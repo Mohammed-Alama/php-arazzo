@@ -95,14 +95,14 @@ In schema (`config/issues/schema.yaml`) visual order:
 | Section | Prompt | Gate codes the section owns |
 | --- | --- | --- |
 | `core-metadata` | none — scripted | `parent-mismatch` (read from labels and the sub-issue link; D22, no agent writes this section) |
-| `problem-statement` | `prompts/write-problem-statement.md` | `missing-requirement` |
+| `problem-statement` | `prompts/write-problem-statement.md` | `missing-requirement`, `problem-statement-too-long` |
 | `feature-scope` | `prompts/write-feature-scope.md` | `non-goals-missing` |
 | `dependency-matrix` | `prompts/write-dependency-matrix.md` | — |
 | `affected-surface` | `prompts/write-affected-surface.md` | `rollback-missing` |
 | `artifacts` | `prompts/write-artifacts.md` | `artifact-block-missing` |
 | `runtime-state` | `prompts/write-runtime-state.md` | — |
 | `acceptance-criteria` | `prompts/write-acceptance-criteria.md` | `scenario-shape`, `scenario-no-test`, `blocked-by-unknown-decision`, `requirement-uncovered`, `quality-coverage-missing`, `vague-then`, `checklist-unverifiable` |
-| `source-grounding` | `prompts/write-source-grounding.md` | `permalink-invalid`, `permalink-not-bare`, `permalink-unverifiable`, `source-grounding-empty` |
+| `source-grounding` | `prompts/write-source-grounding.md` | `permalink-invalid`, `permalink-not-bare`, `permalink-unverifiable`, `permalink-range-invalid`, `source-grounding-empty` |
 | `impact-profile` | `prompts/write-impact-profile.md` | `bc-line-missing` |
 | `epistemic-matrix` | `prompts/write-epistemic-matrix.md` | `tier-invalid` |
 

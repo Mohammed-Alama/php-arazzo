@@ -17,6 +17,9 @@ interface PermalinkResolver
     /** True when the file at `path` exists in the object `sha`. */
     public function pathExistsAt(string $sha, string $path): bool;
 
+    /** The number of lines in the file at `path` in object `sha`, or null when unverifiable. */
+    public function lineCount(string $sha, string $path): ?int;
+
     /** True when the object `sha` exists in the clone. */
     public function isKnown(string $sha): bool;
 

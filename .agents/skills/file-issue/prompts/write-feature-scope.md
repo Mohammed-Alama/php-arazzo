@@ -39,6 +39,9 @@ Rules:
 - Every `D#` line follows the stop rule shape:
   `D#. <question>? Options: <a>, <b>. Default: <a>.` — question, two or more
   options, and a default. This is the `D#` shape this prompt owns.
+- A resolved `D#` line ends with `Decided: <option>.` (case-sensitive). A
+  resolved decision is closed and does not trigger `open-decision` in
+  `readiness()`. An unresolved `D#` line keeps the decision open.
 - Cite `R#` ids instead of repeating requirements; never copy the problem
   statement into this section.
 - No `S#` scenarios here — those belong to acceptance criteria.

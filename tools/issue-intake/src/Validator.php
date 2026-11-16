@@ -99,14 +99,15 @@ final class Validator
 
     /**
      * open-decision: the feature-scope names an unresolved design decision,
-     * a line-anchored `D<n>. `.
+     * a line-anchored `D<n>. `. A decision that ends with `Decided: <option>.`
+     * (case-sensitive) is closed and does not block.
      */
     private function hasOpenDecision(array $parsed): bool
     {
         $key = SectionParser::normalise($this->schema->section('feature-scope')['heading']);
 
         foreach (Content::lines(implode("\n\n", $parsed[$key] ?? [])) as $line) {
-            if (preg_match('/^D\d+\./', $line) === 1) {
+            if (preg_match('/^D\d+\./', $line) === 1 && preg_match('/Decided:\s*\S+\.\s*$/', $line) !== 1) {
                 return true;
             }
         }
@@ -321,6 +322,19 @@ final class Validator
             $this->checkTitle($title, $kind, $findings);
         }
 
+        // draft-reference: a body must not cite an unfiled draft number
+        // ("draft NN"); the filed issue must be cited as "#<n>" instead.
+        // Section-less, warning, checked against the whole body regardless
+        // of whether a title was supplied.
+        if ($kind !== null && preg_match('/\b[Dd]raft\s*#?\d+\b/', $body) === 1) {
+            $severities = $this->schema->checks();
+            $findings[] = new Finding(
+                'draft-reference',
+                'Body cites an unfiled draft ("draft NN") — cite the filed issue as "#<n>" instead.',
+                $severities['draft-reference'] ?? 'warning',
+            );
+        }
+
         if ($level !== null) {
             $this->checkLevel($level, $parent, $parentLevel, $labels, $findings);
             $this->checkPackageLabel($level, $labels, $findings);
@@ -345,6 +359,8 @@ final class Validator
     {
         $severities = $this->schema->checks();
 
+        $problemKey = SectionParser::normalise($this->schema->section('problem-statement')['heading']);
+
         if ($kind === 'kind:feature') {
             $this->checkNonGoals($parsed, $severities, $findings);
 
@@ -356,8 +372,6 @@ final class Validator
             $this->checkQualityCoverage($acText, $findings);
             $this->checkVagueThen($acText, $findings);
 
-            $problemKey = SectionParser::normalise($this->schema->section('problem-statement')['heading']);
-
             // A missing or placeholder section is already reported by checkSections();
             // only a present, non-empty statement without a numbered requirement
             // gets missing-requirement.
@@ -368,6 +382,23 @@ final class Validator
                     'missing-requirement',
                     'Problem statement must name at least one numbered requirement: "R1. <one sentence>".',
                     $severities['missing-requirement'] ?? 'error',
+                    'problem-statement',
+                );
+            }
+        }
+
+        // problem-statement-too-long: the Observed/Expected intro (everything
+        // before the first R<n>. line) must stay under 150 words; R# lines
+        // themselves are not counted. Applies to every kind that carries a
+        // problem-statement section.
+        if (array_key_exists($problemKey, $parsed)
+            && $this->hasContent($parsed[$problemKey], $this->schema->section('problem-statement')['placeholder'])) {
+            $intro = $this->problemStatementIntro(Content::sectionText($parsed, $this->schema, 'problem-statement'));
+            if (str_word_count($intro) > 150) {
+                $findings[] = new Finding(
+                    'problem-statement-too-long',
+                    'Problem statement intro is '.str_word_count($intro).' words — keep the Observed/Expected intro (everything before the first R<n>. line) under 150 words; R# lines are not counted.',
+                    $severities['problem-statement-too-long'] ?? 'warning',
                     'problem-statement',
                 );
             }
@@ -463,6 +494,26 @@ final class Validator
         }
 
         return false;
+    }
+
+    /**
+     * The Observed/Expected intro of a problem statement: everything before the
+     * first `R<n>.` line. R# lines themselves are not counted.
+     */
+    private function problemStatementIntro(string $text): string
+    {
+        $lines = Content::lines($text);
+        $intro = [];
+
+        foreach ($lines as $line) {
+            if (preg_match('/^\s*R\d+\.\s/', $line) === 1) {
+                break;
+            }
+
+            $intro[] = $line;
+        }
+
+        return implode(' ', $intro);
     }
 
     /**
@@ -672,6 +723,28 @@ final class Validator
                     $severities['permalink-invalid'] ?? 'error',
                     'source-grounding',
                 );
+
+                continue;
+            }
+
+            // permalink-range-invalid: when the resolver can count the file's
+            // lines, the range #L<a>-L<b> must satisfy 1 <= a <= b <= lineCount.
+            // A null count means unverifiable — do nothing (permalink-unverifiable
+            // already covers that).
+            $count = $this->resolver->lineCount($sha, $path);
+
+            if ($count !== null) {
+                $start = (int) $match[3];
+                $end = (int) $match[4];
+
+                if ($start < 1 || $start > $end || $end > $count) {
+                    $findings[] = new Finding(
+                        'permalink-range-invalid',
+                        "Permalink range #L{$start}-L{$end} is outside the file's {$count} lines at {$sha}: \"{$trimmed}\".",
+                        $severities['permalink-range-invalid'] ?? 'warning',
+                        'source-grounding',
+                    );
+                }
             }
         }
     }
@@ -849,10 +922,10 @@ final class Validator
                 continue;
             }
 
-            if (preg_match('/^\s*Test:\s*\S+::\S+\s*$/m', $block) !== 1) {
+            if (preg_match('/^\s*Test:\s*\S+\s*::\s*\S+/m', $block) !== 1) {
                 $findings[] = new Finding(
                     'scenario-no-test',
-                    "Scenario {$scenario} names no Test: line — add \"Test: ClassTest::it_does_x\".",
+                    "Scenario {$scenario} names no Test: line — add \"Test: <path to test file> :: <it() description> (new|existing)\".",
                     $severities['scenario-no-test'] ?? 'error',
                     'acceptance-criteria',
                 );

@@ -1,7 +1,7 @@
 # Prompt: write problem statement (`problem-statement`)
 
 Section: `## 📝 Problem Statement & Intent`
-Owns the gate codes: `missing-requirement`.
+Owns the gate codes: `missing-requirement` and `problem-statement-too-long`.
 
 This prompt turns the observed symptom (bugfix) or the intent (feature) into
 numbered requirements `R1..Rn`. It never restates the preamble or any other
@@ -38,6 +38,9 @@ Rules:
 - Each requirement is one sentence, observable in behavior or test output,
   and names no design decision (decisions belong in `feature-scope` as `D#`).
 - No solutions, no interfaces, no packages here — those sections follow.
+- The Observed/Expected intro — everything before the first `R<n>.` line —
+  must stay under 150 words (`R#` lines are not counted); over 150 words
+  triggers `problem-statement-too-long` (warning).
 - Inherits prompt-preamble.md.
 
 ## Worked example

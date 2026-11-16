@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Tools\IssueIntake\Finding;
+use Alama\Tools\IssueIntake\PermalinkResolver;
 use Alama\Tools\IssueIntake\Validator;
 
 it('passes a complete bugfix body', function () {
@@ -596,4 +597,302 @@ it('still refuses a story with no parent', function () {
     ]);
 
     expect(codes($findings))->toContain('parent-missing');
+});
+
+it('flags a draft reference in the body as draft-reference warning', function () {
+    $schema = arazzoSchema();
+    $resolver = new class() implements PermalinkResolver
+    {
+        public function pathExistsAt(string $sha, string $path): bool
+        {
+            return true;
+        }
+
+        public function lineCount(string $sha, string $path): ?int
+        {
+            return 100;
+        }
+
+        public function isKnown(string $sha): bool
+        {
+            return true;
+        }
+
+        public function isAncestor(string $sha): bool
+        {
+            return true;
+        }
+    };
+
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => "Observed: something.\nR1. one requirement.",
+        'source-grounding' => "- claim\nhttps://github.com/o/r/blob/".str_repeat('a', 40)."/x.php#L1-L5\nVerified: 2026-11-16",
+    ]);
+    $body .= "\n\nSee draft 53 for the design.";
+
+    $findings = (new Validator($schema, $resolver))->report([
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->toContain('draft-reference')
+        ->and($findings[array_search('draft-reference', codes($findings))]->severity)->toBe('warning');
+});
+
+it('passes when no draft reference appears', function () {
+    $schema = arazzoSchema();
+    $resolver = new class() implements PermalinkResolver
+    {
+        public function pathExistsAt(string $sha, string $path): bool
+        {
+            return true;
+        }
+
+        public function lineCount(string $sha, string $path): ?int
+        {
+            return 100;
+        }
+
+        public function isKnown(string $sha): bool
+        {
+            return true;
+        }
+
+        public function isAncestor(string $sha): bool
+        {
+            return true;
+        }
+    };
+
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => "Observed: something.\nR1. one requirement.",
+        'source-grounding' => "- claim\nhttps://github.com/o/r/blob/".str_repeat('a', 40)."/x.php#L1-L5\nVerified: 2026-11-16",
+    ]);
+
+    $findings = (new Validator($schema, $resolver))->report([
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->not->toContain('draft-reference');
+});
+
+it('flags a permalink range past the file end as permalink-range-invalid warning', function () {
+    $schema = arazzoSchema();
+    $resolver = new class() implements PermalinkResolver
+    {
+        public function pathExistsAt(string $sha, string $path): bool
+        {
+            return true;
+        }
+
+        public function lineCount(string $sha, string $path): ?int
+        {
+            return 10;
+        }
+
+        public function isKnown(string $sha): bool
+        {
+            return true;
+        }
+
+        public function isAncestor(string $sha): bool
+        {
+            return true;
+        }
+    };
+
+    $body = issueBody($schema, featureSectionIds(), [
+        'source-grounding' => "- claim\nhttps://github.com/o/r/blob/".str_repeat('a', 40)."/x.php#L5-L20\nVerified: 2026-11-16",
+    ]);
+
+    $findings = (new Validator($schema, $resolver))->report([
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->toContain('permalink-range-invalid')
+        ->and($findings[array_search('permalink-range-invalid', codes($findings))]->severity)->toBe('warning');
+});
+
+it('passes when the permalink range fits within the file', function () {
+    $schema = arazzoSchema();
+    $resolver = new class() implements PermalinkResolver
+    {
+        public function pathExistsAt(string $sha, string $path): bool
+        {
+            return true;
+        }
+
+        public function lineCount(string $sha, string $path): ?int
+        {
+            return 100;
+        }
+
+        public function isKnown(string $sha): bool
+        {
+            return true;
+        }
+
+        public function isAncestor(string $sha): bool
+        {
+            return true;
+        }
+    };
+
+    $body = issueBody($schema, featureSectionIds(), [
+        'source-grounding' => "- claim\nhttps://github.com/o/r/blob/".str_repeat('a', 40)."/x.php#L5-L20\nVerified: 2026-11-16",
+    ]);
+
+    $findings = (new Validator($schema, $resolver))->report([
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->not->toContain('permalink-range-invalid');
+});
+
+it('does not flag a permalink range when line count is unverifiable', function () {
+    $schema = arazzoSchema();
+    $resolver = new class() implements PermalinkResolver
+    {
+        public function pathExistsAt(string $sha, string $path): bool
+        {
+            return true;
+        }
+
+        public function lineCount(string $sha, string $path): ?int
+        {
+            return null;
+        }
+
+        public function isKnown(string $sha): bool
+        {
+            return true;
+        }
+
+        public function isAncestor(string $sha): bool
+        {
+            return true;
+        }
+    };
+
+    $body = issueBody($schema, featureSectionIds(), [
+        'source-grounding' => "- claim\nhttps://github.com/o/r/blob/".str_repeat('a', 40)."/x.php#L5-L20\nVerified: 2026-11-16",
+    ]);
+
+    $findings = (new Validator($schema, $resolver))->report([
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->not->toContain('permalink-range-invalid');
+});
+
+it('flags a problem statement intro over 150 words as problem-statement-too-long warning', function () {
+    $schema = arazzoSchema();
+    $resolver = new class() implements PermalinkResolver
+    {
+        public function pathExistsAt(string $sha, string $path): bool
+        {
+            return true;
+        }
+
+        public function lineCount(string $sha, string $path): ?int
+        {
+            return 100;
+        }
+
+        public function isKnown(string $sha): bool
+        {
+            return true;
+        }
+
+        public function isAncestor(string $sha): bool
+        {
+            return true;
+        }
+    };
+
+    $intro = implode(' ', array_fill(0, 160, 'word'));
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => $intro."\n\nR1. one requirement.",
+    ]);
+
+    $findings = (new Validator($schema, $resolver))->report([
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->toContain('problem-statement-too-long')
+        ->and($findings[array_search('problem-statement-too-long', codes($findings))]->severity)->toBe('warning');
+});
+
+it('passes when the problem statement intro is under 150 words', function () {
+    $schema = arazzoSchema();
+    $resolver = new class() implements PermalinkResolver
+    {
+        public function pathExistsAt(string $sha, string $path): bool
+        {
+            return true;
+        }
+
+        public function lineCount(string $sha, string $path): ?int
+        {
+            return 100;
+        }
+
+        public function isKnown(string $sha): bool
+        {
+            return true;
+        }
+
+        public function isAncestor(string $sha): bool
+        {
+            return true;
+        }
+    };
+
+    $intro = implode(' ', array_fill(0, 100, 'word'));
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => $intro."\n\nR1. one requirement.",
+    ]);
+
+    $findings = (new Validator($schema, $resolver))->report([
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->not->toContain('problem-statement-too-long');
+});
+
+it('treats a decision line ending with Decided: as closed (no open-decision blocker)', function () {
+    $schema = arazzoSchema();
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => 'R1. one requirement.',
+        'feature-scope' => "Goals: x\nNon-goals: y\nD1. cache? Options: yes, no. Default: yes. Decided: yes.",
+        'source-grounding' => "- claim\nhttps://github.com/o/r/blob/".str_repeat('a', 40)."/x.php#L1-L5\nVerified: 2026-11-16",
+        'core-metadata' => 'Package: core · Parent: #10',
+        'impact-profile' => 'API: none · BC break: no',
+    ]);
+
+    $result = (new Validator($schema))->readiness([
+        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'parent' => 10, 'parentLevel' => 'level:epic', 'readyForAgent' => true,
+    ]);
+
+    expect($result['ready'])->toBeTrue()
+        ->and($result['blockers'])->not->toContain('open-decision');
+});
+
+it('still treats an unresolved decision line as open-decision', function () {
+    $schema = arazzoSchema();
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => 'R1. one requirement.',
+        'feature-scope' => "Goals: x\nNon-goals: y\nD1. cache? Options: yes, no. Default: yes.",
+        'source-grounding' => "- claim\nhttps://github.com/o/r/blob/".str_repeat('a', 40)."/x.php#L1-L5\nVerified: 2026-11-16",
+        'core-metadata' => 'Package: core · Parent: #10',
+        'impact-profile' => 'API: none · BC break: no',
+    ]);
+
+    $result = (new Validator($schema))->readiness([
+        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'parent' => 10, 'parentLevel' => 'level:epic', 'readyForAgent' => true,
+    ]);
+
+    expect($result['ready'])->toBeFalse()
+        ->and($result['blockers'])->toContain('open-decision');
 });
