@@ -22,7 +22,7 @@ Analyzed 415 total file-touches across 53 modules.
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 47 | 11% | 395 | 119 |
-| `cli:Console` | 29 | 7% | 933 | 31.1 |
+| `cli:Console` | 29 | 7% | 946 | 30.7 |
 | `runner:Execution` | 26 | 6% | 370 | 70.3 |
 | `document:Validator` | 25 | 6% | 3,846 | 6.5 |
 | `laravel:Http` | 22 | 5% | 187 | 117.6 |

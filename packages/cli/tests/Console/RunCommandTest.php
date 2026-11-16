@@ -154,3 +154,179 @@ it('exposes the facade result shape the CLI output rendering depends on', functi
         ->and($result['steps'])->toHaveKey('ping')
         ->and($result['steps']['ping'])->toMatchArray(['stepId' => 'ping', 'success' => true, 'error' => null]);
 });
+
+function inputsDoc(string $workflowId, string $schemaYaml = '', array $steps = []): string
+{
+    if ($steps === []) {
+        $steps = [
+            'fetch' => [
+                'operationPath' => '{$sourceDescriptions.api.url}#/paths/~1ping/get',
+            ],
+        ];
+    }
+
+    $stepsYaml = '';
+    foreach ($steps as $stepId => $step) {
+        $stepsYaml .= "      - stepId: {$stepId}\n";
+        foreach ($step as $key => $value) {
+            $quoted = str_starts_with($value, '{') || str_contains($value, '#') || str_contains($value, ':') ? "'".$value."'" : $value;
+            $stepsYaml .= "        {$key}: {$quoted}\n";
+        }
+    }
+
+    $schemaBlock = $schemaYaml === '' ? '' : "    inputs:\n".$schemaYaml;
+
+    $tmp = sys_get_temp_dir().'/arazzo-cli-inputs-'.uniqid().'.yaml';
+    file_put_contents($tmp, <<<YAML
+arazzo: "1.0.0"
+info:
+  title: Inputs CLI
+  version: "1"
+sourceDescriptions:
+  - name: api
+    url: https://mini.test/openapi.json
+    type: openapi
+workflows:
+  - workflowId: {$workflowId}
+{$schemaBlock}
+    steps:
+{$stepsYaml}
+YAML);
+
+    return $tmp;
+}
+
+function cliCommand(ClientInterface $client, RequestFactoryInterface $factory, SourceRegistry $registry): RunCommand
+{
+    return new RunCommand($client, $factory, $registry);
+}
+
+function okClient(): ClientInterface
+{
+    return new class() implements ClientInterface
+    {
+        public function sendRequest(RequestInterface $request): ResponseInterface
+        {
+            return new Response(200, ['Content-Type' => 'application/json'], '{}');
+        }
+    };
+}
+
+it('validates inputs before execution (S1)', function (): void {
+    $client = okClient();
+    $factory = new HttpFactory();
+    $registry = createTestRegistry($client, $factory);
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
+
+    $doc = inputsDoc('create', "      type: object\n      required: [username]\n      properties:\n        username:\n          type: string");
+
+    $command = cliCommand($client, $factory, $registry);
+    $tester = new CommandTester($command);
+
+    $tester->execute(['file' => $doc, '--input' => '{"username": "alice"}']);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(0)
+        ->and($tester->getDisplay())->toContain('create: succeeded');
+});
+
+it('fails on missing required input (S2)', function (): void {
+    $client = okClient();
+    $factory = new HttpFactory();
+    $registry = createTestRegistry($client, $factory);
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
+
+    $doc = inputsDoc('create', "      type: object\n      required: [username]\n      properties:\n        username:\n          type: string");
+
+    $command = cliCommand($client, $factory, $registry);
+    $tester = new CommandTester($command);
+
+    $tester->execute(['file' => $doc, '--input' => '{"retries": 5}']);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(1)
+        ->and($tester->getDisplay())->toContain('username');
+});
+
+it('fails on type mismatch (S3)', function (): void {
+    $client = okClient();
+    $factory = new HttpFactory();
+    $registry = createTestRegistry($client, $factory);
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
+
+    $doc = inputsDoc('create', "      type: object\n      properties:\n        timeout:\n          type: integer");
+
+    $command = cliCommand($client, $factory, $registry);
+    $tester = new CommandTester($command);
+
+    $tester->execute(['file' => $doc, '--input' => '{"timeout": "thirty"}']);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(1)
+        ->and($tester->getDisplay())->toContain('integer');
+});
+
+it('fails on enum violation (S4)', function (): void {
+    $client = okClient();
+    $factory = new HttpFactory();
+    $registry = createTestRegistry($client, $factory);
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
+
+    $doc = inputsDoc('create', "      type: object\n      properties:\n        region:\n          type: string\n          enum: [eu, us]");
+
+    $command = cliCommand($client, $factory, $registry);
+    $tester = new CommandTester($command);
+
+    $tester->execute(['file' => $doc, '--input' => '{"region": "mars"}']);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(1)
+        ->and($tester->getDisplay())->toContain('enumeration');
+});
+
+it('applies schema defaults from validated map (S5)', function (): void {
+    $client = okClient();
+    $factory = new HttpFactory();
+    $registry = createTestRegistry($client, $factory);
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
+
+    $doc = inputsDoc('create', "      type: object\n      required: [username]\n      properties:\n        username:\n          type: string\n        retries:\n          type: integer\n          default: 3");
+
+    $command = cliCommand($client, $factory, $registry);
+    $tester = new CommandTester($command);
+
+    // retries omitted; default 3 should be injected by validation
+    $tester->execute(['file' => $doc, '--input' => '{"username": "alice"}']);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(0)
+        ->and($tester->getDisplay())->toContain('create: succeeded');
+});
+
+it('accepts arbitrary inputs when no schema declared (S6)', function (): void {
+    $client = okClient();
+    $factory = new HttpFactory();
+    $registry = createTestRegistry($client, $factory);
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
+
+    $doc = inputsDoc('create', '', [
+        'create' => [
+            'operationPath' => '{$sourceDescriptions.api.url}#/paths/~1ping/get',
+        ],
+    ]);
+
+    $command = cliCommand($client, $factory, $registry);
+    $tester = new CommandTester($command);
+
+    $tester->execute(['file' => $doc, '--input' => '{"anything": "goes"}']);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(0)
+        ->and($tester->getDisplay())->toContain('create: succeeded');
+});
