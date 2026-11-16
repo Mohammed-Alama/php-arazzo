@@ -188,6 +188,7 @@ units:
     tasks:
       - task: 40-cli-multi-workflow
         kind: kind:feature
+        filed: 351
 
   - story: 31-input-ergonomics
     kind: kind:feature
