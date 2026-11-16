@@ -214,6 +214,7 @@ units:
     tasks:
       - task: 43-cli-har-export
         kind: kind:feature
+        filed: 357
 
   - story: 37-themed-html-rendering
     kind: kind:feature
