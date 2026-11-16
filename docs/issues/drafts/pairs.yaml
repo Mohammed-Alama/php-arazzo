@@ -223,6 +223,7 @@ units:
     tasks:
       - task: 44-cli-html-rendering
         kind: kind:feature
+        filed: 359
 
   # ── Core story + CLI task (runner semantics wave) ─────────────────────
   - story: 45-run-report-contract
