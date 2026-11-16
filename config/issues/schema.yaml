@@ -150,7 +150,10 @@ sections:
     checks: { tier-invalid: error }
 
 # Section-less checks: title-kind-mismatch is validated against the issue
-# title, not against any section body.
+# title, not against any section body. package-missing and priority-missing
+# are validated against the issue labels, not against any section body.
 title_checks:
   title-kind-mismatch: error
   draft-reference: warning
+  package-missing: error
+  priority-missing: error

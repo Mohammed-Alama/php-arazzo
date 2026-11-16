@@ -338,6 +338,7 @@ final class Validator
         if ($level !== null) {
             $this->checkLevel($level, $parent, $parentLevel, $labels, $findings);
             $this->checkPackageLabel($level, $labels, $findings);
+            $this->checkPriorityLabel($labels, $findings);
         }
 
         return $this->demoteLightProfile($level, $findings);
@@ -1435,35 +1436,67 @@ final class Validator
     /**
      * A package-epic names one primary package — the package it is *mostly*
      * about (spec D14). This is the one invariant the level adds beyond the
-     * parent chain.
+     * parent chain. All other levels require at least one package:* label.
      *
      * @param  list<string>  $labels
      * @param  list<Finding>  $findings
      */
     private function checkPackageLabel(string $level, array $labels, array &$findings): void
     {
-        if (!$this->schema->levelRequiresPackageLabel($level)) {
-            return;
-        }
-
         $packages = array_values(array_filter(
             $labels,
             static fn (string $label): bool => str_starts_with($label, 'package:'),
         ));
 
-        if ($packages === []) {
-            $findings[] = new Finding('missing-package-label', sprintf(
-                'A %s issue must name exactly one primary package (add a package:* label).', $level,
-            ));
+        if ($this->schema->levelRequiresPackageLabel($level)) {
+            // level:package requires exactly one package:* label.
+            if ($packages === []) {
+                $findings[] = new Finding('missing-package-label', sprintf(
+                    'A %s issue must name exactly one primary package (add a package:* label).', $level,
+                ));
 
-            return;
+                return;
+            }
+
+            if (count($packages) > 1) {
+                $findings[] = new Finding('multiple-package-labels', sprintf(
+                    '%s carries several package labels (%s); keep the package it is mostly about.',
+                    $level, implode(', ', $packages),
+                ));
+            }
+        } elseif ($packages === []) {
+            // All other levels require at least one package:* label.
+            $severities = $this->schema->checks();
+            $findings[] = new Finding(
+                'package-missing',
+                'Issue must name at least one primary package (add a package:* label).',
+                $severities['package-missing'] ?? 'error',
+            );
         }
+    }
 
-        if (count($packages) > 1) {
-            $findings[] = new Finding('multiple-package-labels', sprintf(
-                '%s carries several package labels (%s); keep the package it is mostly about.',
-                $level, implode(', ', $packages),
-            ));
+    /**
+     * Every issue must declare a priority label (e.g. priority:high,
+     * priority:normal, priority:low).
+     *
+     * @param  list<string>  $labels
+     * @param  list<Finding>  $findings
+     */
+    private function checkPriorityLabel(array $labels, array &$findings): void
+    {
+        $severities = $this->schema->checks();
+
+        $priorities = array_values(array_filter(
+            $labels,
+            static fn (string $label): bool => str_starts_with($label, 'priority:'),
+        ));
+
+        if ($priorities === []) {
+            $findings[] = new Finding(
+                'priority-missing',
+                'Issue must declare a priority (add a priority:* label).',
+                $severities['priority-missing'] ?? 'error',
+            );
         }
     }
 

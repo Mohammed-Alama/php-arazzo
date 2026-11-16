@@ -16,7 +16,7 @@ it('reports one row per issue with counts and findings', function () {
         'number' => 81,
         'title' => 'feat(runner): x',
         'body' => "## 🏗️ Core Metadata & Alignment\n\npkg\n\n## 📝 Problem Statement & Intent\n\nR1. one\n",
-        'labels' => [['name' => 'kind:feature'], ['name' => 'level:story']],
+        'labels' => [['name' => 'kind:feature', 'package:core', 'priority:normal'], ['name' => 'level:story']],
     ]], new Validator(invSchema()))[0];
 
     expect($row['number'])->toBe(81)

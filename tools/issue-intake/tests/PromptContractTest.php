@@ -64,7 +64,7 @@ it('validates every worked example against the engine', function () {
         $findings = $validator->validate([
             'title' => 'feat(core): x',
             'body' => issueBody($schema, array_values(array_unique([...featureSectionIds(), $id])), [$id => $section]),
-            'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+            'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
         ]);
 
         // Spec §7.7 assertion 3 says "zero findings"; with every other section a

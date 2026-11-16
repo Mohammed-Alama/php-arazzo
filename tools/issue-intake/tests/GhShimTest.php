@@ -26,7 +26,7 @@ function shimStub(): array
 printf '%s\n' "$*" >> "$GATE_GH_LOG"
 if [ "$1 $2" = "issue view" ]; then
     # Default labels as a proper JSON array
-    default='[{"name":"level:package"},{"name":"package:core"}]'
+    default='[{"name":"level:package"},{"name":"package:core"},{"name":"priority:normal"}]'
     labels="${GATE_STUB_LABELS:-$default}"
     printf '{"labels":%s}\n' "$labels" | tee -a "$GATE_GH_RESPONSE_LOG"
     exit 0
@@ -97,7 +97,7 @@ it('delegates a conforming issue create untouched', function () {
 
     $process = runShim([
         'issue', 'create', '--title', 'fix(core): x', '--body', conformingBody(arazzoSchema(), 'kind:bugfix', 1),
-        '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
+        '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core', '--label', 'priority:normal',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(0)
@@ -110,7 +110,7 @@ it('reads --body-file - once and re-supplies it downstream', function () {
     $body = conformingBody(arazzoSchema(), 'kind:bugfix', 1);
 
     $process = runShim([
-        'issue', 'create', '--title', 'fix(core): x', '--body-file', '-', '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
+        'issue', 'create', '--title', 'fix(core): x', '--body-file', '-', '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core', '--label', 'priority:normal',
     ], $gh, $log, null, ['GATE_STUB_CAPTURE' => $capture], $body);
 
     expect($process->getExitCode())->toBe(0)

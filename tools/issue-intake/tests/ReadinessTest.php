@@ -11,7 +11,7 @@ it('is not ready while a design decision is open, even when conforming', functio
     ]);
 
     $result = (new Validator($schema))->readiness([
-        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10, 'parentLevel' => 'level:epic', 'readyForAgent' => true,
     ]);
 

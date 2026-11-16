@@ -35,7 +35,7 @@ it('rejects a branch link and a missing path at a known SHA', function () {
 
     $findings = (new Validator($schema, $resolver))->validate([
         'body' => issueBody($schema, featureSectionIds(), ['source-grounding' => $text]),
-        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->toContain('permalink-invalid');
@@ -71,7 +71,7 @@ it('warns instead of erroring when the SHA is not in the clone', function () {
         'body' => issueBody($schema, featureSectionIds(), [
             'source-grounding' => "- claim\nhttps://github.com/o/r/blob/{$sha}/a.php#L1-L2\nVerified: 2026-11-15",
         ]),
-        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($report))->toContain('permalink-unverifiable');

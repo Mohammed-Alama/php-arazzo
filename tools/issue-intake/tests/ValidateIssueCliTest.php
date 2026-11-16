@@ -17,7 +17,7 @@ function runIntakeValidator(array|string $input): Process
 it('exits 1 and prints findings for a malformed body', function () {
     $process = runIntakeValidator([
         'body' => 'nothing here',
-        'labels' => ['kind:bugfix', 'level:epic'],
+        'labels' => ['kind:bugfix', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => null,
         'parentLevel' => null,
     ]);
@@ -35,7 +35,7 @@ it('exits 0 and reports conforming for a complete body', function () {
 
     $process = runIntakeValidator([
         'body' => conformingBody($schema, 'kind:bugfix', 1),
-        'labels' => ['kind:bugfix', 'level:package', 'package:core'],
+        'labels' => ['kind:bugfix', 'level:package', 'package:core', 'priority:normal'],
         'parent' => null,
         'parentLevel' => null,
     ]);

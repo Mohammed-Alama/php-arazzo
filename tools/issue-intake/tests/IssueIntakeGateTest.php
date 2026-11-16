@@ -133,10 +133,17 @@ it('clears needs-info on a conforming issue we previously commented on', functio
     [$process, $log] = runIntakeGate([
         'issue' => (string) json_encode([
             'body' => $body,
-            'labels' => [['name' => 'kind:bugfix'], ['name' => 'level:epic'], ['name' => 'package:core'], ['name' => 'needs-info']],
+            'labels' => [
+                ['name' => 'kind:bugfix'],
+                ['name' => 'package:core'],
+                ['name' => 'priority:normal'],
+                ['name' => 'level:epic'],
+                ['name' => 'package:core'],
+                ['name' => 'needs-info'],
+            ],
         ]),
         'parent' => (string) json_encode([
-            'data' => ['repository' => ['issue' => ['parent' => ['number' => 1, 'labels' => ['nodes' => [['name' => 'level:package']]]]]]],
+            'data' => ['repository' => ['issue' => ['parent' => ['number' => 1, 'labels' => ['nodes' => [['name' => 'level:package', 'package:core', 'priority:normal']]]]]]],
         ]),
         'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
     ], ['INTAKE_CUTOFF' => '0']);
@@ -153,10 +160,17 @@ it('removes its stale marker comment once the issue conforms', function () {
     [$process, $log] = runIntakeGate([
         'issue' => (string) json_encode([
             'body' => $body,
-            'labels' => [['name' => 'kind:bugfix'], ['name' => 'level:epic'], ['name' => 'package:core'], ['name' => 'needs-info']],
+            'labels' => [
+                ['name' => 'kind:bugfix'],
+                ['name' => 'package:core'],
+                ['name' => 'priority:normal'],
+                ['name' => 'level:epic'],
+                ['name' => 'package:core'],
+                ['name' => 'needs-info'],
+            ],
         ]),
         'parent' => (string) json_encode([
-            'data' => ['repository' => ['issue' => ['parent' => ['number' => 1, 'labels' => ['nodes' => [['name' => 'level:package']]]]]]],
+            'data' => ['repository' => ['issue' => ['parent' => ['number' => 1, 'labels' => ['nodes' => [['name' => 'level:package', 'package:core', 'priority:normal']]]]]]],
         ]),
         'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
     ], ['INTAKE_CUTOFF' => '0']);
@@ -174,10 +188,16 @@ it('removes a stale marker comment even when the label was cleared elsewhere', f
     [$process, $log] = runIntakeGate([
         'issue' => (string) json_encode([
             'body' => $body,
-            'labels' => [['name' => 'kind:bugfix'], ['name' => 'level:epic'], ['name' => 'package:core']],
+            'labels' => [
+                ['name' => 'kind:bugfix'],
+                ['name' => 'package:core'],
+                ['name' => 'priority:normal'],
+                ['name' => 'level:epic'],
+                ['name' => 'package:core'],
+            ],
         ]),
         'parent' => (string) json_encode([
-            'data' => ['repository' => ['issue' => ['parent' => ['number' => 1, 'labels' => ['nodes' => [['name' => 'level:package']]]]]]],
+            'data' => ['repository' => ['issue' => ['parent' => ['number' => 1, 'labels' => ['nodes' => [['name' => 'level:package', 'package:core', 'priority:normal']]]]]]],
         ]),
         'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
     ], ['INTAKE_CUTOFF' => '0']);

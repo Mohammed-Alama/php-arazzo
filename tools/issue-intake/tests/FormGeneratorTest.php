@@ -113,7 +113,7 @@ it('produces forms whose filled body conforms to the validator', function () {
 
         $findings = (new Validator($schema))->validate([
             'body' => $body,
-            'labels' => $form['labels'],
+            'labels' => array_merge($form['labels'], ['package:core', 'priority:normal']),
             'parent' => $parent,
             'parentLevel' => $parentLevel,
         ]);
@@ -132,7 +132,7 @@ it('offers a title prefix the gate accepts', function () {
         $findings = (new Validator($schema))->validate([
             'title' => $title.'add x',
             'body' => issueBody($schema, $schema->requiredIdsFor($kind)),
-            'labels' => [$kind, 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+            'labels' => [$kind, 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
         ]);
 
         // The stub body fails the content checks on purpose; only the title is under test.

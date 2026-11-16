@@ -13,7 +13,7 @@ it('passes a complete bugfix body', function () {
 
     $findings = (new Validator($schema))->validate([
         'body' => conformingBody($schema, 'kind:bugfix', 1),
-        'labels' => ['kind:bugfix', 'level:epic'],
+        'labels' => ['kind:bugfix', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => 1,
         'parentLevel' => 'level:package',
     ]);
@@ -33,7 +33,7 @@ it('flags an unedited placeholder or bare checklist as empty, not missing', func
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core · Parent: #1',
         ]),
-        'labels' => ['kind:bugfix', 'level:epic'],
+        'labels' => ['kind:bugfix', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => 1,
         'parentLevel' => 'level:package',
     ]);
@@ -52,7 +52,7 @@ it('treats a written checklist as content', function () {
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core · Parent: #1',
         ]),
-        'labels' => ['kind:bugfix', 'level:epic'],
+        'labels' => ['kind:bugfix', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => 1,
         'parentLevel' => 'level:package',
     ]);
@@ -65,7 +65,7 @@ it('reports sections that are absent entirely', function () {
 
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, ['core-metadata'], ['core-metadata' => 'Package: core · Parent: #1']),
-        'labels' => ['kind:bugfix', 'level:epic'],
+        'labels' => ['kind:bugfix', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => 1,
         'parentLevel' => 'level:package',
     ]);
@@ -80,14 +80,14 @@ it('demands exactly one kind label', function () {
 
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, bugfixSectionIds()),
-        'labels' => ['level:epic'],
+        'labels' => ['level:epic', 'package:core', 'priority:normal'],
     ]);
 
     expect(codes($findings))->toContain('missing-kind-label');
 
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, bugfixSectionIds()),
-        'labels' => ['kind:bugfix', 'kind:feature', 'level:epic'],
+        'labels' => ['kind:bugfix', 'kind:feature', 'level:epic', 'package:core', 'priority:normal'],
     ]);
 
     expect(codes($findings))->toContain('multiple-kind-labels');
@@ -103,7 +103,7 @@ it('accepts the level declared by the form dropdown when no level label is set',
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core · Parent: #1',
         ]),
-        'labels' => ['kind:bugfix'],
+        'labels' => ['kind:bugfix', 'package:core', 'priority:normal'],
         'parent' => 1,
         'parentLevel' => 'level:package',
     ]);
@@ -121,7 +121,7 @@ it('does not accept a body level it cannot resolve', function () {
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core · Parent: #1',
         ]),
-        'labels' => ['kind:bugfix'],
+        'labels' => ['kind:bugfix', 'package:core', 'priority:normal'],
     ]);
 
     expect(codes($findings))->toBe(['missing-level-label']);
@@ -138,14 +138,14 @@ it('requires a story to sit under an epic', function () {
     ]);
 
     $underEpic = (new Validator($schema))->validate([
-        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10, 'parentLevel' => 'level:epic',
     ]);
 
     expect($underEpic)->toBe([]);
 
     $underStory = (new Validator($schema))->validate([
-        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10, 'parentLevel' => 'level:story',
     ]);
 
@@ -162,7 +162,7 @@ it('requires a story to have a parent at all', function () {
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core',
         ]),
-        'labels' => ['kind:feature', 'level:story'],
+        'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => null,
         'parentLevel' => null,
     ]);
@@ -180,7 +180,7 @@ it('names a legacy parent that carries no level label', function () {
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core · Parent: #42',
         ]),
-        'labels' => ['kind:feature', 'level:story'],
+        'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 42,
         'parentLevel' => null,
     ]);
@@ -199,7 +199,7 @@ it('refuses to give a sub-task children', function () {
             'affected-surface' => "Risk: low\nRollback: revert the commit",
             'core-metadata' => 'Package: core · Parent: #7',
         ]),
-        'labels' => ['kind:chore', 'level:task'],
+        'labels' => ['kind:chore', 'level:task', 'package:core', 'priority:normal'],
         'parent' => 7,
         'parentLevel' => 'level:task',
     ]);
@@ -218,7 +218,7 @@ it('treats GitHub\'s no-response sentinel as an empty section', function () {
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core · Parent: #1',
         ]),
-        'labels' => ['kind:bugfix', 'level:epic'],
+        'labels' => ['kind:bugfix', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => 1,
         'parentLevel' => 'level:package',
     ]);
@@ -236,7 +236,7 @@ it('tolerates a missing parentLevel key', function () {
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core · Parent: #1',
         ]),
-        'labels' => ['kind:bugfix', 'level:epic'],
+        'labels' => ['kind:bugfix', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => 1,
         'parentLevel' => 'level:package',
     ]);
@@ -247,7 +247,7 @@ it('tolerates a missing parentLevel key', function () {
 it('accepts a package-epic with no kind and no sections', function () {
     $findings = (new Validator(arazzoSchema()))->validate([
         'body' => "Anything at all — the body is generated.\n",
-        'labels' => ['level:package', 'package:runner'],
+        'labels' => ['level:package', 'package:runner', 'priority:normal'],
         'parent' => null,
         'parentLevel' => null,
     ]);
@@ -259,13 +259,13 @@ it('demands exactly one package label on a package-epic', function () {
     $schema = arazzoSchema();
 
     $missing = (new Validator($schema))->validate([
-        'body' => '', 'labels' => ['level:package'], 'parent' => null,
+        'body' => '', 'labels' => ['level:package', 'priority:normal'], 'parent' => null,
     ]);
 
     expect(codes($missing))->toBe(['missing-package-label']);
 
     $tooMany = (new Validator($schema))->validate([
-        'body' => '', 'labels' => ['level:package', 'package:runner', 'package:runtime'], 'parent' => null,
+        'body' => '', 'labels' => ['level:package', 'package:runner', 'package:runtime', 'priority:normal'], 'parent' => null,
     ]);
 
     expect(codes($tooMany))->toBe(['multiple-package-labels']);
@@ -273,7 +273,7 @@ it('demands exactly one package label on a package-epic', function () {
 
 it('forbids a parent on a package-epic', function () {
     $findings = (new Validator(arazzoSchema()))->validate([
-        'body' => '', 'labels' => ['level:package', 'package:runner'],
+        'body' => '', 'labels' => ['level:package', 'package:runner', 'priority:normal'],
         'parent' => 3, 'parentLevel' => 'level:package',
     ]);
 
@@ -288,7 +288,7 @@ it('requires an epic to sit under a package-epic', function () {
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core · Parent: #1',
         ]),
-        'labels' => ['kind:bugfix', 'level:epic', 'package:core'],
+        'labels' => ['kind:bugfix', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => null,
         'parentLevel' => null,
     ]);
@@ -301,7 +301,7 @@ it('accepts a conventional prefix that matches the kind', function () {
     foreach (['feat(core): add x', 'feat: add x'] as $title) {
         $findings = (new Validator($schema))->validate([
             'title' => $title, 'body' => issueBody($schema, featureSectionIds()),
-            'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+            'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
         ]);
         expect(codes($findings))->not->toContain('title-kind-mismatch');
     }
@@ -312,7 +312,7 @@ it('rejects a bracket title and a prefix that belongs to another kind', function
     foreach (['[Feature] add x', 'fix(core): add x'] as $title) {
         $findings = (new Validator($schema))->validate([
             'title' => $title, 'body' => issueBody($schema, featureSectionIds()),
-            'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+            'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
         ]);
         expect(codes($findings))->toContain('title-kind-mismatch');
     }
@@ -324,7 +324,7 @@ it('returns errors from validate() and every finding from report()', function ()
 
     $input = [
         'body' => issueBody($schema, featureSectionIds(), ['feature-scope' => 'Goals: x']),
-        'labels' => ['kind:feature', 'level:story'],
+        'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10,
         'parentLevel' => 'level:epic',
     ];
@@ -340,7 +340,7 @@ it('requires at least one numbered requirement for feature and bugfix', function
     $schema = arazzoSchema();
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, featureSectionIds(), ['problem-statement' => 'It is broken.']),
-        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->toContain('missing-requirement');
@@ -364,7 +364,7 @@ MD;
 
     $findings = (new Validator($schema))->report([
         'body' => issueBody($schema, featureSectionIds(), ['acceptance-criteria' => $text]),
-        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->toContain('scenario-shape')->toContain('scenario-no-test');
@@ -401,7 +401,7 @@ MD,
     ]);
 
     $findings = (new Validator($schema))->validate([
-        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10, 'parentLevel' => 'level:epic',
     ]);
 
@@ -424,7 +424,7 @@ MD,
     ]);
 
     $input = [
-        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10, 'parentLevel' => 'level:epic',
     ];
     $reported = (new Validator($schema))->report($input);
@@ -455,7 +455,7 @@ MD,
     ]);
 
     $input = [
-        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10, 'parentLevel' => 'level:epic',
     ];
 
@@ -479,7 +479,7 @@ MD,
     ]);
 
     $input = [
-        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10, 'parentLevel' => 'level:epic',
     ];
 
@@ -501,7 +501,7 @@ MD,
     ]);
 
     $findings = (new Validator($schema))->validate([
-        'body' => $body, 'labels' => ['kind:feature', 'level:epic'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
@@ -517,7 +517,7 @@ it('flags an unmeasurable Then', function () {
     ]);
 
     $findings = (new Validator($schema))->validate([
-        'body' => $body, 'labels' => ['kind:feature', 'level:epic'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
@@ -530,7 +530,7 @@ it('requires every chore checklist item to name a command or a URL', function ()
 
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, choreSectionIds(), ['acceptance-criteria' => $text]),
-        'labels' => ['kind:chore', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'labels' => ['kind:chore', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->toContain('checklist-unverifiable');
@@ -543,7 +543,7 @@ it('accepts T1-T4 and rejects any other tier', function () {
 
     $run = fn (string $t) => codes((new Validator($schema))->report([
         'body' => issueBody($schema, featureSectionIds(), ['epistemic-matrix' => $t]),
-        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]));
 
     expect($run($good))->not->toContain('tier-invalid')
@@ -556,7 +556,7 @@ it('demotes source-grounding and Test-line errors for an epic', function () {
         'body' => issueBody($schema, featureSectionIds(), [
             'acceptance-criteria' => "S1 (R1, Reliable): x\n  Given a\n  When b\n  Then it throws DomainException",
         ]),
-        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ];
     $validator = new Validator($schema);
 
@@ -569,7 +569,7 @@ it('warns rather than errors when an epic omits feature-scope and epistemic-matr
     $ids = array_values(array_diff(featureSectionIds(), ['feature-scope', 'epistemic-matrix']));
     $input = [
         'body' => issueBody($schema, $ids),
-        'labels' => ['kind:feature', 'level:epic', 'package:core'],
+        'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'],
         'parent' => 1, 'parentLevel' => 'level:package',
     ];
     $validator = new Validator($schema);
@@ -582,7 +582,7 @@ it('lets an epic with zero or two package labels have no parent', function () {
     $schema = arazzoSchema();
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, featureSectionIds()),
-        'labels' => ['kind:feature', 'level:epic', 'package:a', 'package:b'],
+        'labels' => ['kind:feature', 'level:epic', 'package:a', 'package:b', 'priority:normal'],
         'parent' => null, 'parentLevel' => null,
     ]);
 
@@ -593,7 +593,7 @@ it('still refuses a story with no parent', function () {
     $schema = arazzoSchema();
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, featureSectionIds()),
-        'labels' => ['kind:feature', 'level:story'], 'parent' => null, 'parentLevel' => null,
+        'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'], 'parent' => null, 'parentLevel' => null,
     ]);
 
     expect(codes($findings))->toContain('parent-missing');
@@ -631,7 +631,7 @@ it('flags a draft reference in the body as draft-reference warning', function ()
     $body .= "\n\nSee draft 53 for the design.";
 
     $findings = (new Validator($schema, $resolver))->report([
-        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->toContain('draft-reference')
@@ -669,7 +669,7 @@ it('passes when no draft reference appears', function () {
     ]);
 
     $findings = (new Validator($schema, $resolver))->report([
-        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->not->toContain('draft-reference');
@@ -705,7 +705,7 @@ it('flags a permalink range past the file end as permalink-range-invalid warning
     ]);
 
     $findings = (new Validator($schema, $resolver))->report([
-        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->toContain('permalink-range-invalid')
@@ -742,7 +742,7 @@ it('passes when the permalink range fits within the file', function () {
     ]);
 
     $findings = (new Validator($schema, $resolver))->report([
-        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->not->toContain('permalink-range-invalid');
@@ -778,7 +778,7 @@ it('does not flag a permalink range when line count is unverifiable', function (
     ]);
 
     $findings = (new Validator($schema, $resolver))->report([
-        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->not->toContain('permalink-range-invalid');
@@ -815,7 +815,7 @@ it('flags a problem statement intro over 150 words as problem-statement-too-long
     ]);
 
     $findings = (new Validator($schema, $resolver))->report([
-        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->toContain('problem-statement-too-long')
@@ -853,7 +853,7 @@ it('passes when the problem statement intro is under 150 words', function () {
     ]);
 
     $findings = (new Validator($schema, $resolver))->report([
-        'body' => $body, 'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
 
     expect(codes($findings))->not->toContain('problem-statement-too-long');
@@ -870,7 +870,7 @@ it('treats a decision line ending with Decided: as closed (no open-decision bloc
     ]);
 
     $result = (new Validator($schema))->readiness([
-        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10, 'parentLevel' => 'level:epic', 'readyForAgent' => true,
     ]);
 
@@ -889,10 +889,73 @@ it('still treats an unresolved decision line as open-decision', function () {
     ]);
 
     $result = (new Validator($schema))->readiness([
-        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'body' => $body, 'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'],
         'parent' => 10, 'parentLevel' => 'level:epic', 'readyForAgent' => true,
     ]);
 
     expect($result['ready'])->toBeFalse()
         ->and($result['blockers'])->toContain('open-decision');
+});
+
+it('flags a story missing package:* label as package-missing error', function () {
+    $schema = arazzoSchema();
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, featureSectionIds()),
+        'labels' => ['kind:feature', 'level:story'], 'parent' => 10, 'parentLevel' => 'level:epic',
+    ]);
+
+    expect(codes($findings))->toContain('package-missing');
+});
+
+it('passes when a story has a package:* label', function () {
+    $schema = arazzoSchema();
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, featureSectionIds()),
+        'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:normal'], 'parent' => 10, 'parentLevel' => 'level:epic',
+    ]);
+
+    expect(codes($findings))->not->toContain('package-missing');
+});
+
+it('flags an epic missing priority:* label as priority-missing error', function () {
+    $schema = arazzoSchema();
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, featureSectionIds()),
+        'labels' => ['kind:feature', 'level:epic', 'package:core'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->toContain('priority-missing');
+});
+
+it('passes when an issue has both package:* and priority:* labels', function () {
+    $schema = arazzoSchema();
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, featureSectionIds()),
+        'labels' => ['kind:feature', 'level:story', 'package:core', 'priority:high'], 'parent' => 10, 'parentLevel' => 'level:epic',
+    ]);
+
+    expect(codes($findings))->not->toContain('package-missing')
+        ->and(codes($findings))->not->toContain('priority-missing');
+});
+
+it('flags a bugfix missing both package:* and priority:* labels', function () {
+    $schema = arazzoSchema();
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, bugfixSectionIds()),
+        'labels' => ['kind:bugfix', 'level:story'], 'parent' => 1, 'parentLevel' => 'level:epic',
+    ]);
+
+    expect(codes($findings))->toContain('package-missing')
+        ->and(codes($findings))->toContain('priority-missing');
+});
+
+it('allows a package-epic with exactly one package label and a priority label', function () {
+    $findings = (new Validator(arazzoSchema()))->validate([
+        'body' => '', 'labels' => ['level:package', 'package:runner', 'priority:normal'],
+        'parent' => null, 'parentLevel' => null,
+    ]);
+
+    expect(codes($findings))->not->toContain('package-missing')
+        ->and(codes($findings))->not->toContain('priority-missing')
+        ->and(codes($findings))->not->toContain('missing-package-label');
 });

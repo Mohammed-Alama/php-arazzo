@@ -21,7 +21,7 @@ it('treats a feature scope with no non-goals as advisory for an epic', function 
     $validator = new Validator($schema);
     $input = [
         'body' => issueBody($schema, featureSectionIds(), ['feature-scope' => 'Goals: x']),
-        'labels' => ['kind:feature', 'level:epic'], 'parent' => 10, 'parentLevel' => 'level:package',
+        'labels' => ['kind:feature', 'level:epic', 'package:core', 'priority:normal'], 'parent' => 10, 'parentLevel' => 'level:package',
     ];
 
     expect(codes($validator->report($input)))->toContain('non-goals-missing');

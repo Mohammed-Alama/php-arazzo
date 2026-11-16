@@ -49,7 +49,7 @@ function fail(string $message, int $code = 2): void
 function usage(): void
 {
     fwrite(STDOUT, <<<'TXT'
-        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--package=<name>] [--prompt=<section-id>]
+        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--package=<name>] [--priority=<name>] [--prompt=<section-id>]
 
           --kind=<kind>        one of: bug, enhancement, chore
           --level=<label>      one of: level:package, level:epic, level:story, level:task
@@ -58,7 +58,8 @@ function usage(): void
           --parent=<n>         file as a sub-issue of <n> (checked against <n>'s level:* label)
           --edit=<n>           edit issue <n> instead of creating a new one
           --repo=<owner/name>  target repository (defaults to the current one)
-          --package=<name>     primary package (required for level:package; adds package:<name> label)
+          --package=<name>     primary package (required for non-package-epic levels; adds package:<name> label)
+          --priority=<name>    priority (required for all levels; adds priority:<name> label)
           --prompt=<section-id> print prompts/write-<section-id>.md, or a cross-cutting
           prompt (prompt-preamble, readme, orchestrate-issue-conversion,
           review-issue-body), to stdout and exit 0
@@ -149,10 +150,10 @@ foreach (array_slice($argv, 1) as $argument) {
 
 $promptDir = dirname(__DIR__).'/prompts';
 $promptCrossCutting = [
-    'prompt-preamble'             => 'prompt-preamble.md',
-    'readme'                      => 'README.md',
+    'prompt-preamble' => 'prompt-preamble.md',
+    'readme' => 'README.md',
     'orchestrate-issue-conversion' => 'orchestrate-issue-conversion.md',
-    'review-issue-body'           => 'review-issue-body.md',
+    'review-issue-body' => 'review-issue-body.md',
 ];
 
 if (isset($options['prompt'])) {
@@ -208,6 +209,7 @@ if (!in_array($level, array_keys($schema->levels()), true)) {
 
 $packageEpic = $schema->levelKindForbidden($level);
 $package = ($options['package'] ?? '') !== '' ? $options['package'] : null;
+$priority = ($options['priority'] ?? '') !== '' ? $options['priority'] : null;
 
 if ($packageEpic) {
     if (($options['kind'] ?? '') !== '') {
@@ -231,6 +233,16 @@ if ($packageEpic) {
     if (!in_array($kind, $schema->kinds(), true)) {
         fail("unknown kind \"{$kind}\"; expected one of: ".implode(', ', $schema->kinds()));
     }
+
+    if (($package ?? '') === '' || preg_match('/^[a-z0-9-]+$/', $package) !== 1) {
+        usage();
+        fail('--package=<name> is required (lowercase, digits, hyphens)');
+    }
+}
+
+if (($priority ?? '') === '' || preg_match('/^[a-z0-9-]+$/', $priority) !== 1) {
+    usage();
+    fail('--priority=<name> is required (lowercase, digits, hyphens)');
 }
 
 $parent = null;
@@ -325,13 +337,15 @@ if (!$packageEpic) {
 
     $body = implode("\n\n", $blocks);
 } else {
-    $body = (new PackageIndex)->stub($package);
+    $body = (new PackageIndex())->stub($package);
 }
 
 $gh = getenv('FILE_ISSUE_GH_BIN') ?: 'gh';
 $parentLevel = $parent !== null ? resolveParentLevel($gh, $parent, $repo) : null;
 
-$labels = $packageEpic ? [$level, 'package:'.$package] : [$kind, $level];
+$labels = $packageEpic
+    ? [$level, 'package:'.$package, 'priority:'.$priority]
+    : [$kind, $level, 'package:'.$package, 'priority:'.$priority];
 
 $root = dirname(__DIR__, 3);
 $findings = (new Validator($schema, new GitPermalinkResolver($root)))->validate([
