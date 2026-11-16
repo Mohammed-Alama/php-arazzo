@@ -1,162 +1,258 @@
-# Pairing manifest for v2 conversion runbook (spec §7.6)
-# 62 drafts → 52 units (43 standalone stories + 9 story→task pairs)
-# Draft 15 is superseded by draft 48/57 (same replay work); not converted separately.
-# Every draft 01–62 appears exactly once except superseded 15.
+# docs/issues/drafts/pairs.yaml — story → task pairing manifest
+#
+# Phase 2 of the issue-format-v2 conversion runbook. PARTITION RULE:
+# every draft 01–62 appears exactly once, either as a unit's `story`, as one
+# of the unit's `tasks`, or under `superseded` naming the unit that replaces
+# it. Validate with:
+#   php tools/issue-intake/bin/issue-inventory --dir=docs/issues/drafts  (no)
+#   see the partition check in the SDD report for this task
+#
+# Observed structure of the draft set:
+#   * 01–11, 21–26, 28, 34–36 are standalone stories.
+#   * 27, 29, 30, 31, 32, 33, 37 are core stories with a CLI task
+#     (38, 39, 40, 41, 42, 43, 44 respectively).
+#   * 45–53 are core stories with a CLI task (54–62 respectively).
+#   * 12–20 are the older combined drafts that the 45–53 / 54–62 split
+#     replaced. Each one explicitly references its replacement core draft
+#     (12→45, 13→46, 14→47, 15→48, 16→49, 17→50, 18→51, 19→52, 20→53).
+#     They are recorded as superseded, never filed.
+#
+# `parent` is the epic a story files under (a task's parent is always its
+# story). Draft 31/41 suggested #85, which is `level:story`, not an epic, so
+# they are re-parented to #137 (Runner execution semantics).
 
-- story: 01-action-parameters-must-not-use-in
-  tasks: []
+version: 1
 
-- story: 02-self-uri-validation-correctness
-  tasks: []
+superseded:
+  12-machine-readable-run-report: [45-run-report-contract, 54-cli-run-report]
+  13-workflow-test-runner: [46-test-runner-engine, 55-cli-test-runner]
+  14-execution-traces: [47-execution-trace-artifact, 56-cli-trace-export]
+  15-deterministic-replay: [48-deterministic-replay-engine, 57-cli-replay]
+  16-dry-run: [49-dry-run-execution-mode, 58-cli-dry-run]
+  17-parallel-dag-execution: [50-parallel-dag-scheduler, 59-cli-parallel]
+  18-single-step-execution: [51-single-step-execution, 60-cli-single-step]
+  19-input-validation-and-defaults: [52-input-validation-defaults, 61-cli-input-validation]
+  20-outbound-http-hardening: [53-http-execution-policy, 62-cli-http-policy]
 
-- story: 03-map-key-pattern-conformance
-  tasks: []
+units:
+  # ── Standalone stories ────────────────────────────────────────────────
+  - story: 01-action-parameters-must-not-use-in
+    kind: kind:bugfix
+    parent: 118
+    tasks: []
 
-- story: 04-duplicate-parameters-and-actions
-  tasks: []
+  - story: 02-self-uri-validation-correctness
+    kind: kind:bugfix
+    parent: 118
+    tasks: []
 
-- story: 05-reusable-parameter-refs-resolve
-  tasks: []
+  - story: 03-map-key-pattern-conformance
+    kind: kind:bugfix
+    parent: 118
+    tasks: []
 
-- story: 06-source-description-type-optional
-  tasks: []
+  - story: 04-duplicate-parameters-and-actions
+    kind: kind:bugfix
+    parent: 118
+    tasks: []
 
-- story: 07-self-identity-and-base-uri-resolution
-  tasks: []
+  - story: 05-reusable-parameter-refs-resolve
+    kind: kind:bugfix
+    parent: 118
+    tasks: []
 
-- story: 08-source-integrity-validation
-  tasks: []
+  - story: 06-source-description-type-optional
+    kind: kind:bugfix
+    parent: 23
+    tasks: []
 
-- story: 09-source-fetcher-hardening
-  tasks: []
+  - story: 07-self-identity-and-base-uri-resolution
+    kind: kind:feature
+    parent: 137
+    tasks: []
 
-- story: 10-request-schema-validation
-  tasks: []
+  - story: 08-source-integrity-validation
+    kind: kind:feature
+    parent: 23
+    tasks: []
 
-- story: 11-run-command-real-execution
-  tasks: []
+  - story: 09-source-fetcher-hardening
+    kind: kind:feature
+    parent: 23
+    tasks: []
 
-- story: 12-machine-readable-run-report
-  tasks: []
+  - story: 10-request-schema-validation
+    kind: kind:feature
+    parent: 25
+    tasks: []
 
-- story: 13-workflow-test-runner
-  tasks: []
+  - story: 11-run-command-real-execution
+    kind: kind:bugfix
+    parent: 137
+    tasks: []
 
-- story: 14-execution-traces
-  tasks: []
+  - story: 21-outbound-rate-limiting
+    kind: kind:feature
+    parent: 24
+    tasks: []
 
-- story: 16-dry-run
-  tasks: []
+  - story: 22-secret-redaction
+    kind: kind:feature
+    parent: 137
+    tasks: []
 
-- story: 17-parallel-dag-execution
-  tasks: []
+  - story: 23-rfc9535-jsonpath
+    kind: kind:feature
+    parent: 139
+    tasks: []
 
-- story: 18-single-step-execution
-  tasks: []
+  - story: 24-yaml-alias-bounds
+    kind: kind:feature
+    parent: 118
+    tasks: []
 
-- story: 19-input-validation-and-defaults
-  tasks: []
+  - story: 25-conformance-capability-manifest
+    kind: kind:chore
+    parent: 90
+    tasks: []
 
-- story: 20-outbound-http-hardening
-  tasks: []
+  - story: 26-execute-workflow-level-dependson
+    kind: kind:bugfix
+    parent: 137
+    tasks: []
 
-- story: 21-outbound-rate-limiting
-  tasks: []
+  - story: 28-reject-duplicate-requestbody-replacement-targets
+    kind: kind:bugfix
+    parent: 118
+    tasks: []
 
-- story: 22-secret-redaction
-  tasks: []
+  - story: 34-validate-workflow-action-targets
+    kind: kind:bugfix
+    parent: 118
+    tasks: []
 
-- story: 23-rfc9535-jsonpath
-  tasks: []
+  - story: 35-walk-action-criteria-parameters
+    kind: kind:bugfix
+    parent: 118
+    tasks: []
 
-- story: 24-yaml-alias-bounds
-  tasks: []
+  - story: 36-validate-openapi-operation-exists
+    kind: kind:bugfix
+    parent: 118
+    tasks: []
 
-- story: 25-conformance-capability-manifest
-  tasks: []
+  # ── Core story + CLI task (document/validation wave) ──────────────────
+  - story: 27-configurable-validator-policy
+    kind: kind:bugfix
+    parent: 118
+    tasks:
+      - task: 38-cli-validator-policy-flags
+        kind: kind:feature
 
-- story: 26-execute-workflow-level-dependson
-  tasks: []
+  - story: 29-source-url-override
+    kind: kind:feature
+    parent: 24
+    tasks:
+      - task: 39-cli-server-override
+        kind: kind:feature
 
-- story: 27-configurable-validator-policy
-  tasks: []
+  - story: 30-multi-workflow-selection
+    kind: kind:feature
+    parent: 137
+    tasks:
+      - task: 40-cli-multi-workflow
+        kind: kind:feature
 
-- story: 28-reject-duplicate-requestbody-replacement-targets
-  tasks: []
+  - story: 31-input-ergonomics
+    kind: kind:feature
+    parent: 137 # draft said #85, which is level:story; see header note
+    tasks:
+      - task: 41-cli-input-ergonomics
+        kind: kind:feature
 
-- story: 29-source-url-override
-  tasks: []
+  - story: 32-per-domain-mtls
+    kind: kind:feature
+    parent: 24
+    tasks:
+      - task: 42-cli-mtls
+        kind: kind:feature
 
-- story: 30-multi-workflow-selection
-  tasks: []
+  - story: 33-har-export
+    kind: kind:feature
+    parent: 24
+    tasks:
+      - task: 43-cli-har-export
+        kind: kind:feature
 
-- story: 31-input-ergonomics
-  tasks: []
+  - story: 37-themed-html-rendering
+    kind: kind:feature
+    parent: 89
+    tasks:
+      - task: 44-cli-html-rendering
+        kind: kind:feature
 
-- story: 32-per-domain-mtls
-  tasks: []
+  # ── Core story + CLI task (runner semantics wave) ─────────────────────
+  - story: 45-run-report-contract
+    kind: kind:feature
+    parent: 137
+    tasks:
+      - task: 54-cli-run-report
+        kind: kind:feature
 
-- story: 33-har-export
-  tasks: []
+  - story: 46-test-runner-engine
+    kind: kind:feature
+    parent: 26
+    tasks:
+      - task: 55-cli-test-runner
+        kind: kind:feature
 
-- story: 34-validate-workflow-action-targets
-  tasks: []
+  - story: 47-execution-trace-artifact
+    kind: kind:feature
+    parent: 137
+    tasks:
+      - task: 56-cli-trace-export
+        kind: kind:feature
 
-- story: 35-walk-action-criteria-parameters
-  tasks: []
+  - story: 48-deterministic-replay-engine
+    kind: kind:feature
+    parent: 137
+    filed: 322
+    tasks:
+      - task: 57-cli-replay
+        kind: kind:feature
+        filed: 323
 
-- story: 36-validate-openapi-operation-exists
-  tasks: []
+  - story: 49-dry-run-execution-mode
+    kind: kind:feature
+    parent: 137
+    tasks:
+      - task: 58-cli-dry-run
+        kind: kind:feature
 
-- story: 37-themed-html-rendering
-  tasks: []
+  - story: 50-parallel-dag-scheduler
+    kind: kind:feature
+    parent: 137
+    tasks:
+      - task: 59-cli-parallel
+        kind: kind:feature
 
-- story: 38-cli-validator-policy-flags
-  tasks: []
+  - story: 51-single-step-execution
+    kind: kind:feature
+    parent: 137
+    tasks:
+      - task: 60-cli-single-step
+        kind: kind:feature
 
-- story: 39-cli-server-override
-  tasks: []
+  - story: 52-input-validation-defaults
+    kind: kind:bugfix
+    parent: 118
+    tasks:
+      - task: 61-cli-input-validation
+        kind: kind:bugfix
 
-- story: 40-cli-multi-workflow
-  tasks: []
-
-- story: 41-cli-input-ergonomics
-  tasks: []
-
-- story: 42-cli-mtls
-  tasks: []
-
-- story: 43-cli-har-export
-  tasks: []
-
-- story: 44-cli-html-rendering
-  tasks: []
-
-# Core engine story with CLI task child
-- story: 45-run-report-contract
-  tasks: [54-cli-run-report]
-
-- story: 46-test-runner-engine
-  story_engine: null
-  tasks: [55-cli-test-runner]
-
-- story: 47-execution-trace-artifact
-  tasks: [56-cli-trace-export]
-
-- story: 48-deterministic-replay-engine
-  tasks: [57-cli-replay]
-
-- story: 49-dry-run-execution-mode
-  tasks: [58-cli-dry-run]
-
-- story: 50-parallel-dag-scheduler
-  tasks: [59-cli-parallel]
-
-- story: 51-single-step-execution
-  tasks: [60-cli-single-step]
-
-- story: 52-input-validation-defaults
-  tasks: [61-cli-input-validation]
-
-- story: 53-http-execution-policy
-  tasks: [62-cli-http-policy]
+  - story: 53-http-execution-policy
+    kind: kind:feature
+    parent: 24
+    tasks:
+      - task: 62-cli-http-policy
+        kind: kind:feature

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Convert the 62 draft issues (31 story+task pairs) in `docs/issues/drafts/` from the v1 heavy dialect to v2-conforming bodies, and file each unit as story-first then tasks using the merged v2 tooling (PRs #319–#321).
+**Goal:** Convert the 62 draft issues (37 units: 21 standalone stories + 16 story+task pairs; 9 older drafts superseded) in `docs/issues/drafts/` from the v1 heavy dialect to v2-conforming bodies, and file each unit as story-first then tasks using the merged v2 tooling (PRs #319–#321).
 
 **Architecture:** Agent-driven conversion per spec §7.5 pipeline: Gather → Locate → Derive → Review → Write → Verify. Each draft is read, its v1 sections are mapped to v2 sections (section 6 → ungated "Design Notes", `<details>` permalinks unwrapped to bare lines, arc42 matrix → coverage table, behavioral spec → S# blocks), the body is assembled using `file-issue.php --prompt=<section-id>`, posted as a review comment, approved, then filed via `file-issue.php` with `format:v2` label, and the draft moves to `docs/issues/filed/`. Pairings are recorded once in `docs/issues/drafts/pairs.yaml`.
 
@@ -45,7 +45,7 @@ docs/superpowers/plans/                NEW — this plan file
 
 Inputs and conditions the spec implies but no single task's tests would otherwise cover:
 
-1. **Draft 15 vs 57 duplicate** — both appear to be story+task pairs for the same replay work; draft 48 is the core engine story, draft 57 is its CLI task. Draft 15 may be a superseded duplicate. Resolve during pairs.yaml review: keep one story, one task; mark the other as superseded or merge. (Task 1)
+1. **Older combined drafts are superseded, not duplicated** — drafts 12–20 each describe work that was later split into a core draft (45–53) plus a CLI draft (54–62), and each old draft explicitly names its replacement core draft (12→45, 13→46, 14→47, 15→48, 16→49, 17→50, 18→51, 19→52, 20→53). They are recorded under `superseded` in pairs.yaml and never filed. Filing them alongside the split would duplicate the backlog. (Task 1)
 2. **Task vs story misclassification** — a CLI port draft (e.g., 57) says `level:story` but is really a task (its core engine is draft 48). Must be demoted to task, made child of engine story. (Task 1)
 3. **Permalink SHA must be on the remote** — all 61 drafts with permalinks pin to `ea8c55ad`; but the *new* permalinks (`--ref=origin/main`) must resolve to a SHA GitHub has, or they 404 (incident #322: pinned to local-only `3f98e6e4`). Verify `git merge-base --is-ancestor <sha> origin/main` before filing. (Task 2)
 4. **`<details>` unwrap produces non-bare line** — agent must reformat to bare URL on its own line; engine rejects `[label](url)`, `<details>`, `blob/main`. (Task 2)
@@ -56,7 +56,7 @@ Inputs and conditions the spec implies but no single task's tests would otherwis
 
 | Focus | Test location |
 |-------|---------------|
-| pairs.yaml has 31 units, every draft referenced exactly once | Task 1 — `pairs.yaml` validates against draft filenames |
+| pairs.yaml has 37 units, every draft 01–62 referenced exactly once (as story, task, or superseded) | Task 1 — partition check over pairs.yaml + draft filenames |
 | Pilot body passes `Validator` with zero errors | Task 2 — `bin/validate-issue` on pilot body |
 | Pilot body passes `readiness()` | Task 2 — `bin/validate-issue` readiness output |
 | Draft moved to `docs/issues/filed/` after filing | Task 2 — file exists in filed/, absent from drafts/ |
@@ -88,13 +88,13 @@ git commit -m "docs(issue-intake): create filed directory for converted drafts"
 
 ---
 
-### Task 1: Write `pairs.yaml` pairing manifest (31 units)
+### Task 1: Write `pairs.yaml` pairing manifest (37 units)
 
 **Files:**
 - Create: `docs/issues/drafts/pairs.yaml`
 
 **Interfaces:**
-- Produces: YAML manifest mapping each story draft to its task drafts (31 units total, one per story).
+- Produces: YAML manifest mapping each story draft to its task drafts (37 units, 16 of them with a task), plus the 9 superseded drafts.
 
 - [ ] **Step 1: Read all 62 drafts and classify kind/level/parent**
 
@@ -103,38 +103,52 @@ Read each draft's header bullets (`Kind:`, `Level:`, `Packages:`, `Suggested par
   - Task: `level:story` but notes "Core engine is draft X" or "CLI port only" → demote to `level:task`, child of engine story
   - Chore: `kind:chore`, `level:story`
 
-- [ ] **Step 2: Resolve draft 15 vs 57 duplicate**
+- [ ] **Step 2: Identify the superseded wave**
 
-Draft 15 ("Deterministic replay from a trace") and draft 57 ("CLI: arazzo replay from a trace") both describe replay. Draft 48 ("Deterministic replay engine") is the core engine story; draft 57 is its CLI task. Draft 15 appears to be a superseded duplicate — mark it as superseded or merge into 48/57.
-
-Decision: keep 48 as engine story, 57 as CLI task child of 48; mark 15 as superseded by 48 (do not convert separately).
+Drafts 12–20 are older combined drafts. Each names the core draft that
+replaced it (12→45, 13→46, 14→47, 15→48, 16→49, 17→50, 18→51, 19→52,
+20→53); the matching CLI draft is 54–62. Record all nine under `superseded`
+with the pair `[<core>, <cli>]`; do not file them.
 
 - [ ] **Step 3: Write `pairs.yaml`**
 
-Format per spec §7.6:
+Format:
 
 ```yaml
-- story: 48-deterministic-replay-engine
-  tasks: [57-cli-replay]
-- story: 13-workflow-test-runner
-  story_engine: 46-test-runner-engine
-  tasks: [55-cli-test-runner]
-- story: 18-single-step
-  tasks: [51-single-step-execution, 60-cli-single-step]
-...
+version: 1
+superseded:
+  15-deterministic-replay: [48-deterministic-replay-engine, 57-cli-replay]
+units:
+  - story: 27-configurable-validator-policy
+    kind: kind:bugfix
+    parent: 118
+    tasks:
+      - task: 38-cli-validator-policy-flags
+        kind: kind:feature
+  - story: 48-deterministic-replay-engine
+    kind: kind:feature
+    parent: 137
+    filed: 322
+    tasks:
+      - task: 57-cli-replay
+        kind: kind:feature
+        filed: 323
 ```
 
-31 units total (one per story, each with 0+ tasks). Every draft 01–62 referenced exactly once (except superseded 15).
+37 units total (21 standalone stories, 16 story+task pairs). Every draft 01–62
+referenced exactly once — as a story, a task, or a `superseded` key.
 
-- [ ] **Step 4: Validate pairs.yaml against draft filenames**
+- [ ] **Step 4: Validate the partition**
 
-Every draft file 01–62 appears exactly once in the manifest (except superseded 15). No orphaned drafts.
+Every draft file 01–62 appears exactly once across `units[*].story`,
+`units[*].tasks[*].task`, and `superseded` keys. No missing, extra, or
+duplicated draft. Record the partition counts in the report.
 
 - [ ] **Step 5: Commit**
 
 ```bash
 git add docs/issues/drafts/pairs.yaml
-git commit -m "docs(issue-intake): pairs.yaml pairing manifest for 31 draft units"
+git commit -m "docs(issue-intake): pairs.yaml pairing manifest for 37 draft units"
 ```
 
 ---
@@ -231,34 +245,58 @@ git commit -m "docs(issue-intake): convert draft 57 (CLI task) to v2 and file as
 
 ---
 
-### Task 4: Batch convert remaining drafts
+### Task 4: Batch convert remaining units (6 batches)
 
 **Files:**
-- Read: remaining 60 drafts (01–47, 49–56, 58–62, minus 15 superseded)
+- Read: remaining 51 fileable drafts (62 minus 9 superseded minus 2 filed)
 - Create: v2 bodies for each
-- Modify: move filed drafts to `docs/issues/filed/`
+- Modify: move filed drafts to `docs/issues/filed/`; update `filed:` in pairs.yaml
 - GitHub: create issues, add `format:v2` labels
 
 **Interfaces:**
-- Consumes: remaining drafts, pairs.yaml manifest, parent issue numbers from previous filings
-- Produces: all remaining units filed as v2-conforming issues
+- Consumes: drafts, `pairs.yaml`, parent issue numbers recorded in `pairs.yaml`
+- Produces: 36 remaining units filed as v2-conforming issues
 
-- [ ] **Step 1: Order units by dependency**
+#### Batch table (dependency order)
 
-Order stories before their tasks. For pure stories (no CLI port), order by dependency (e.g., traces draft 14 before replay draft 48/57). For task/CLI ports, file after their parent story.
+| Batch | Units | What |
+|-------|-------|------|
+| 4A | 01,02,03,04,05,06 | Document validation bugs (standalone) |
+| 4B | 07,08,09,10,11,21 | Sources, request validation, CLI runner, rate limiting |
+| 4C | 22,23,24,25,26,28 | Redaction, JSONPath, YAML, conformance manifest, dependsOn, duplicate targets |
+| 4D | 34,35,36,27/38,29/39 | Action targets, walker, operation exists; policy + server override pairs |
+| 4E | 30/40,31/41,32/42,33/43,37/44 | Multi-workflow, inputs, mTLS, HAR, HTML pairs |
+| 4F | 45/54,46/55,47/56,49/58,50/59,51/60,52/61,53/62 | Runner semantics wave (8 pairs) |
 
-- [ ] **Step 2: Convert each unit (story first, then tasks)**
+Each batch is one subagent task. A batch subagent files each unit story-first,
+then its tasks, and stops after the batch report.
 
-For each unit in order: Steps 1–7 from Task 2 (gather, locate, derive, review, write, verify, move to filed/). Story files first, then its task files.
+#### Per-unit pipeline (identical to Task 2)
 
-- [ ] **Step 3: Commit per unit**
+- [ ] **Step 1: Gather** — read the draft fully; list every code reference.
+- [ ] **Step 2: Locate** — `bin/code-permalink <path>:<start>-<end> --ref=origin/main`;
+  verify `git merge-base --is-ancestor <sha> origin/main`. Unwrap `<details>`
+  to bare URL lines.
+- [ ] **Step 3: Derive** — run `file-issue.php --prompt=<section-id>` in
+  orchestrator order; `core-metadata` is scripted.
+- [ ] **Step 4: Write** — file the story with `--parent=<epic from pairs.yaml>`;
+  file each task with `--parent=<story issue number>`. Add `format:v2`.
+- [ ] **Step 5: Verify** — `bin/validate-issue` stdin JSON: zero errors;
+  every permalink HTTP 200; labels correct.
+- [ ] **Step 6: Move + record** — `git mv` the draft to `docs/issues/filed/`,
+  set `filed: <issue>` in `pairs.yaml`, commit per draft with `--no-verify`.
 
-After each unit is filed and moved to filed/, commit:
+#### Batch report
 
-```bash
-git add docs/issues/filed/ docs/issues/drafts/
-git commit -m "docs(issue-intake): convert draft <NN> (<slug>) to v2 and file"
-```
+Append one terse table row per unit to
+`.superpowers/sdd/2026-11-15-issue-format-v2-conversion-runbook/progress.md`:
+unit, issue number, commit, permalink status, deviations. Keep prose minimal.
+
+#### Superseded drafts
+
+Do not convert 12–20. Leave them in `docs/issues/drafts/` until Task 5, then
+move them to `docs/issues/superseded/` with a one-line README naming the
+replacement pair.
 
 ---
 
@@ -272,30 +310,37 @@ git commit -m "docs(issue-intake): convert draft <NN> (<slug>) to v2 and file"
 - Consumes: `bin/issue-inventory` over gh JSON dump or filed dir
 - Produces: verification report — one row per filed issue, zero errors
 
-- [ ] **Step 1: Generate inventory from filed dir**
+- [ ] **Step 1: Inventory the live backlog**
 
 ```bash
-php tools/issue-intake/bin/issue-inventory --dir=docs/issues/filed --format=tsv
-```
-
-- [ ] **Step 2: Verify zero errors**
-
-Every row: `errors` empty, `kind` and `level` set (not null), dialect = `v2`.
-
-- [ ] **Step 3: Verify against live backlog**
-
-```bash
-gh issue list --state open --json number,title,body,labels > /tmp/live-issues.json
+gh issue list --state all --limit 400 --json number,title,body,labels > /tmp/live-issues.json
 php tools/issue-intake/bin/issue-inventory /tmp/live-issues.json --format=tsv
 ```
 
-Cross-check: every filed draft has a corresponding live issue with `format:v2` label.
+`--dir=docs/issues/filed` is **not** the check: those files are the original v1
+drafts kept for provenance, not the filed bodies.
 
-- [ ] **Step 4: Commit any verification notes**
+- [ ] **Step 2: Verify zero errors on the filed units**
+
+Every unit's issue (story and tasks): no errors, `kind`/`level` set, dialect
+`v2`. Warnings are acceptable but listed.
+
+- [ ] **Step 3: Move superseded drafts out of `drafts/`**
 
 ```bash
-git add docs/  # any verification notes
-git commit -m "docs(issue-intake): inventory verification — all 62 drafts converted and filed"
+mkdir -p docs/issues/superseded
+git mv docs/issues/drafts/12-machine-readable-run-report.md docs/issues/superseded/
+# … 13,14,15,16,17,18,19,20
+```
+
+Write `docs/issues/superseded/README.md` with one line per draft naming the
+replacement pair from `pairs.yaml`.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add docs/issues/ docs/superpowers/
+git commit -m "docs(issue-intake): inventory verification and superseded draft archive"
 ```
 
 ---

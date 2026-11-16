@@ -8,7 +8,7 @@
 
 The v2 tooling (schema, engine, prompts, gate ratchet) is merged and CI-green. The 62 draft issues in `docs/issues/drafts/` are still in the old v1 "heavy" dialect — numbered headings, `<details>`-wrapped permalinks, no front matter, no `R#`/`S#`/`Test:`/`coverage table`. They cannot be filed until they pass the v2 validator.
 
-This runbook defines how to convert the 62 drafts (31 story+task pairs) into v2-conforming issues and file them, one unit at a time, without blocking on converting all 62 up front.
+This runbook defines how to convert the 62 drafts (37 units: 21 standalone stories + 16 story+task pairs, with 9 older drafts superseded) into v2-conforming issues and file them, one unit at a time, without blocking on converting all 62 up front.
 
 ## 2. What actually exists (the facts that set the effort)
 
@@ -16,7 +16,7 @@ This runbook defines how to convert the 62 drafts (31 story+task pairs) into v2-
 |------|--------|
 | Draft count | 62 files in `docs/issues/drafts/`, numbered 01–62 |
 | Draft dialect | v1 heavy: numbered headings (`### 🏗️ 1. Core Metadata & Alignment`), `<details>`-wrapped permalinks pinned to `ea8c55ad`, no front matter, draft-specific sections (6–9) not in v2 |
-| Story/task pairing | Not yet recorded — `docs/issues/drafts/pairs.yaml` does not exist |
+| Story/task pairing | Recorded in `docs/issues/drafts/pairs.yaml`: 37 units, 9 superseded drafts, 62 drafts accounted for exactly once |
 | Draft header bullets | `Suggested title`, `Kind`, `Level`, `Packages` — enough to derive kind/level/parent/packages |
 | v2 schema | Merged (PR #319): 11 sections, per-check severities, `demote`/`demote_sections`, `title_checks` |
 | v2 prompts | Merged (PR #320): one prompt per section in `.agents/skills/file-issue/prompts/` |
@@ -28,7 +28,7 @@ This runbook defines how to convert the 62 drafts (31 story+task pairs) into v2-
 
 ### Goals
 
-- Convert all 62 drafts (31 story+task pairs) to v2-conforming bodies.
+- Convert all 62 drafts (37 units: 21 standalone stories + 16 story+task pairs, with 9 older drafts superseded) to v2-conforming bodies.
 - File each unit as story-first, then its tasks — a unit is filed only on approval.
 - Record the story→task pairing once in `docs/issues/drafts/pairs.yaml`.
 - Leave unconverted drafts untouched in `docs/issues/drafts/` until their turn.
@@ -89,18 +89,24 @@ Per body, whether draft or live issue:
 
 Draft conversion additionally writes front matter (`title`, `kind`, `level`, `parent`, `packages`, `pair`) in place of the `# Draft issue NN` header, and moves the file to `docs/issues/filed/` only when the issue is actually filed.
 
-## 7. The 31 draft units and pairing
+## 7. The draft units and pairing
 
 The pairing is recorded once, in `docs/issues/drafts/pairs.yaml`, not rediscovered per conversion:
 
 ```yaml
-- story: 15-deterministic-replay
-  tasks: [57-cli-replay]
-- story: 13-workflow-test-runner
-  story_engine: 46-test-runner-engine   # engine lands first; both stories, task-child of 13
-  tasks: [55-cli-test-runner]
-- story: 18-single-step
-  tasks: [51-single-step-execution, 60-cli-single-step]
+units:
+  - story: 27-configurable-validator-policy
+    kind: kind:bugfix
+    parent: 118
+    tasks:
+      - task: 38-cli-validator-policy-flags
+        kind: kind:feature
+  - story: 48-deterministic-replay-engine
+    parent: 137
+    tasks:
+      - task: 57-cli-replay
+superseded:
+  15-deterministic-replay: [48-deterministic-replay-engine, 57-cli-replay]
 ```
 
 The manifest is reviewed before any conversion starts. Getting the tree wrong is the expensive mistake: a task that should have been a story loses its own requirements, and a story that should have been a task duplicates its parent.
@@ -109,13 +115,18 @@ The manifest is reviewed before any conversion starts. Getting the tree wrong is
 
 | Range | Kind/level observed | Notes |
 |-------|---------------------|-------|
-| 01–13 | kind:bugfix/chore, level:story | Pure stories (no CLI port) |
-| 14–31 | kind:feature, level:story | Pure stories (traces, validation, etc.) |
-| 32–40 | kind:chore, level:story | Chore stories (mtls, html, etc.) |
-| 41–45 | kind:feature/chore, level:story | CLI command stories (validator-policy, mtls, har, etc.) |
-| 46–62 | kind:feature/chore, level:task | Task/CLI ports (engine→CLI, trace→export, etc.) |
+| 01–11, 21–26, 28, 34–36 | kind:bugfix/feature/chore, level:story | Standalone stories (document, sources, validation, redaction, JSONPath, YAML, conformance) |
+| 27, 29–33, 37 + 38–44 | core story + CLI task | Each CLI draft opens by naming the core draft it ports |
+| 45–53 + 54–62 | core story + CLI task | Runner execution semantics wave; CLI draft names its core draft |
+| 12–20 | superseded | Older combined drafts replaced by the 45–53 / 54–62 split; each names its replacement core draft (12→45 … 20→53) |
 
-**Note:** Drafts 15 ("Deterministic replay") and 57 ("CLI: arazzo replay") appear to be duplicate story+task pairs for the same work — draft 48 ("Deterministic replay engine") is the core story, draft 57 is its CLI task. Draft 15 may be a superseded duplicate. This must be resolved during pairing review.
+**Total:** 37 units (21 standalone stories, 16 story+task pairs), 9 superseded
+drafts, 62 drafts accounted for exactly once. Drafts 48 and 57 are already
+filed as #322 and #323.
+
+**Re-parenting:** drafts 31/41 suggested #85, which carries `level:story`, not
+`level:epic`. A story's parent must be an epic, so both are re-parented to
+#137; 41 remains a task child of 31.
 
 ## 8. v1 → v2 section mapping
 
@@ -180,7 +191,7 @@ This runbook covers Phases 2–6. Phase 0–1 are complete.
 
 | Risk | Mitigation |
 |------|------------|
-| Draft 15 vs 57 duplicate (same story) | Resolve during pairs.yaml review; keep one story, one task |
+| Older combined drafts (12–20) duplicate the split pairs (45–53 + 54–62) | Each old draft names its replacement core draft; recorded under `superseded` in pairs.yaml, never filed |
 | Draft says level:story but is really a task (CLI port of draft 48) | Check "Core engine is draft X" note; demote to task, make child of engine story |
 | Permalink SHA `ea8c55ad` not an ancestor of HEAD | All 61 drafts pin to `ea8c55ad` which is confirmed ancestor; verify per-file |
 | Permalink SHA not on the remote (404 on GitHub) | Pin to a pushed ref via `bin/code-permalink --ref=origin/main`; verify each SHA is on the remote before filing (incident #322) |
@@ -190,7 +201,7 @@ This runbook covers Phases 2–6. Phase 0–1 are complete.
 
 ## 12. Left to the builder
 
-- Write `docs/issues/drafts/pairs.yaml` pairing manifest (31 units)
+- Write `docs/issues/drafts/pairs.yaml` pairing manifest (37 units)
 - Select pilot unit and run Phase 3
 - Run Phase 4 batch conversion
 - Run Phase 5 inventory verification
