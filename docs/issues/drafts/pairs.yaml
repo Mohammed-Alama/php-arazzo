@@ -69,6 +69,7 @@ units:
   - story: 06-source-description-type-optional
     kind: kind:bugfix
     parent: 23
+    filed: 329
     tasks: []
 
   - story: 07-self-identity-and-base-uri-resolution
