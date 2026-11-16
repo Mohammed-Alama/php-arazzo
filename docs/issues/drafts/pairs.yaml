@@ -287,6 +287,7 @@ units:
     tasks:
       - task: 60-cli-single-step
         kind: kind:feature
+        filed: 371
 
   - story: 52-input-validation-defaults
     kind: kind:bugfix
