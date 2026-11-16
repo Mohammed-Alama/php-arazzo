@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Expression;
@@ -23,6 +26,7 @@ use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
+use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionError;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Sync\WorkflowEngine;
 use Alama\Arazzo\Runtime\Policy\RetryPolicy;
@@ -152,3 +156,64 @@ it('enforces the shared step budget before an attempt', function (): void {
 
     (new WorkflowEngine(workflowEngineResolver(), workflowEngineRetryPolicy()))->transition(workflowEngineDocument($workflow), $workflow, $step, $state, true);
 })->throws(StepBudgetExceededException::class);
+
+it('throws ExecutionError coded ambiguous-target for dual-target retry', function (): void {
+    $retry = new RetryAction('r', 1.0, 3, 's2', 'wf2', []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onFailure: [$retry]), new StepIo());
+    $workflow = workflowEngineWorkflow([$step]);
+    $state = workflowEngineState()->withStepResult('s1', workflowEngineStepResult());
+
+    try {
+        (new WorkflowEngine(workflowEngineResolver(), workflowEngineRetryPolicy()))->transition(
+            workflowEngineDocument($workflow), $workflow, $step, $state, false,
+        );
+        expect(true)->toBeFalse('expected ExecutionError to be thrown');
+    } catch (ExecutionError $e) {
+        expect($e->codeId)->toBe('ambiguous-target');
+    }
+});
+
+it('throws ExecutionError coded ambiguous-target for dual-target success goto', function (): void {
+    $goto = new SuccessGotoAction('g', 's2', 'wf2', []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onSuccess: [$goto]), new StepIo());
+    $workflow = workflowEngineWorkflow([$step]);
+    $state = workflowEngineState()->withStepResult('s1', workflowEngineStepResult());
+
+    try {
+        (new WorkflowEngine(workflowEngineResolver(), workflowEngineRetryPolicy()))->transition(
+            workflowEngineDocument($workflow), $workflow, $step, $state, true,
+        );
+        expect(true)->toBeFalse('expected ExecutionError to be thrown');
+    } catch (ExecutionError $e) {
+        expect($e->codeId)->toBe('ambiguous-target');
+    }
+});
+
+it('throws ExecutionError coded ambiguous-target for dual-target failure goto', function (): void {
+    $goto = new FailureGotoAction('g', 's2', 'wf2', []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onFailure: [$goto]), new StepIo());
+    $workflow = workflowEngineWorkflow([$step]);
+    $state = workflowEngineState()->withStepResult('s1', workflowEngineStepResult());
+
+    try {
+        (new WorkflowEngine(workflowEngineResolver(), workflowEngineRetryPolicy()))->transition(
+            workflowEngineDocument($workflow), $workflow, $step, $state, false,
+        );
+        expect(true)->toBeFalse('expected ExecutionError to be thrown');
+    } catch (ExecutionError $e) {
+        expect($e->codeId)->toBe('ambiguous-target');
+    }
+});
+
+it('does not throw for single-target retry', function (): void {
+    $retry = new RetryAction('r', 1.0, 3, 's1', null, []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onFailure: [$retry]), new StepIo());
+    $workflow = workflowEngineWorkflow([$step]);
+    $state = workflowEngineState()->withStepResult('s1', workflowEngineStepResult());
+
+    $result = (new WorkflowEngine(workflowEngineResolver(), workflowEngineRetryPolicy()))->transition(
+        workflowEngineDocument($workflow), $workflow, $step, $state, false,
+    );
+
+    expect($result)->toBeInstanceOf(Transition::class);
+});

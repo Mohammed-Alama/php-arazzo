@@ -9,8 +9,8 @@ every commit.
 
 ```mermaid
 flowchart TD
-    ROOT["Validator rules (54)"]
-    G_Actions["Actions — 4"]
+    ROOT["Validator rules (55)"]
+    G_Actions["Actions — 5"]
     ROOT --> G_Actions
     R_ActionGotoTargetResolvesRule["ActionGotoTargetResolves"]
     G_Actions --> R_ActionGotoTargetResolvesRule
@@ -18,6 +18,8 @@ flowchart TD
     G_Actions --> R_ActionRetryLimitsRule
     R_ActionReusableRefResolvesRule["ActionReusableRefResolves"]
     G_Actions --> R_ActionReusableRefResolvesRule
+    R_ActionTargetExclusivityRule["ActionTargetExclusivity"]
+    G_Actions --> R_ActionTargetExclusivityRule
     R_ActionTypeValidRule["ActionTypeValid"]
     G_Actions --> R_ActionTypeValidRule
     G_AsyncAPI["AsyncAPI — 1"]
@@ -146,7 +148,7 @@ flowchart TD
 
 | Group | Rules |
 |---|---|
-| **Actions** | `ActionGotoTargetResolvesRule`, `ActionRetryLimitsRule`, `ActionReusableRefResolvesRule`, `ActionTypeValidRule` |
+| **Actions** | `ActionGotoTargetResolvesRule`, `ActionRetryLimitsRule`, `ActionReusableRefResolvesRule`, `ActionTargetExclusivityRule`, `ActionTypeValidRule` |
 | **AsyncAPI** | `AsyncApiFieldsRequire11Rule` |
 | **Components** | `ComponentsUniqueNamesRule` |
 | **Document-level** | `DocUnknownFieldRule`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule`, `DocumentSourceDescriptionsPresentRule` |

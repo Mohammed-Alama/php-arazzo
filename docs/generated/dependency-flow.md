@@ -43,7 +43,7 @@ contracts-State,contracts-Spec,3
 document-Parser,contracts-Spec,38
 document-Parser,contracts-Support,2
 document-Validator,contracts-Dependency,1
-document-Validator,contracts-Spec,106
+document-Validator,contracts-Spec,110
 document-Validator,contracts-Support,2
 document-Validator,expression-Data,1
 document-Validator,expression-Enum,9
@@ -210,7 +210,7 @@ runner-Async,runtime-Telemetry,1
 runner-Execution,contracts-Interfaces,2
 runner-Execution,contracts-Spec,2
 runner-Execution,contracts-State,1
-runner-Execution,contracts-Support,3
+runner-Execution,contracts-Support,4
 runner-Execution,document-root,2
 runner-Execution,events-Interfaces,1
 runner-Execution,runtime-State,4
@@ -230,7 +230,7 @@ runner-Sync,engine-Execution,4
 runner-Sync,evaluation-root,4
 runner-Sync,events-root,7
 runner-Sync,expression-Data,2
-runner-Sync,runner-Execution,9
+runner-Sync,runner-Execution,10
 runner-Sync,runtime-Policy,1
 runner-Sync,runtime-State,1
 runner-Sync,sources-Normalizer,2

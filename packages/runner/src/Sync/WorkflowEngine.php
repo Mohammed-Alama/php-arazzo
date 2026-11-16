@@ -24,6 +24,7 @@ use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
+use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionError;
 use Alama\Arazzo\Runner\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Execution\Exceptions\WorkflowCycleException;
@@ -83,6 +84,7 @@ final class WorkflowEngine
             if (!$criteriaResults->criteriaMet()) {
                 continue;
             }
+            $this->assertActionTargetExclusive($action);
             if ($action instanceof RetryAction) {
                 $attemptsSoFar = $state->attemptFor($step->stepId);
                 if ($this->retryPolicy->isExhausted($attemptsSoFar, $action->retryLimit)) {
@@ -211,6 +213,20 @@ final class WorkflowEngine
         }
         if (count($state->workflowCallStack) >= $state->maxWorkflowDepth) {
             throw new WorkflowDepthExceededException("Execution exceeded workflow depth {$state->maxWorkflowDepth}.");
+        }
+    }
+
+    private function assertActionTargetExclusive(mixed $action): void
+    {
+        if (!($action instanceof SuccessGotoAction || $action instanceof FailureGotoAction || $action instanceof RetryAction)) {
+            return;
+        }
+        if ($action->stepId !== null && $action->workflowId !== null) {
+            throw new ExecutionError(
+                "Action '{$action->name}' declares both stepId and workflowId; they are mutually exclusive.",
+                '',
+                'ambiguous-target',
+            );
         }
     }
 

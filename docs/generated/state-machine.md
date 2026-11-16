@@ -62,6 +62,7 @@ stateDiagram-v2
 
 | Exception | Meaning |
 |---|---|
+| `ExecutionError` |  |
 | `GotoTargetNotFoundException` | goto/reusable target missing |
 | `StepBudgetExceededException` | step budget exhausted |
 | `WorkflowCycleException` | re-entry into running workflow blocked |

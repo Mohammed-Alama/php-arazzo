@@ -71,7 +71,7 @@ quadrantChart
     laravel/Support: [0.556, 0]
     laravel/_: [1, 0]
     runner/Async: [0.826, 0]
-    runner/Execution: [0.643, 0.067]
+    runner/Execution: [0.643, 0.063]
     runner/Interfaces: [1, 1]
     runner/Sync: [0.818, 0]
     runner/_: [0.682, 0.222]
@@ -100,6 +100,7 @@ Concrete types over 300 LOC:
 | `ExecutionState` | `contracts:State` | 410 |
 | `WorkflowContext` | `contracts:State` | 382 |
 | `PreflightValidator` | `sources:Validator` | 325 |
+| `WorkflowEngine` | `runner:Sync` | 310 |
 | `SchemaValidator` | `engine:Execution` | 302 |
 
 ## Fat interfaces (ISP)

@@ -83,11 +83,11 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.11 | 41 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 234 | 49 | 100% |
+| `contracts/Spec` | 0.03 | 235 | 49 | 100% |
 | `contracts/State` | 0.07 | 70 | 2 | 100% |
 | `contracts/Support` | 0.00 | 12 | 5 | 100% |
 | `document/Parser` | 0.22 | 41 | 12 | 100% |
-| `document/Validator` | 0.54 | 81 | 70 | 100% |
+| `document/Validator` | 0.54 | 82 | 71 | 100% |
 | `engine/Data` | 0.75 | 2 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
@@ -120,7 +120,7 @@ quadrantChart
 | `laravel/State` | 0.67 | 3 | 1 | 100% |
 | `laravel/Support` | 0.56 | 2 | 4 | 50% |
 | `runner/Async` | 0.83 | 21 | 7 | 100% |
-| `runner/Execution` | 0.64 | 30 | 15 | 100% |
+| `runner/Execution` | 0.64 | 30 | 16 | 100% |
 | `runner/Interfaces` | 1.00 | 0 | 1 | 0% |
 | `runner/Sync` | 0.82 | 32 | 5 | 100% |
 | `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |

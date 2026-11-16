@@ -9,6 +9,7 @@ use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionRetryLimitsRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionReusableRefResolvesRule;
+use Alama\Arazzo\Document\Validator\Rules\ActionTargetExclusivityRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionTypeValidRule;
 use Alama\Arazzo\Document\Validator\Rules\AsyncApiFieldsRequire11Rule;
 use Alama\Arazzo\Document\Validator\Rules\ComponentsUniqueNamesRule;
@@ -101,6 +102,7 @@ final readonly class RuleSet
         return new self([
             new OfficialSchemaRule(),
             new ActionGotoTargetResolvesRule(),
+            new ActionTargetExclusivityRule(),
             new ActionRetryLimitsRule(),
             new ActionReusableRefResolvesRule(),
             new ActionTypeValidRule(),
