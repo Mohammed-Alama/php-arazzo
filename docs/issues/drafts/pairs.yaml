@@ -57,6 +57,7 @@ units:
   - story: 04-duplicate-parameters-and-actions
     kind: kind:bugfix
     parent: 118
+    filed: 327
     tasks: []
 
   - story: 05-reusable-parameter-refs-resolve
