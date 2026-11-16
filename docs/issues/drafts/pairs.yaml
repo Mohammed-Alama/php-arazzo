@@ -242,6 +242,7 @@ units:
     tasks:
       - task: 55-cli-test-runner
         kind: kind:feature
+        filed: 363
 
   - story: 47-execution-trace-artifact
     kind: kind:feature
