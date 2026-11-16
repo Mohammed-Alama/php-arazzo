@@ -159,6 +159,7 @@ units:
   - story: 36-validate-openapi-operation-exists
     kind: kind:bugfix
     parent: 118
+    filed: 345
     tasks: []
 
   # ── Core story + CLI task (document/validation wave) ──────────────────
