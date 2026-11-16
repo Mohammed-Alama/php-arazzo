@@ -99,7 +99,7 @@ Concrete types over 300 LOC:
 | `StepExecutionWorker` | `runner:Async` | 414 |
 | `ExecutionState` | `contracts:State` | 410 |
 | `WorkflowContext` | `contracts:State` | 382 |
-| `PreflightValidator` | `sources:Validator` | 303 |
+| `PreflightValidator` | `sources:Validator` | 325 |
 | `SchemaValidator` | `engine:Execution` | 302 |
 
 ## Fat interfaces (ISP)

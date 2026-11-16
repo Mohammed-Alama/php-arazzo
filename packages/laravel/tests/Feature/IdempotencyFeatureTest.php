@@ -57,7 +57,7 @@ it('executes a step with automatic idempotency key injection using Laravel bindi
         new Operation([]),
     ));
     $documents->shouldReceive('preflight')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
-    $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
+    $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d, string $w, array $i) => new ValidationResult($d, [], [], $i));
     app()->instance(DocumentInterface::class, $documents);
 
     $executor = app(AsyncExecutionGraph::class)->stepExecutor();

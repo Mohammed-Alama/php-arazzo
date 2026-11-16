@@ -81,17 +81,18 @@ final class PreflightValidator
         if ($workflow === null) {
             return new ValidationResult($document, [
                 new Error('preflight.unknown_workflow', "Workflow '{$workflowId}' does not exist.", '/workflows/'.$workflowId),
-            ], []);
+            ], [], $inputs);
         }
 
         $schema = is_array($workflow->inputs ?? null) ? $workflow->inputs : null;
 
-        // No declared schema = anything goes.
+        // No declared schema = anything goes; pass the raw inputs through.
         if ($schema === null || $schema === []) {
-            return new ValidationResult($document, [], []);
+            return new ValidationResult($document, [], [], $inputs);
         }
 
-        $violations = $this->validateAgainstSchema($inputs, $schema);
+        $finalInputs = $inputs;
+        $violations = $this->validateAgainstSchema($inputs, $schema, $finalInputs);
 
         foreach ($violations as $violation) {
             $pointer = '/workflows/'.$workflowId.'/inputs'
@@ -107,17 +108,21 @@ final class PreflightValidator
             ));
         }
 
-        return new ValidationResult($document, $errors->errors(), $errors->warnings());
+        return new ValidationResult($document, $errors->errors(), $errors->warnings(), $finalInputs);
     }
 
     /**
      * Runs the justinrainbow validator against a raw 2020-12 schema array.
+     * When validation succeeds, populates $populatedInputs with the
+     * default-populated input map (defaults applied via CHECK_MODE_APPLY_DEFAULTS).
+     * When validation fails, leaves $populatedInputs unchanged.
      *
      * @param  array<string, mixed>  $inputs
      * @param  array<string, mixed>  $schema
+     * @param  array<string, mixed>  $populatedInputs  Populated in place on success.
      * @return list<array{message: string, property: string}>
      */
-    private function validateAgainstSchema(array $inputs, array $schema): array
+    private function validateAgainstSchema(array $inputs, array $schema, array &$populatedInputs): array
     {
         $storage = new SchemaStorage();
         $schemaObject = \json_decode((string) \json_encode($schema), false);
@@ -139,6 +144,23 @@ final class PreflightValidator
         );
 
         if ($validator->isValid()) {
+            // The validator mutates $dataObject in place when applying defaults
+            // (CHECK_MODE_APPLY_DEFAULTS); convert it back to an array so the
+            // default-populated map reaches execution through $populatedInputs.
+            $encoded = json_encode($dataObject);
+            $decoded = is_string($encoded) ? json_decode($encoded, true) : null;
+
+            $populated = [];
+            if (is_array($decoded)) {
+                foreach ($decoded as $key => $value) {
+                    $populated[(string) $key] = $value;
+                }
+            } else {
+                $populated = $inputs;
+            }
+
+            $populatedInputs = $populated;
+
             return [];
         }
 

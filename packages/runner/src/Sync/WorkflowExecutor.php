@@ -69,6 +69,9 @@ class WorkflowExecutor
                         [...$result->errors, ...$inputResult->errors],
                         [...$result->warnings, ...$inputResult->warnings],
                     );
+                } elseif ($inputResult->inputs !== []) {
+                    // Use the default-populated input map returned by preflight.
+                    $inputs = $inputResult->inputs;
                 }
             }
 
