@@ -77,6 +77,19 @@ final class RunCommand extends Command
         $engine = new EvaluationEngine(expression: $expressionEngine);
         $runtime = SourceGraph::runtime(registry: $registry, engine: $expressionEngine);
 
+        // Preflight input-schema validation before any side effect.
+        $preflightResult = $runtime->document->preflightInputs($document, (string) $workflow->workflowId, $inputs);
+        if (!$preflightResult->isValid()) {
+            foreach ($preflightResult->errors as $error) {
+                $output->writeln('<error>'.$error->message.'</error>');
+            }
+
+            return Command::FAILURE;
+        }
+
+        // Use the validated, default-populated input map (defaults applied).
+        $inputs = $preflightResult->inputs;
+
         $fakeClient = new FakePsr18Client();
         $fakeFactory = new HttpFactory();
 
