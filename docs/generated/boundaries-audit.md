@@ -17,11 +17,11 @@ when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 5 | 3 | **forbidden** ⚠ |
+| `GuzzleHttp` | 6 | 3 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 46 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 25 | 0 | _unclassified_ ⚠ |
-| `Psr` | 36 | 26 | allowed |
+| `Psr` | 35 | 26 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 10 | 0 | **forbidden** ⚠ |
@@ -30,8 +30,8 @@ when a boundary consciously moves.
 
 | Package | Module | Vendor | References |
 |---|---|---|---:|
-| cli | `cli:Console` | `GuzzleHttp` | 1 |
-| cli | `cli:Console` | `Psr` | 5 |
+| cli | `cli:Console` | `GuzzleHttp` | 2 |
+| cli | `cli:Console` | `Psr` | 4 |
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
 | contracts | `contracts:Interfaces` | `Psr` | 2 |
@@ -74,7 +74,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Spatie` | 2 |
 
 **12 library boundary violation(s):**
-- `cli:Console` imports `GuzzleHttp\*` (1 refs)
+- `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (4 refs)

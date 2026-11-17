@@ -70,7 +70,7 @@ quadrantChart
     runtime/Policy: [0.75, 1]
     runtime/State: [0.25, 1]
     runtime/Telemetry: [0, 1]
-    sources/Normalizer: [0.357, 1]
+    sources/Normalizer: [0.385, 1]
     sources/Resolver: [0.273, 1]
     sources/Validator: [0.571, 1]
 ```
@@ -127,7 +127,7 @@ quadrantChart
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
 | `runtime/State` | 0.25 | 27 | 12 | 100% |
 | `runtime/Telemetry` | 0.00 | 2 | 2 | 100% |
-| `sources/Normalizer` | 0.36 | 19 | 11 | 100% |
+| `sources/Normalizer` | 0.39 | 19 | 11 | 100% |
 | `sources/Resolver` | 0.27 | 24 | 13 | 100% |
 | `sources/Validator` | 0.57 | 5 | 1 | 100% |
 

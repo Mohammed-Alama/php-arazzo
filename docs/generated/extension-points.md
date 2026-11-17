@@ -50,8 +50,6 @@ mindmap
       FileLockStrategy
       NullLockStrategy
       PessimisticLockStrategy
-    OpenApiExecutorInterface
-      RunCommand
     OpenApiNormalizerInterface
       OpenApi30Normalizer
       Swagger2Normalizer
@@ -117,7 +115,6 @@ mindmap
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
 | `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
-| `OpenApiExecutorInterface` | no | `RunCommand` <small>core</small> |
 | `OpenApiNormalizerInterface` | no | `OpenApi30Normalizer` <small>core</small>, `Swagger2Normalizer` <small>core</small> |
 | `OpenApiOperationResolverInterface` | no | `OpenApiOperationResolver` <small>core</small> |
 | `OperationExecutorPluginInterface` | no | `SubWorkflowStepExecutor` <small>core</small> |
@@ -141,6 +138,7 @@ mindmap
 
 Declared but nothing in src implements them — candidates for removal or for a first adapter:
 
+- `OpenApiExecutorInterface` <small>Execution/Interfaces</small>
 - `OperationResolverInterface` <small></small>
 - `OutputExtractorInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>

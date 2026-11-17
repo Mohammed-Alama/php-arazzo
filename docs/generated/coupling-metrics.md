@@ -11,11 +11,11 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 12 | 934 | 0 | 18 | 1.00 |  |
+| `cli:Console` | 12 | 907 | 0 | 18 | 1.00 |  |
 | `cli:Generator` | 2 | 139 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
-| `contracts:Exceptions` | 1 | 30 | 4 | 0 | 0.00 |  |
+| `contracts:Exceptions` | 1 | 30 | 5 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 19 | 348 | 24 | 3 | 0.11 |  |
 | `contracts:Spec` | 49 | 1158 | 37 | 1 | 0.03 |  |
 | `contracts:State` | 3 | 907 | 13 | 1 | 0.07 |  |
@@ -68,12 +68,12 @@ targets. Regenerated before every commit.
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `runtime:State` | 12 | 1044 | 9 | 3 | 0.25 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `sources:Normalizer` | 11 | 1271 | 9 | 5 | 0.36 |  |
+| `sources:Normalizer` | 11 | 1271 | 8 | 5 | 0.38 |  |
 | `sources:Resolver` | 13 | 477 | 8 | 3 | 0.27 |  |
 | `sources:Validator` | 1 | 324 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 333 | 2 | 10 | 0.83 |  |
 
-Total cross-module edges: **1129**
+Total cross-module edges: **1124**
 
 ## Most entangled module pairs
 

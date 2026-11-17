@@ -330,3 +330,305 @@ it('accepts arbitrary inputs when no schema declared (S6)', function (): void {
     expect($tester->getStatusCode())->toBe(0)
         ->and($tester->getDisplay())->toContain('create: succeeded');
 });
+
+/**
+ * The HTTP boundary fake: records every real request the graph builds.
+ */
+final class CliRecordingHttpClient implements ClientInterface
+{
+    /** @var list<RequestInterface> */
+    public array $requests = [];
+
+    /** @param list<ResponseInterface> $responses */
+    public function __construct(private array $responses = []) {}
+
+    public function sendRequest(RequestInterface $request): ResponseInterface
+    {
+        $this->requests[] = $request;
+
+        return array_shift($this->responses) ?? new Response(200, ['Content-Type' => 'application/json'], '{}');
+    }
+}
+
+const REAL_HTTP_OPENAPI = [
+    'openapi' => '3.0.3',
+    'info' => ['title' => 'Pet API', 'version' => '1'],
+    'servers' => [['url' => 'https://mini.test']],
+    'paths' => [
+        '/pets' => [
+            'get' => [
+                'operationId' => 'listPets',
+                'responses' => [
+                    '200' => [
+                        'description' => 'ok',
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    'type' => 'object',
+                                    'required' => ['pets'],
+                                    'properties' => [
+                                        'pets' => [
+                                            'type' => 'array',
+                                            'items' => [
+                                                'type' => 'object',
+                                                'properties' => ['id' => ['type' => 'integer'], 'name' => ['type' => 'string']],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        '/pets/{petId}' => [
+            'get' => [
+                'operationId' => 'getPet',
+                'parameters' => [
+                    ['name' => 'petId', 'in' => 'path', 'required' => true, 'schema' => ['type' => 'integer']],
+                ],
+                'responses' => [
+                    '200' => [
+                        'description' => 'ok',
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    'type' => 'object',
+                                    'required' => ['id'],
+                                    'properties' => ['id' => ['type' => 'integer'], 'name' => ['type' => 'string']],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'post' => [
+                'operationId' => 'updatePet',
+                'parameters' => [
+                    ['name' => 'petId', 'in' => 'path', 'required' => true, 'schema' => ['type' => 'integer']],
+                    ['name' => 'limit', 'in' => 'query', 'schema' => ['type' => 'integer']],
+                    ['name' => 'X-Trace', 'in' => 'header', 'schema' => ['type' => 'string']],
+                ],
+                'requestBody' => [
+                    'required' => true,
+                    'content' => ['application/json' => ['schema' => ['type' => 'object']]],
+                ],
+                'responses' => [
+                    '200' => [
+                        'description' => 'ok',
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    'type' => 'object',
+                                    'properties' => ['id' => ['type' => 'integer']],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
+
+function realHttpDoc(string $workflow): string
+{
+    $doc = sys_get_temp_dir().'/arazzo-cli-http-'.uniqid().'.yaml';
+    file_put_contents($doc, $workflow);
+
+    return $doc;
+}
+
+function realHttpRegistry(ClientInterface $client, RequestFactoryInterface $factory): SourceRegistry
+{
+    $registry = createTestRegistry($client, $factory);
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', REAL_HTTP_OPENAPI));
+
+    return $registry;
+}
+
+it('sends the real request through the injected HTTP client (method, URL, path, query, header, body)', function (): void {
+    $client = new CliRecordingHttpClient([
+        new Response(200, ['Content-Type' => 'application/json'], '{"id": 7}'),
+    ]);
+    $factory = new HttpFactory();
+
+    $doc = realHttpDoc(<<<'YAML'
+        arazzo: "1.0.0"
+        info:
+          title: Real HTTP
+          version: "1"
+        sourceDescriptions:
+          - name: api
+            url: https://mini.test/openapi.json
+            type: openapi
+        workflows:
+          - workflowId: updatePet
+            steps:
+              - stepId: update
+                operationPath: "{$sourceDescriptions.api.url}#/paths/~1pets~1{petId}/post"
+                parameters:
+                  - name: petId
+                    in: path
+                    value: 42
+                  - name: limit
+                    in: query
+                    value: 10
+                  - name: X-Trace
+                    in: header
+                    value: trace-1
+                requestBody:
+                  contentType: application/json
+                  payload:
+                    name: Fido
+                    age: 3
+                successCriteria:
+                  - condition: $statusCode == 200
+        YAML);
+
+    $tester = new CommandTester(new RunCommand($client, $factory, realHttpRegistry($client, $factory)));
+    $tester->execute(['file' => $doc]);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(0)
+        ->and($tester->getDisplay())->toContain('updatePet: succeeded')
+        ->and($client->requests)->toHaveCount(1);
+
+    $request = $client->requests[0];
+
+    expect($request->getMethod())->toBe('POST')
+        ->and((string) $request->getUri())->toBe('https://mini.test/pets/42?limit=10')
+        ->and($request->getHeaderLine('X-Trace'))->toBe('trace-1')
+        ->and($request->getHeaderLine('Content-Type'))->toBe('application/json')
+        ->and(json_decode((string) $request->getBody(), true))->toBe(['name' => 'Fido', 'age' => 3]);
+});
+
+it('exposes step outputs to downstream steps and workflow outputs', function (): void {
+    $client = new CliRecordingHttpClient([
+        new Response(200, ['Content-Type' => 'application/json'], '{"pets": [{"id": 7, "name": "Fido"}]}'),
+        new Response(200, ['Content-Type' => 'application/json'], '{"id": 7, "name": "Fido"}'),
+    ]);
+    $factory = new HttpFactory();
+
+    $doc = realHttpDoc(<<<'YAML'
+        arazzo: "1.0.0"
+        info:
+          title: Real HTTP outputs
+          version: "1"
+        sourceDescriptions:
+          - name: api
+            url: https://mini.test/openapi.json
+            type: openapi
+        workflows:
+          - workflowId: petFlow
+            outputs:
+              petId: "{$steps.list.outputs.petId}"
+            steps:
+              - stepId: list
+                operationPath: "{$sourceDescriptions.api.url}#/paths/~1pets/get"
+                outputs:
+                  petId: "{$response.body#/pets/0/id}"
+                successCriteria:
+                  - condition: $statusCode == 200
+              - stepId: fetch
+                operationPath: "{$sourceDescriptions.api.url}#/paths/~1pets~1{petId}/get"
+                parameters:
+                  - name: petId
+                    in: path
+                    value: "{$steps.list.outputs.petId}"
+                successCriteria:
+                  - condition: $statusCode == 200
+        YAML);
+
+    $tester = new CommandTester(new RunCommand($client, $factory, realHttpRegistry($client, $factory)));
+    $tester->execute(['file' => $doc]);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(0)
+        ->and($tester->getDisplay())->toContain('petFlow: succeeded')
+        ->and($tester->getDisplay())->toContain('✔ list')
+        ->and($tester->getDisplay())->toContain('✔ fetch')
+        ->and($tester->getDisplay())->toContain('petId = 7')
+        ->and($client->requests)->toHaveCount(2)
+        ->and((string) $client->requests[1]->getUri())->toBe('https://mini.test/pets/7');
+});
+
+it('fails the run and renders the violation when a response breaks its schema', function (): void {
+    $client = new CliRecordingHttpClient([
+        new Response(200, ['Content-Type' => 'application/json'], '{"id": "not-an-integer"}'),
+    ]);
+    $factory = new HttpFactory();
+
+    $doc = realHttpDoc(<<<'YAML'
+        arazzo: "1.0.0"
+        info:
+          title: Real HTTP schema
+          version: "1"
+        sourceDescriptions:
+          - name: api
+            url: https://mini.test/openapi.json
+            type: openapi
+        workflows:
+          - workflowId: petFlow
+            steps:
+              - stepId: fetch
+                operationPath: "{$sourceDescriptions.api.url}#/paths/~1pets~1{petId}/get"
+                parameters:
+                  - name: petId
+                    in: path
+                    value: 7
+                successCriteria:
+                  - condition: $statusCode == 200
+        YAML);
+
+    $tester = new CommandTester(new RunCommand($client, $factory, realHttpRegistry($client, $factory)));
+    $tester->execute(['file' => $doc]);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(1)
+        ->and($tester->getDisplay())->toContain("Response schema validation failed for step 'fetch'")
+        ->and($tester->getDisplay())->toContain('/id')
+        ->and($tester->getDisplay())->toContain("expected type 'integer'");
+});
+
+it('fails the run when success criteria are not met', function (): void {
+    $client = new CliRecordingHttpClient([
+        new Response(500, ['Content-Type' => 'application/json'], '{}'),
+    ]);
+    $factory = new HttpFactory();
+
+    $doc = realHttpDoc(<<<'YAML'
+        arazzo: "1.0.0"
+        info:
+          title: Real HTTP criteria
+          version: "1"
+        sourceDescriptions:
+          - name: api
+            url: https://mini.test/openapi.json
+            type: openapi
+        workflows:
+          - workflowId: petFlow
+            steps:
+              - stepId: fetch
+                operationPath: "{$sourceDescriptions.api.url}#/paths/~1pets~1{petId}/get"
+                parameters:
+                  - name: petId
+                    in: path
+                    value: 7
+                successCriteria:
+                  - condition: $statusCode == 200
+        YAML);
+
+    $tester = new CommandTester(new RunCommand($client, $factory, realHttpRegistry($client, $factory)));
+    $tester->execute(['file' => $doc]);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(1)
+        ->and($tester->getDisplay())->toContain('petFlow: failed')
+        ->and($tester->getDisplay())->toContain('✘ fetch');
+});
