@@ -235,8 +235,8 @@ flowchart LR
     runner_Execution --> events_Interfaces
     runner_Interfaces --> contracts_Interfaces
     runner_Interfaces --> contracts_Spec
-    runner_Sync --> contracts_Dependency
     runner_Sync --> contracts_Spec
+    runner_Sync --> contracts_Dependency
     runner_Sync --> contracts_State
     runner_Sync --> evaluation__
     runner_Sync --> expression_Data

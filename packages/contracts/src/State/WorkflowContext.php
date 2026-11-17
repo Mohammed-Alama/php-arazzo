@@ -61,6 +61,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
             'components' => $this->components,
             'stepsSpent' => $this->stepsSpent,
             'workflowCallStack' => $this->workflowCallStack,
+            'workflows' => $this->workflows,
         ];
     }
 
@@ -83,7 +84,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         /** @var array<string, mixed> $components */
         $components = is_array($persisted['components'] ?? null) ? $persisted['components'] : [];
 
-        $context = new self($definitionId, $inputs, $steps, $components, $workflowId, $executionId);
+        $context = new self($definitionId, $inputs, $steps, $components, $workflowId, $executionId, workflows: WorkflowDataMap::from($persisted['workflows'] ?? null));
 
         if (array_key_exists('stepsSpent', $persisted) || array_key_exists('workflowCallStack', $persisted)) {
             $stack = is_array($persisted['workflowCallStack'] ?? null) ? $persisted['workflowCallStack'] : [];
@@ -112,6 +113,8 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         /** @var array<string, array<string, mixed>> $mergedSteps */
         $mergedSteps = array_merge($incoming->getSteps(), $persistedSteps);
 
+        $persistedWorkflows = WorkflowDataMap::from($persisted['workflows'] ?? null);
+
         $restored = new self(
             $incoming->getDefinitionId(),
             $incoming->getInputs(),
@@ -119,6 +122,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
             $incoming->getComponents(),
             $incoming->getWorkflowId(),
             $executionId,
+            workflows: $incoming->getWorkflows(),
         );
 
         if (array_key_exists('stepsSpent', $persisted) || array_key_exists('workflowCallStack', $persisted)) {
@@ -130,6 +134,12 @@ final readonly class WorkflowContext implements WorkflowContextInterface
             );
         }
 
+        // Persisted workflow outputs are newer than anything the incoming
+        // job carried, so they win per workflow without dropping untouched ones.
+        foreach ($persistedWorkflows as $workflowId => $data) {
+            $restored = $restored->withWorkflowData($workflowId, $data);
+        }
+
         return $restored;
     }
 
@@ -138,7 +148,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
      */
     public function withBudget(int $stepsSpent, array $workflowCallStack): self
     {
-        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $stepsSpent, workflowCallStack: $workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $stepsSpent, workflowCallStack: $workflowCallStack, parentRunId: $this->parentRunId);
     }
 
     /**
@@ -161,6 +171,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
             components: $parent->getComponents(),
             workflowId: $target->workflowId,
             executionId: uniqid('run_', true),
+            workflows: $parent->getWorkflows(),
             stepsSpent: $parent->getStepsSpent(),
             workflowCallStack: $callStack,
             parentRunId: $parent->getExecutionId(),
@@ -220,7 +231,18 @@ final readonly class WorkflowContext implements WorkflowContextInterface
             'outputs' => $data['outputs'] ?? $existing['outputs'],
         ];
 
-        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $newWorkflows);
+        return new self(
+            definitionId: $this->definitionId,
+            inputs: $this->inputs,
+            steps: $this->steps,
+            components: $this->components,
+            workflowId: $this->workflowId,
+            executionId: $this->executionId,
+            workflows: $newWorkflows,
+            stepsSpent: $this->stepsSpent,
+            workflowCallStack: $this->workflowCallStack,
+            parentRunId: $this->parentRunId,
+        );
     }
 
     /**

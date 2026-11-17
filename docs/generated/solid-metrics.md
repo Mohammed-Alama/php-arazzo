@@ -92,15 +92,16 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `document:Parser` | 931 |
-| `ExecutionContext` | `runtime:State` | 496 |
+| `ExecutionContext` | `runtime:State` | 516 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |
 | `Parser` | `expression:_` | 466 |
 | `StepOutcomeHandler` | `runner:Async` | 454 |
+| `ExecutionState` | `contracts:State` | 436 |
 | `StepExecutionWorker` | `runner:Async` | 414 |
-| `ExecutionState` | `contracts:State` | 410 |
-| `WorkflowContext` | `contracts:State` | 382 |
+| `WorkflowContext` | `contracts:State` | 404 |
 | `PreflightValidator` | `sources:Validator` | 325 |
 | `WorkflowEngine` | `runner:Sync` | 310 |
+| `WorkflowExecutor` | `runner:Sync` | 310 |
 | `SchemaValidator` | `engine:Execution` | 302 |
 
 ## Fat interfaces (ISP)

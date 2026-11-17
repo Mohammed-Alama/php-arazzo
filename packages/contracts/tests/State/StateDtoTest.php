@@ -45,7 +45,58 @@ it('keeps the persisted key set and its order stable', function (): void {
         'executionId', 'definitionId', 'workflowId', 'currentStepId', 'inputs',
         'stepAttempts', 'stepResults', 'dependencies', 'outputs', 'errors',
         'stepsSpent', 'maxSteps', 'workflowCallStack', 'maxWorkflowDepth',
-        'components', 'status',
+        'components', 'status', 'workflows',
+    ]);
+});
+
+it('owns workflow outputs across canonical state, context, and persistence conversions', function (): void {
+    $state = ExecutionState::start('exec_w', 'def', 'wf', ['seed' => false])
+        ->withWorkflowData('base', ['outputs' => ['x' => 1, 'nil' => null]])
+        ->withWorkflowData('base', ['inputs' => ['q' => 'v']])
+        ->spendStep();
+
+    $workflows = [
+        'base' => [
+            'inputs' => ['q' => 'v'],
+            'outputs' => ['x' => 1, 'nil' => null],
+        ],
+    ];
+
+    $context = $state->toContext();
+    expect($context->getWorkflows())->toBe($workflows)
+        ->and($context->getStepsSpent())->toBe(1);
+
+    $fromContext = ExecutionState::fromContext($context, maxSteps: 9, maxWorkflowDepth: 3);
+    expect($fromContext->toContext()->getWorkflows())->toBe($workflows)
+        ->and($fromContext->stepsSpent)->toBe(1)
+        ->and($fromContext->maxSteps)->toBe(9);
+
+    $persisted = $state->toArray();
+    expect($persisted['workflows'])->toBe($workflows)
+        ->and(ExecutionState::fromArray($persisted)->toContext()->getWorkflows())->toBe($workflows);
+});
+
+it('round-trips workflow data through the context persistence payload', function (): void {
+    $workflows = ['base' => ['inputs' => ['q' => 'v'], 'outputs' => ['x' => null, 'zero' => 0]]];
+    $context = (new WorkflowContext('def', ['in' => 1], [], [], 'wf', 'exec_p'))
+        ->withWorkflowData('base', $workflows['base'])
+        ->withBudget(5, ['wf', 'child']);
+
+    $persisted = $context->toArray();
+    expect($persisted['workflows'])->toBe($workflows);
+
+    $restored = WorkflowContext::fromPersisted($persisted, 'exec_p');
+    expect($restored->getWorkflows())->toBe($workflows)
+        ->and($restored->getStepsSpent())->toBe(5)
+        ->and($restored->getWorkflowCallStack())->toBe(['wf', 'child']);
+
+    $incoming = (new WorkflowContext('def', ['in' => 2], [], [], 'wf', 'exec_new'))
+        ->withWorkflowData('base', ['outputs' => ['stale' => true]])
+        ->withWorkflowData('other', ['outputs' => ['kept' => 1]]);
+
+    expect(WorkflowContext::reconciled($incoming, $persisted, 'exec_p')->getWorkflows())->toBe([
+        'base' => $workflows['base'],
+        'other' => ['inputs' => [], 'outputs' => ['kept' => 1]],
     ]);
 });
 
@@ -67,9 +118,11 @@ it('falls back to defaults instead of throwing on a corrupt persisted payload', 
         'maxWorkflowDepth' => null,
         'components' => 'nope',
         'status' => 99,
+        'workflows' => 'nope',
     ]);
 
     expect($state->executionId)->toBe('')
+        ->and($state->toContext()->getWorkflows())->toBe([])
         ->and($state->definitionId)->toBe('')
         ->and($state->workflowId)->toBe('')
         ->and($state->currentStepId)->toBeNull()

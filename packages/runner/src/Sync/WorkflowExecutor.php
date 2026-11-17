@@ -84,9 +84,67 @@ class WorkflowExecutor
         }
 
         $executionId = is_string($inputs['__executionId'] ?? null) ? $inputs['__executionId'] : bin2hex(random_bytes(8));
-        $context ??= new WorkflowContext($workflow->workflowId, $inputs);
+        $context ??= new WorkflowContext(
+            definitionId: $workflow->workflowId,
+            inputs: $inputs,
+            workflowId: $workflow->workflowId,
+            executionId: $executionId,
+        );
         $context = $context->withWorkflowData($workflow->workflowId, ['inputs' => $inputs]);
 
+        // ExecutionState is the single owner of the workflow-output handoff.
+        // Dependencies publish into it; executeCanonically() seeds its own state
+        // from the resulting context so steps and workflow outputs can read them.
+        return $this->executeWithDependencies($workflow, $document, $inputs, ExecutionState::fromContext($context), $executionId);
+    }
+
+    /**
+     * Runs the transitive `dependsOn` closure once, then the requested workflow.
+     * Dependency outputs are recorded on the canonical state handoff.
+     *
+     * @param  array<string, mixed>  $inputs
+     */
+    private function executeWithDependencies(Workflow $workflow, ArazzoDocument $document, array $inputs, ExecutionState $handoff, string $executionId): ExecutionResult
+    {
+        $resolver = new WorkflowDependencyResolver($document->workflows);
+        $stepResults = [];
+
+        foreach ($resolver->orderFor($workflow->workflowId) as $dependencyId) {
+            if (isset($handoff->workflows[$dependencyId])) {
+                continue; // already executed in this run (memoized)
+            }
+
+            $dependency = $this->workflow($document, $dependencyId);
+            $result = $this->executeOnce($dependency, $document, [], $handoff->toContext(), $executionId);
+            $handoff = $handoff->withWorkflowData($dependencyId, ['outputs' => $result->outputs]);
+            $stepResults += $result->stepResults;
+
+            if ($result->status !== 'succeeded') {
+                $this->events->dispatch(new RunFailedEvent(
+                    $executionId,
+                    $workflow->workflowId,
+                    new RuntimeException("Dependency '{$dependencyId}' failed."),
+                    new DateTimeImmutable(),
+                    'execution',
+                ));
+
+                return new ExecutionResult(
+                    $workflow->workflowId,
+                    'failed',
+                    [],
+                    $stepResults,
+                    $result->stepsSpent,
+                    $result->workflowCallStack,
+                );
+            }
+        }
+
+        return $this->executeOnce($workflow, $document, $inputs, $handoff->toContext(), $executionId);
+    }
+
+    /** @param array<string, mixed> $inputs */
+    private function executeOnce(Workflow $workflow, ArazzoDocument $document, array $inputs, WorkflowContext $context, string $executionId): ExecutionResult
+    {
         $this->events->dispatch(new RunStartedEvent(
             $executionId,
             $workflow->workflowId,
@@ -112,6 +170,7 @@ class WorkflowExecutor
             stepsSpent: $context?->getStepsSpent() ?? 0,
             workflowCallStack: $context !== null && $context->getWorkflowCallStack() !== [] ? $context->getWorkflowCallStack() : null,
         );
+        $state = $this->carryWorkflowData($state, $context);
         $currentWorkflow = $workflow;
         $stepId = $this->firstStep($workflow);
         $results = [];
@@ -180,6 +239,24 @@ class WorkflowExecutor
         }
 
         return new ExecutionResult($currentWorkflow->workflowId, 'succeeded', $state->outputs, $results, $state->stepsSpent, $state->workflowCallStack);
+    }
+
+    /**
+     * Seeds a freshly started canonical state with workflow data handed over
+     * from a caller context (dependencies recorded by the runner or a nested
+     * invocation). Kept separate so the execution loop stays focused.
+     */
+    private function carryWorkflowData(ExecutionState $state, ?WorkflowContext $context): ExecutionState
+    {
+        if ($context === null) {
+            return $state;
+        }
+
+        foreach ($context->getWorkflows() as $workflowId => $data) {
+            $state = $state->withWorkflowData($workflowId, $data);
+        }
+
+        return $state;
     }
 
     private function firstStep(Workflow $workflow): ?string

@@ -92,6 +92,26 @@ it('converts to canonical ExecutionState folding record attempts back out', func
         ->and($state->status)->toBe('failed');
 });
 
+it('carries workflow data through every runtime state conversion', function (): void {
+    $workflows = ['base' => ['inputs' => ['q' => 'v'], 'outputs' => ['x' => 0, 'nil' => null]]];
+    $context = (new WorkflowContext('def', ['in' => 1], [], [], 'wf', 'exec_w', workflows: $workflows))
+        ->withBudget(4, ['wf']);
+
+    $runtime = ExecutionContext::fromWorkflowContext($context);
+    $view = $runtime->toWorkflowContext();
+
+    expect($view->getWorkflows())->toBe($workflows)
+        ->and($view->getStepsSpent())->toBe(4)
+        ->and($view->getWorkflowCallStack())->toBe(['wf']);
+
+    $updated = $runtime->spendStep()->withStepResult('s', ['outputs' => []]);
+    expect($updated->toWorkflowContext()->getWorkflows())->toBe($workflows);
+
+    $state = $runtime->toExecutionState();
+    expect($state->toContext()->getWorkflows())->toBe($workflows)
+        ->and(ExecutionState::fromArray($state->toArray())->toContext()->getWorkflows())->toBe($workflows);
+});
+
 it('serializes StepResult to the persistence record shape', function (): void {
     $result = StepResult::success(201, ['id' => 'x'], ['k' => 'v'], responseHeaders: ['Location' => '/x'], attempts: 1);
     $record = $result->toArray();
