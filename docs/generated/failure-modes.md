@@ -54,8 +54,10 @@ Regenerated before every commit.
 | `ExpressionSyntaxException` | `EmbeddedExpressionSplitter` |  |
 | `ExpressionSyntaxException` | `Parser` |  |
 | `JsonException` | `NativeJsonDecoder` |  |
+| `LoaderException` | `RunCommand` |  |
 | `LoaderException` | `ValidateCommand` |  |
 | `ParseException` | `SymfonyYamlDecoder` |  |
+| `ParserException` | `RunCommand` |  |
 | `ParserException` | `ValidateCommand` |  |
 | `ParserException` | `DatabaseDefinitionRegistry` |  |
 | `SchemaValidationException` | `RunCommand` |  |

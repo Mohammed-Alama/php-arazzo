@@ -393,7 +393,7 @@ flowchart TB
 | From package | To package | Refs |
 |---|---|---:|
 | `cli` | `contracts` | 27 |
-| `cli` | `document` | 8 |
+| `cli` | `document` | 10 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `events` | 2 |
 | `cli` | `expression` | 2 |
