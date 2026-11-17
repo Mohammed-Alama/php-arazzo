@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests;
 
+use Alama\Arazzo\Laravel\Support\AsyncGraphResolver;
 use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Protocol\Http\Registrar\ProtocolHttpRegistrar;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
@@ -30,4 +31,12 @@ it('passes the strict default to the protocol http executor', function (): void 
 
     expect($http)->toBeInstanceOf(HttpStepExecutor::class)
         ->and((new ReflectionProperty(HttpStepExecutor::class, 'strictValidationDefault'))->getValue($http))->toBeTrue();
+});
+
+it('honours an explicit false config, so invalid response payloads stay allowed when disabled', function (): void {
+    config()->set('arazzo.strict_schema_validation', false);
+
+    $executor = AsyncGraphResolver::resolve(app())->stepExecutor();
+
+    expect((new ReflectionProperty(StepExecutor::class, 'strictValidationDefault'))->getValue($executor))->toBeFalse();
 });

@@ -48,3 +48,21 @@ it('defaults strict validation on for the http executor it wires', function (): 
     expect($http)->toBeInstanceOf(HttpStepExecutor::class)
         ->and((new ReflectionProperty(HttpStepExecutor::class, 'strictValidationDefault'))->getValue($http))->toBeTrue();
 });
+
+it('keeps an explicit opt-out, so invalid response payloads are still allowed when the host disables it', function (): void {
+    $registrar = new ProtocolHttpRegistrar(
+        loader: new OpenApiDocumentLoader(Mockery::mock(SourceResolver::class)),
+        operationResolver: Mockery::mock(OpenApiOperationResolver::class),
+        openApiExecutor: Mockery::mock(OpenApiExecutorInterface::class),
+        outputExtractor: Mockery::mock(OutputExtractorInterface::class),
+        schemaValidator: Mockery::mock(ResponseValidatorInterface::class),
+        evaluationEngine: Mockery::mock(EvaluationEngineInterface::class),
+        pendingCorrelations: Mockery::mock(PendingCorrelationRegistryInterface::class),
+        httpClient: Mockery::mock(HttpClientInterface::class),
+        strictValidationDefault: false,
+    );
+
+    $http = $registrar->executors()[0];
+
+    expect((new ReflectionProperty(HttpStepExecutor::class, 'strictValidationDefault'))->getValue($http))->toBeFalse();
+});

@@ -121,18 +121,22 @@ function seamsPorts(): array
 }
 
 it('constructs seams with all required ports', function () {
-    $seams = dummySeams();
+    $ports = seamsPorts();
+    $seams = new AsyncGraphSeams(
+        ...$ports,
+        requestFactory: new HttpFactory(),
+    );
 
-    expect($seams->stateStore)->not->toBeNull()
-        ->and($seams->queueDriver)->not->toBeNull()
-        ->and($seams->eventLedger)->not->toBeNull()
-        ->and($seams->executionRegistry)->not->toBeNull()
-        ->and($seams->pendingCorrelationRegistry)->not->toBeNull()
-        ->and($seams->definitionRegistry)->not->toBeNull()
-        ->and($seams->lockManager)->not->toBeNull()
-        ->and($seams->httpClient)->not->toBeNull()
+    expect($seams->stateStore)->toBe($ports['stateStore'])
+        ->and($seams->queueDriver)->toBe($ports['queueDriver'])
+        ->and($seams->eventLedger)->toBe($ports['eventLedger'])
+        ->and($seams->executionRegistry)->toBe($ports['executionRegistry'])
+        ->and($seams->pendingCorrelationRegistry)->toBe($ports['pendingCorrelationRegistry'])
+        ->and($seams->definitionRegistry)->toBe($ports['definitionRegistry'])
+        ->and($seams->lockManager)->toBe($ports['lockManager'])
+        ->and($seams->httpClient)->toBe($ports['httpClient'])
         ->and($seams->schemaValidator)->toBeNull()
-        ->and($seams->requestFactory)->not->toBeNull();
+        ->and($seams->requestFactory)->toBeInstanceOf(HttpFactory::class);
 });
 
 it('retains config knobs', function () {

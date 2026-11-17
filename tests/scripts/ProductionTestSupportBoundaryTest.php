@@ -48,8 +48,13 @@ it('finds production source to scan', function () {
     expect($files)->not->toBe([]);
 });
 
-it('keeps production source free of test-support references', function () {
-    $repo = dirname(__DIR__, 2);
+/**
+ * The production files that import anything from the test-support namespace.
+ *
+ * @return list<string>
+ */
+function testSupportReferences(string $repo): array
+{
     $offenders = [];
 
     foreach (productionSourceFiles($repo) as $relative) {
@@ -60,5 +65,27 @@ it('keeps production source free of test-support references', function () {
         }
     }
 
-    expect($offenders)->toBe([]);
+    return $offenders;
+}
+
+it('keeps production source free of test-support references', function () {
+    expect(testSupportReferences(dirname(__DIR__, 2)))->toBe([]);
+});
+
+it('flags a production file that references test support, so the guard fails on a real import', function () {
+    $repo = sys_get_temp_dir().'/arazzo-boundary-'.uniqid();
+    $source = $repo.'/packages/demo/src/Bad.php';
+
+    mkdir(dirname($source), 0777, true);
+    file_put_contents($source, "<?php\n\nuse Alama\\Arazzo\\Tests\\Support\\FakePsr18Client;\n");
+
+    $offenders = testSupportReferences($repo);
+
+    unlink($source);
+    rmdir($repo.'/packages/demo/src');
+    rmdir($repo.'/packages/demo');
+    rmdir($repo.'/packages');
+    rmdir($repo);
+
+    expect($offenders)->toBe(['packages/demo/src/Bad.php']);
 });

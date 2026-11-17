@@ -61,7 +61,7 @@ quadrantChart
     laravel/Persistence: [0.833, 1]
     laravel/Queue: [0.75, 1]
     laravel/State: [0.667, 1]
-    laravel/Support: [0.556, 0.5]
+    laravel/Support: [0.556, 0.75]
     runner/Async: [0.826, 1]
     runner/Execution: [0.643, 1]
     runner/Interfaces: [1, 0]
@@ -118,7 +118,7 @@ quadrantChart
 | `laravel/Persistence` | 0.83 | 6 | 4 | 100% |
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.67 | 3 | 1 | 100% |
-| `laravel/Support` | 0.56 | 2 | 4 | 50% |
+| `laravel/Support` | 0.56 | 3 | 4 | 75% |
 | `runner/Async` | 0.83 | 21 | 7 | 100% |
 | `runner/Execution` | 0.64 | 30 | 16 | 100% |
 | `runner/Interfaces` | 1.00 | 0 | 1 | 0% |
