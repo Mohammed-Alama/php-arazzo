@@ -23,7 +23,7 @@ Analyzed 426 total file-touches across 53 modules.
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 47 | 11% | 395 | 119 |
 | `cli:Console` | 31 | 7% | 919 | 33.7 |
-| `document:Validator` | 27 | 6% | 4,096 | 6.6 |
+| `document:Validator` | 27 | 6% | 4,275 | 6.3 |
 | `runner:Execution` | 27 | 6% | 383 | 70.5 |
 | `laravel:Http` | 22 | 5% | 187 | 117.6 |
 | `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
