@@ -31,6 +31,7 @@
     "autoload": {
         "psr-4": {"Alama\\Arazzo\\Cli\\": "src/"}
     },
+    "bin": ["bin/arazzo"],
     "autoload-dev": {
         "psr-4": {
             "Alama\\Arazzo\\Tests\\": "tests/"
