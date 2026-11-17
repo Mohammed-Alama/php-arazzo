@@ -38,6 +38,7 @@ use Symfony\Component\Process\Process;
 $suiteDir = null;
 $output = null;
 $binary = null;
+$script = null;
 $sha = null;
 
 $argv = array_slice($_SERVER['argv'], 1);
@@ -55,6 +56,10 @@ for ($i = 0; $i < count($argv); $i++) {
         $binary = $argv[++$i];
     } elseif (str_starts_with($arg, '--binary=')) {
         $binary = substr($arg, strlen('--binary='));
+    } elseif ($arg === '--script' && isset($argv[$i + 1])) {
+        $script = $argv[++$i];
+    } elseif (str_starts_with($arg, '--script=')) {
+        $script = substr($arg, strlen('--script='));
     } elseif ($arg === '--sha' && isset($argv[$i + 1])) {
         $sha = $argv[++$i];
     } elseif (str_starts_with($arg, '--sha=')) {
@@ -107,7 +112,7 @@ if (!is_dir($suiteDir)) {
     exit(1);
 }
 
-$scorer = new ConformanceScorer($suiteDir, $binary, $output, $sha);
+$scorer = new ConformanceScorer($suiteDir, $binary, $output, $sha, 4010, $script);
 $scorer->score();
 
 echo "Wrote {$output}\n";

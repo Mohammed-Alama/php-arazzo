@@ -236,7 +236,8 @@ it('writes conformance/score.json with per-case validation verdicts, versions an
     $process = runConformanceScorer([
         '--suite-dir='.$fixture['suite'],
         '--output='.$out,
-        '--binary=vendor/bin/arazzi',
+        '--binary=php',
+        '--script='.dirname(__DIR__, 2).'/packages/cli/bin/arazzo',
         '--sha=fixture-sha',
     ]);
 

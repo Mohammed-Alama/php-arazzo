@@ -48,6 +48,7 @@ final class ConformanceScorer
         public readonly string $output,
         public readonly string $sha,
         public readonly int $mockPort = 4010,
+        public readonly ?string $script = null,
     ) {
         // Resolve a relative binary against the repo root so it stays valid
         // once child processes are launched with a different cwd (the case
@@ -63,6 +64,21 @@ final class ConformanceScorer
                 $this->binary = $resolved;
             }
         }
+    }
+
+    /**
+     * Build the command array for a given action.
+     *
+     * @return list<string>
+     */
+    private function command(string ...$args): array
+    {
+        $parts = [$this->binary];
+        if ($this->script !== null) {
+            $parts[] = $this->script;
+        }
+
+        return array_merge($parts, $args);
     }
 
     /**
@@ -274,7 +290,7 @@ final class ConformanceScorer
 
     private function runValidate(string $path): string
     {
-        $process = new Process([$this->binary, 'validate', $path], dirname($path));
+        $process = new Process($this->command('validate', $path), dirname($path));
         $process->setTimeout(120);
         $process->run();
 
@@ -291,7 +307,7 @@ final class ConformanceScorer
         $inputs = json_encode((array) ($case['inputs'] ?? []), JSON_THROW_ON_ERROR);
 
         $process = new Process(
-            [$this->binary, 'run', $case['path'], '--workflow', (string) ($case['workflow'] ?? ''), '--input', $inputs],
+            $this->command('run', $case['path'], '--workflow', (string) ($case['workflow'] ?? ''), '--input', $inputs),
             dirname($case['path']),
         );
         $process->setTimeout(120);
