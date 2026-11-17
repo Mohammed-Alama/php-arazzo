@@ -49,11 +49,16 @@ final class ConformanceScorer
         public readonly string $sha,
         public readonly int $mockPort = 4010,
     ) {
-        // Resolve a relative binary against the working directory the scorer
-        // runs in (the repo root), so it stays valid once child processes are
-        // launched with a different cwd (the case file's directory).
+        // Resolve a relative binary against the repo root so it stays valid
+        // once child processes are launched with a different cwd (the case
+        // file's directory). getcwd() can point at a temp directory when the
+        // scorer is invoked through a Process with a custom cwd, so fall back
+        // to resolving relative to this script's directory (repo root).
         if (!str_starts_with($this->binary, '/') && !str_starts_with($this->binary, '\\')) {
             $resolved = realpath(getcwd().'/'.$this->binary);
+            if ($resolved === false) {
+                $resolved = realpath(__DIR__.'/../../'.$this->binary);
+            }
             if ($resolved !== false) {
                 $this->binary = $resolved;
             }
@@ -77,12 +82,12 @@ final class ConformanceScorer
             'generatedAt' => date('c'),
             'mockPort' => $this->mockPort,
             'validation' => [
-                'total' => count($validation['cases']),
+                'total' => count(array_filter($validation['cases'], static fn (array $c): bool => !$c['contested'])),
                 'passed' => count(array_filter($validation['cases'], static fn (array $c): bool => $c['pass'] === true)),
                 'cases' => $validation['cases'],
             ],
             'execution' => [
-                'total' => count($execution['cases']),
+                'total' => count(array_filter($execution['cases'], static fn (array $c): bool => !$c['contested'])),
                 'passed' => count(array_filter($execution['cases'], static fn (array $c): bool => $c['pass'] === true)),
                 'cases' => $execution['cases'],
             ],

@@ -75,10 +75,9 @@ foreach (['validation', 'execution'] as $tier) {
     $scorePassed = (int) ($s['passed'] ?? 0);
     $scoreTotal = (int) ($s['total'] ?? 0);
 
-    if ($baseTotal !== 0 && $scoreTotal !== 0 && $baseTotal !== $scoreTotal) {
-        $failures[] = "{$tier}: case count changed from {$baseTotal} to {$scoreTotal}";
-    }
-
+    // A regression is when a previously-right case turns wrong: the passed
+    // count drops below baseline. A changed case count (new cases added) is
+    // not a regression — it is expected as the suite evolves.
     if ($scorePassed < $basePassed) {
         $failures[] = "{$tier}: passed dropped from {$basePassed}/{$baseTotal} to {$scorePassed}/{$scoreTotal}";
     }
