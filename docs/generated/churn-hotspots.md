@@ -17,7 +17,7 @@ xychart-beta
     bar [47, 30, 27, 27, 22, 20, 17, 15, 15, 14, 14, 13]
 ```
 
-Analyzed 422 total file-touches across 53 modules.
+Analyzed 423 total file-touches across 53 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -37,7 +37,7 @@ Analyzed 422 total file-touches across 53 modules.
 | `contracts:Interfaces` | 11 | 3% | 367 | 30 |
 | `contracts:Spec` | 11 | 3% | 1,207 | 9.1 |
 | `laravel:Lock` | 9 | 2% | 52 | 173.1 |
-| `runner:Sync` | 8 | 2% | 1,046 | 7.6 |
+| `runner:Sync` | 9 | 2% | 1,046 | 8.6 |
 | `engine:Execution` | 7 | 2% | 1,000 | 7 |
 | `evaluation:Plugins` | 7 | 2% | 120 | 58.3 |
 | `evaluation:Condition` | 6 | 1% | 1,023 | 5.9 |

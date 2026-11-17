@@ -44,7 +44,7 @@ final readonly class AsyncGraphSeams
         public ?LoggerInterface $logger = null,
         public bool $idempotencyEnabled = false,
         public string $idempotencyHeader = 'Idempotency-Key',
-        public bool $strictValidation = false,
+        public bool $strictValidation = true,
         public int $retryCeiling = 10,
         public float $retryBackoffMultiplier = 1.0,
         public int $stateTtlSeconds = 86400,

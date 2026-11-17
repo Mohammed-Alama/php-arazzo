@@ -122,7 +122,7 @@ quadrantChart
 | `runner/Async` | 0.83 | 21 | 7 | 100% |
 | `runner/Execution` | 0.64 | 30 | 16 | 100% |
 | `runner/Interfaces` | 1.00 | 0 | 1 | 0% |
-| `runner/Sync` | 0.82 | 34 | 6 | 100% |
+| `runner/Sync` | 0.82 | 35 | 6 | 100% |
 | `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
 | `runtime/State` | 0.25 | 27 | 12 | 100% |

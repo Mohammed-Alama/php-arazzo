@@ -55,10 +55,20 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
         // in a fabricated response derived from the operation's own contract.
         $this->inner->execute($resolvedOperation, $payload, $requestInterceptor, $timeoutSeconds);
 
-        [$status, $body] = self::synthesizeResponse($resolvedOperation->operation->normalized->responses ?? []);
+        [$status, $body, $rootType] = self::synthesizeResponse($resolvedOperation->operation->normalized->responses ?? []);
 
-        foreach ($this->referencedBodyFields as $field) {
-            $body[$field] = $body[$field] ?? false;
+        // Only object-rooted responses can carry named fields. A reference
+        // such as `$response.body#/0/id` addresses an array element, so
+        // injecting the field names would turn a list into a map and make the
+        // fabricated body violate its own declared schema.
+        if ($rootType !== 'array') {
+            foreach ($this->referencedBodyFields as $field) {
+                if (ctype_digit($field)) {
+                    continue;
+                }
+
+                $body[$field] = $body[$field] ?? false;
+            }
         }
 
         return new Response(
@@ -70,18 +80,20 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
 
     /**
      * @param  array<string, mixed>  $responses
-     * @return array<string, mixed>
      */
-    /** @return array{0: int, 1: array<string, mixed>} */
+    /** @return array{0: int, 1: array<string, mixed>, 2: string|null} */
     public static function synthesizeResponse(array $responses): array
     {
         // Prefer declared 2xx codes, then any other explicit code (e.g. a
-        // 302 redirect step), then default.
-        $candidates = array_keys(array_filter(
-            $responses,
-            fn ($v, $k): bool => is_string($k) && preg_match('/^[1-5]\d\d$/', $k) === 1,
-            ARRAY_FILTER_USE_BOTH,
-        ));
+        // 302 redirect step), then default. The normalizer keeps literal
+        // status codes as integer keys, so both key types are candidates.
+        $candidates = [];
+
+        foreach (array_keys($responses) as $key) {
+            if (preg_match('/^[1-5]\d\d$/', (string) $key) === 1) {
+                $candidates[] = (string) $key;
+            }
+        }
 
         usort($candidates, fn (string $a, string $b): int => ((int) $a < 300 ? 0 : 1) - ((int) $b < 300 ? 0 : 1) ?: strcmp($a, $b));
 
@@ -90,13 +102,15 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
                 continue;
             }
 
+            $statusCode = ctype_digit((string) $code) ? (int) $code : 200;
             $content = $responses[$code]['content'] ?? null;
 
             if (!is_array($content)) {
-                continue;
+                // A declared response with no content still reports its status
+                // (redirects, 204s); falling through to `default` would report
+                // an error status the workflow never asked for.
+                return [$statusCode, [], null];
             }
-
-            $statusCode = ctype_digit((string) $code) ? (int) $code : 200;
 
             foreach ($content as $mediaType => $mediaTypeObject) {
                 if (!str_starts_with((string) $mediaType, 'application/json') || !is_array($mediaTypeObject)) {
@@ -106,20 +120,21 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
                 $schema = $mediaTypeObject['schema'] ?? null;
 
                 if (is_array($schema)) {
+                    $rootType = is_string($schema['type'] ?? null) ? $schema['type'] : null;
                     $instance = self::instanceFromSchema($schema);
 
-                    if ($instance !== []) {
-                        return [$statusCode, $instance];
-                    }
+                    return [$statusCode, $instance, $rootType];
                 }
 
                 // Declared success response without JSON content: still
                 // report its status so `$statusCode == 2xx` criteria pass.
-                return [$statusCode, []];
+                return [$statusCode, [], null];
             }
+
+            return [$statusCode, [], null];
         }
 
-        return [200, []];
+        return [200, [], null];
     }
 
     /**
@@ -128,6 +143,10 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
      */
     private static function instanceFromSchema(array $schema): array
     {
+        if (($schema['type'] ?? null) === 'array') {
+            return ConformanceFabricator::arrayFromSchema($schema);
+        }
+
         return ConformanceFabricator::objectFromSchema($schema);
     }
 }
