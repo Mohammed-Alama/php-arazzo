@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__.'/../vendor/autoload.php';
+
+use Alama\Arazzo\Cli\Console\Application;
+
+$app = new Application();
+$app->setAutoExit(false);
+
+$status = $app->run();
+
+exit($status);

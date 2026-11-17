@@ -632,3 +632,44 @@ it('fails the run when success criteria are not met', function (): void {
         ->and($tester->getDisplay())->toContain('petFlow: failed')
         ->and($tester->getDisplay())->toContain('✘ fetch');
 });
+
+it('catches a loader exception for a nonexistent file and exits 1 without a stack trace', function (): void {
+    $command = new RunCommand();
+    $tester = new CommandTester($command);
+
+    $doc = sys_get_temp_dir().'/arazzo-cli-nonexistent-'.uniqid().'.yaml';
+
+    $tester->execute(['file' => $doc]);
+
+    if (file_exists($doc)) {
+        unlink($doc);
+    }
+
+    expect($tester->getStatusCode())->toBe(1)
+        ->and($tester->getDisplay())->toContain('PARSE ERROR')
+        ->and($tester->getDisplay())->not->toContain('Throwable')
+        ->and($tester->getDisplay())->not->toContain('Stack trace');
+});
+
+it('catches an unsupported-version parser exception and exits 1', function (): void {
+    $command = new RunCommand();
+    $tester = new CommandTester($command);
+
+    $doc = sys_get_temp_dir().'/arazzo-cli-unsupported-'.uniqid().'.yaml';
+    file_put_contents($doc, <<<'YAML'
+        arazzo: "2.0.0"
+        info:
+          title: Unsupported
+          version: "1"
+        sourceDescriptions: []
+        workflows: []
+        YAML);
+
+    $tester->execute(['file' => $doc]);
+
+    unlink($doc);
+
+    expect($tester->getStatusCode())->toBe(1)
+        ->and($tester->getDisplay())->toContain('PARSE ERROR')
+        ->and($tester->getDisplay())->toContain('Unsupported arazzo version');
+});

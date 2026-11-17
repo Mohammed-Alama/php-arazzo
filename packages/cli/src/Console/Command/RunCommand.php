@@ -8,6 +8,8 @@ use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
+use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
@@ -50,7 +52,15 @@ final class RunCommand extends Command
     {
         /** @var string $file */
         $file = $input->getArgument('file');
-        $document = DocumentLoader::load($file);
+
+        try {
+            $document = DocumentLoader::load($file);
+        } catch (LoaderException|ParserException $e) {
+            $output->writeln('<error>PARSE ERROR</error> '.$e->getMessage());
+
+            return Command::FAILURE;
+        }
+
         /** @var string|null $workflowId */
         $workflowId = $input->getOption('workflow');
         $workflow = $this->findWorkflow($document, $workflowId);
