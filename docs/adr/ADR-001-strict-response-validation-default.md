@@ -54,6 +54,6 @@ Leave the default `false` and set `x-strict-validation: true` on the acceptance 
 - Required verification: `StepExecutorTest` for the new default, `AsyncGraphSeamsTest`, protocol-http tests where mirrored, `RunCommandTest` covering failure rendering and exit code, sync and `QueueFixtureRunner` fixture parity, `make verify`, `make test-mutate`, and the falsification scripts.
 - A release note must call out the semantic break.
 
-## Location note
+## Location
 
-The repository had no established ADR directory or numbering convention at the time of writing, so this record uses the default `docs/decisions/ADR-NNN-title.md` convention.
+Moved from `docs/decisions/ADR-001-...` to `docs/adr/ADR-001-...` to match the repository's ADR directory convention.
