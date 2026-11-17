@@ -7,7 +7,7 @@ parameters:
 			path: src/State/Data/ExecutionContext.php
 
 		-
-			message: '#^Method __construct has too many parameters \(13\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(14\)\. Maximum allowed is 5\.$#'
 			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/State/Data/ExecutionContext.php

@@ -27,7 +27,7 @@ flowchart LR
         S_sources_Validator["sources:Validator<br/><small>325 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
-        S_contracts_State["contracts:State<br/><small>792 LOC</small>"]:::genericDomain
+        S_contracts_State["contracts:State<br/><small>910 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
         S_evaluation_Events["evaluation:Events<br/><small>27 LOC</small>"]:::genericDomain
         S_expression_Support["expression:Support<br/><small>59 LOC</small>"]:::genericDomain
@@ -39,7 +39,7 @@ flowchart LR
         S_laravel_Queue["laravel:Queue<br/><small>109 LOC</small>"]:::genericDomain
         S_laravel_State["laravel:State<br/><small>52 LOC</small>"]:::genericDomain
         S_laravel_Support["laravel:Support<br/><small>272 LOC</small>"]:::genericDomain
-        S_runtime_State["runtime:State<br/><small>1036 LOC</small>"]:::genericDomain
+        S_runtime_State["runtime:State<br/><small>1056 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified["Unclassified"]
         S_contracts_Dependency["contracts:Dependency<br/><small>336 LOC</small>"]:::unknownDomain
@@ -85,8 +85,8 @@ flowchart LR
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,207 | 0 | 5% |
 | Supporting | 7 | 7,706 | 0 | 35% |
-| Generic subdomain | 13 | 2,099 | 1,407 | 16% |
-| Unclassified | 32 | 9,584 | 0 | 44% |
+| Generic subdomain | 13 | 2,237 | 1,407 | 16% |
+| Unclassified | 32 | 9,584 | 0 | 43% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

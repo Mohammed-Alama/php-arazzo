@@ -18,6 +18,7 @@ final class ExecutionContext
      * @param  array<string, mixed>  $components
      * @param  list<array<string, mixed>>  $errors
      * @param  list<string>  $workflowCallStack
+     * @param  array<string, array{inputs: array<string, mixed>, outputs: array<string, mixed>}>  $workflows
      */
     public function __construct(
         public readonly string $executionId,
@@ -33,6 +34,7 @@ final class ExecutionContext
         public readonly array $workflowCallStack = [],
         public readonly int $maxWorkflowDepth = 32,
         public readonly string $status = 'running',
+        public readonly array $workflows = [],
     ) {}
 
     /**
@@ -90,6 +92,7 @@ final class ExecutionContext
             workflowCallStack: $context->getWorkflowCallStack() ?: [$context->getWorkflowId() ?? ''],
             maxWorkflowDepth: 32,
             status: 'running',
+            workflows: $context->getWorkflows(),
         );
     }
 
@@ -104,6 +107,7 @@ final class ExecutionContext
             executionId: $this->executionId,
             stepsSpent: $this->stepsSpent,
             workflowCallStack: $this->workflowCallStack,
+            workflows: $this->workflows,
         );
     }
 
@@ -124,6 +128,10 @@ final class ExecutionContext
             stepsSpent: $this->stepsSpent,
             workflowCallStack: $this->workflowCallStack ?: [$this->workflowId],
         )->withCurrentStep($this->currentStepId ?? null);
+
+        foreach ($this->workflows as $workflowId => $data) {
+            $state = $state->withWorkflowData($workflowId, $data);
+        }
 
         foreach ($this->stepResults as $stepId => $record) {
             $state = $state->withStepResult($stepId, $record);
@@ -245,6 +253,7 @@ final class ExecutionContext
             workflowCallStack: $this->workflowCallStack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -278,6 +287,7 @@ final class ExecutionContext
             workflowCallStack: $this->workflowCallStack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -297,6 +307,7 @@ final class ExecutionContext
             workflowCallStack: $this->workflowCallStack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -319,6 +330,7 @@ final class ExecutionContext
             workflowCallStack: $stack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -338,6 +350,7 @@ final class ExecutionContext
             workflowCallStack: $this->workflowCallStack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -357,6 +370,7 @@ final class ExecutionContext
             workflowCallStack: $this->workflowCallStack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $status,
+            workflows: $this->workflows,
         );
     }
 
@@ -379,6 +393,7 @@ final class ExecutionContext
             workflowCallStack: $stack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -401,6 +416,7 @@ final class ExecutionContext
             workflowCallStack: $stack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -421,6 +437,7 @@ final class ExecutionContext
             workflowCallStack: $this->workflowCallStack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -443,6 +460,7 @@ final class ExecutionContext
             workflowCallStack: $this->workflowCallStack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -463,6 +481,7 @@ final class ExecutionContext
             workflowCallStack: $callStack,
             maxWorkflowDepth: $this->maxWorkflowDepth,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -490,6 +509,7 @@ final class ExecutionContext
             'workflowCallStack' => $this->workflowCallStack,
             'maxWorkflowDepth' => $this->maxWorkflowDepth,
             'status' => $this->status,
+            'workflows' => $this->workflows,
         ];
     }
 }

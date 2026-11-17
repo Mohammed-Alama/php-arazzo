@@ -18,7 +18,7 @@ targets. Regenerated before every commit.
 | `contracts:Exceptions` | 1 | 30 | 4 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 19 | 348 | 24 | 3 | 0.11 |  |
 | `contracts:Spec` | 49 | 1158 | 37 | 1 | 0.03 |  |
-| `contracts:State` | 2 | 790 | 13 | 1 | 0.07 |  |
+| `contracts:State` | 3 | 907 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1441 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 72 | 4024 | 6 | 7 | 0.54 |  |
@@ -66,7 +66,7 @@ targets. Regenerated before every commit.
 | `(runner root)` | 9 | 522 | 7 | 15 | 0.68 |  |
 | `runtime:Infrastructure` | 3 | 159 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
-| `runtime:State` | 12 | 1024 | 9 | 3 | 0.25 |  |
+| `runtime:State` | 12 | 1044 | 9 | 3 | 0.25 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `sources:Normalizer` | 11 | 1271 | 9 | 5 | 0.36 |  |
 | `sources:Resolver` | 13 | 477 | 8 | 3 | 0.27 |  |

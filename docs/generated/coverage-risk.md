@@ -84,7 +84,7 @@ quadrantChart
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.11 | 41 | 19 | 100% |
 | `contracts/Spec` | 0.03 | 236 | 49 | 100% |
-| `contracts/State` | 0.07 | 70 | 2 | 100% |
+| `contracts/State` | 0.07 | 70 | 3 | 100% |
 | `contracts/Support` | 0.00 | 12 | 5 | 100% |
 | `document/Parser` | 0.22 | 41 | 12 | 100% |
 | `document/Validator` | 0.54 | 83 | 72 | 100% |

@@ -202,7 +202,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Contracts\State`
 
 #### `ExecutionState` class
-- `public function __construct(public string $executionId, public string $definitionId, public string $workflowId, public ?string $currentStepId = null, public array $inputs = [], public array $stepAttempts = [], public array $stepResults = [], public array $dependencies = [], public array $outputs = [], public array $errors = [], public int $stepsSpent = 0, public int $maxSteps = 1000, public array $workflowCallStack = [], public int $maxWorkflowDepth = 32, public array $components = [], public string $status = 'running')`
+- `public function __construct(public string $executionId, public string $definitionId, public string $workflowId, public ?string $currentStepId = null, public array $inputs = [], public array $stepAttempts = [], public array $stepResults = [], public array $dependencies = [], public array $outputs = [], public array $errors = [], public int $stepsSpent = 0, public int $maxSteps = 1000, public array $workflowCallStack = [], public int $maxWorkflowDepth = 32, public array $components = [], public string $status = 'running', public array $workflows = [])`
 - `public function attemptFor(string $stepId): int`
 - `public function enterWorkflow(string $workflowId): self`
 - `public function jsonSerialize(): array`
@@ -220,6 +220,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function withStepAttempt(string $stepId): self`
 - `public function withStepResult(string $stepId, array $result): self`
 - `public function withWorkflow(string $workflowId): self`
+- `public function withWorkflowData(string $workflowId, array $data): self`
 - `public static function fromArray(array $values): self`
 - `public static function fromContext(WorkflowContext $context, ?int $maxSteps = null, ?int $maxWorkflowDepth = null): self`
 

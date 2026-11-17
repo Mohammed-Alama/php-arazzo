@@ -54,6 +54,27 @@ it('persists and restores the shared budget across queue job boundaries', functi
 
 });
 
+it('keeps the shared budget and call stack when recording workflow outputs', function (): void {
+    $context = (new WorkflowContext(
+        definitionId: 'def',
+        workflowId: 'wf',
+        executionId: 'exec_b',
+        workflows: ['base' => ['inputs' => [], 'outputs' => ['kept' => true]]],
+        workflowCallStack: ['parent', 'wf'],
+        parentRunId: 'run_parent',
+    ))->withBudget(7, ['parent', 'wf']);
+
+    $updated = $context->withWorkflowData('child', ['outputs' => ['x' => 1]]);
+
+    expect($updated->getStepsSpent())->toBe(7)
+        ->and($updated->getWorkflowCallStack())->toBe(['parent', 'wf'])
+        ->and($updated->parentRunId)->toBe('run_parent')
+        ->and($updated->getWorkflows())->toBe([
+            'base' => ['inputs' => [], 'outputs' => ['kept' => true]],
+            'child' => ['inputs' => [], 'outputs' => ['x' => 1]],
+        ]);
+});
+
 it('shares one step budget between parent and nested sub-workflow invocation', function (): void {
     $resolver = new TestEvaluationEngine();
 
@@ -79,13 +100,14 @@ it('shares one step budget between parent and nested sub-workflow invocation', f
 
     // ...and a fresh child context inherits the parent's consumption.
     $childContext = WorkflowContext::forChildInvocation(
-        new WorkflowContext('def', [], workflowId: 'parent', executionId: 'p1', stepsSpent: 1, workflowCallStack: ['parent']),
+        new WorkflowContext('def', [], workflowId: 'parent', executionId: 'p1', workflows: ['base' => ['inputs' => [], 'outputs' => ['x' => 7]]], stepsSpent: 1, workflowCallStack: ['parent']),
         $childWf,
         [],
     );
 
     expect($childContext->getStepsSpent())->toBe(1)
-        ->and($childContext->getWorkflowCallStack())->toBe(['parent', 'child']);
+        ->and($childContext->getWorkflowCallStack())->toBe(['parent', 'child'])
+        ->and($childContext->getWorkflows())->toBe(['base' => ['inputs' => [], 'outputs' => ['x' => 7]]]);
 
     // Two child attempts push the SHARED pool to its limit of 5.
     $childState = ExecutionState::start(
