@@ -101,6 +101,7 @@ Concrete types over 300 LOC:
 | `WorkflowContext` | `contracts:State` | 404 |
 | `PreflightValidator` | `sources:Validator` | 325 |
 | `WorkflowEngine` | `runner:Sync` | 310 |
+| `WorkflowExecutor` | `runner:Sync` | 310 |
 | `SchemaValidator` | `engine:Execution` | 302 |
 
 ## Fat interfaces (ISP)

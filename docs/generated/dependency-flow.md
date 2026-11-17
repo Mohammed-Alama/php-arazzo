@@ -220,7 +220,7 @@ runner-Interfaces,contracts-Spec,2
 runner-Sync,contracts-Dependency,1
 runner-Sync,contracts-Exceptions,2
 runner-Sync,contracts-Interfaces,7
-runner-Sync,contracts-Spec,24
+runner-Sync,contracts-Spec,25
 runner-Sync,contracts-State,5
 runner-Sync,contracts-Support,2
 runner-Sync,document-Validator,2

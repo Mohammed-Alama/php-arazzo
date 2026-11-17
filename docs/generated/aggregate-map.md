@@ -24,7 +24,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 | runtime | 3 | 12 | 20% |
 | engine | 4 | 8 | 33% |
 | events | 9 | 1 | 90% |
-| runner | 6 | 27 | 18% |
+| runner | 6 | 28 | 18% |
 | cli | 0 | 15 | 0% |
 | laravel | 0 | 28 | 0% |
 
