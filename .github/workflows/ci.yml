@@ -11,6 +11,7 @@ on:
       - 'composer.json'
       - 'composer.lock'
       - 'packages/*/composer.json'
+      - 'docs/conformance/'
       - 'phpstan.neon.dist'
       - '**/phpstan.neon.dist'
       - '**/phpstan-baseline.neon'
@@ -26,6 +27,7 @@ on:
       - 'composer.json'
       - 'composer.lock'
       - 'packages/*/composer.json'
+      - 'docs/conformance/'
       - 'phpstan.neon.dist'
       - '**/phpstan.neon.dist'
       - '**/phpstan-baseline.neon'
@@ -227,3 +229,5 @@ jobs:
           cd ../..
       - name: Execute tests
         run: composer run test
+      - name: Check conformance manifest drift
+        run: php scripts/check-conformance-manifest.php
