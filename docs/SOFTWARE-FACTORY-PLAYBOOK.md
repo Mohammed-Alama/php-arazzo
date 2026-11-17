@@ -15,14 +15,15 @@
 | 0 | Intake spine (entry) | `arazzo-detective` → `file-issue` → `gh` shim → CI gate → `triage` | Conforming GitHub issue | Stage 1 or 7 |
 | 1 | Idea → Spec | `grill-with-docs`, `to-spec`, `spec-driven-development` | Spec (`docs/superpowers/specs/...`) | Stage 2 |
 | 2 | Spec → Tickets | `to-tickets`, `planning-and-task-breakdown` | Tickets (issues via `file-issue`) | Stage 3 |
-| 3 | Ticket → Code | `implement`, `tdd`, `incremental-implementation` | Code + tests on a branch | Stage 4 |
-| 4 | Code → Review | `code-review`, `code-review-and-quality` | Review verdict | Stage 5 |
-| 5 | Review → PR | `pr-prep`, `git-workflow-and-versioning` | Pull request | Stage 6 |
-| 6 | PR → Release | `release`, `shipping-and-launch` | Tagged release | — |
-| 7 | Bug path | `diagnosing-bugs`, `debugging-and-error-recovery` | Fix + regression test | Stage 4 |
-| 8 | Quality bar | `constraint-driven-development`, `falsification-testing` | CONSTRAINTS.md / verified suite | Gates stages 3–6 |
+| 3 | Design Review (Architecture) | `balanced-coupling`, `improve-codebase-architecture`, `codebase-design`, `domain-modeling` | Architecture decision record + design sign-off | Stage 4 |
+| 4 | Ticket → Code | `implement`, `tdd`, `incremental-implementation` | Code + tests on a branch | Stage 5 |
+| 5 | Code → Review | `code-review`, `code-review-and-quality` | Review verdict | Stage 6 |
+| 6 | Review → PR | `pr-prep`, `git-workflow-and-versioning` | Pull request | Stage 7 |
+| 7 | PR → Release | `release`, `shipping-and-launch` | Tagged release | — |
+| 8 | Bug path | `diagnosing-bugs`, `debugging-and-error-recovery` | Fix + regression test | Stage 5 |
+| 9 | Quality bar | `constraint-driven-development`, `falsification-testing` | CONSTRAINTS.md / verified suite | Gates stages 4–6 |
 
-Supplement seams are wired inline as `> Supplement:` callouts at stages 3, 4, 7 (and the quality bar at stage 8).
+Supplement seams are wired inline as `> Supplement:` callouts at stages 4, 5, 7 (and the quality bar at stage 9).
 
 ---
 
@@ -45,13 +46,13 @@ All work enters the tracker through this spine. An issue that bypasses it is rej
 
 ```
 investigate (arazzo-detective) ──▶ file (file-issue) ──▶ gh (shimmed) ──HARD gate──▶ GitHub
-                                                                        │ fail → fix, retry
-                                                                        ▼
+                                                                         │ fail → fix, retry
+                                                                         ▼
                                                                   CI soft gate
-                                                                        │ non-conforming → needs-info + marker comment (never close)
-                                                                        ▼
+                                                                         │ non-conforming → needs-info + marker comment (never close)
+                                                                         ▼
                                                                   triage skill
-                                                                        └─ bug/feature/chore, level, needs-info → chase, or ready-for-agent
+                                                                         └─ bug/feature/chore, level, needs-info → chase, or ready-for-agent
 ```
 
 ### 0.1 Investigate (when the cause is unknown)
@@ -180,22 +181,66 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 **Artifact:** conforming GitHub issues (tracer bullets), each with blocking edges.
 
-**Handoff:** `ready-for-agent` issues → Stage 3 (via `implement`). Do **not** triage tickets you produced.
+**Handoff:** `ready-for-agent` issues → Stage 3 (design review). Do **not** triage tickets you produced.
 
 **Verification:** every ticket conforms (validator returns `conforming: true`); parent links present; blocking edges recorded; no `needs-info`.
 
 ---
 
-## Stage 3 — Ticket → Code
+## Stage 3 — Design Review (Architecture)
+
+**Goal:** Before any code is written, review the proposed design against the codebase's coupling, depth, and domain-model constraints. This stage runs *after* tickets are filed via `file-issue` and *before* any implementation code is written. It prevents architectural drift and ensures the solution fits the codebase's seams.
+
+**Skill(s):** `balanced-coupling` · `improve-codebase-architecture` · `codebase-design` · `domain-modeling`.
+
+**Inputs:**
+- A conforming GitHub issue filed via `file-issue` (§0.2), with `kind`, `level`, `parent`, and schema sections (`problem-statement`, `dependency-matrix`, `feature-scope`, `affected-surface`, `acceptance-criteria`, `source-grounding`, `impact-profile`, `epistemic-matrix` as required by kind).
+- Approved spec (from Stage 1) or tracer-bullet tickets (from Stage 2).
+- The issue's `source-grounding` section with pinned code permalinks (§0.2).
+
+**Procedure:**
+1. **Read the issue:** `gh issue view <n> --comments`. Confirm it is conforming (validator returns `conforming: true`).
+2. **Run `domain-modeling`**: challenge fuzzy terms in the issue, resolve overloaded words, record hard-to-reverse decisions as ADRs if the design introduces new domain concepts.
+3. **Run `codebase-design`**: define the module interface, depth, seam, and adapter boundaries for the proposed change. Determine what behavior goes behind a small interface at a clean seam.
+4. **Run `balanced-coupling`**: evaluate the proposed change's coupling on three dimensions — integration strength, distance, volatility. Apply the balance rule: is the coupling balanced or unbalanced? Does it create a distributed monolith risk?
+5. **Run `improve-codebase-architecture`**: scan for deepening opportunities. If the change touches a module that is hard to change, identify the deepening opportunity before implementing.
+6. **Post the design review to the issue:** write a comment on the GitHub issue summarizing the design decision. Include:
+   - The design approach (module interfaces, seams, adapters)
+   - Coupling classification (balanced/unbalanced) with integration strength, distance, volatility ratings
+   - Any ADR link (if an irreversible decision was made)
+   - Any `CONTEXT.md` glossary updates
+
+   Post via:
+   ```bash
+   gh issue comment <n> --body "## Design Review
+   - **Approach:** <summary>
+   - **Coupling:** balanced/unbalanced — integration strength, distance, volatility ratings
+   - **ADR:** <link-to-adr-or-none>
+   - **Sign-off:** <reviewer>
+   "
+   ```
+7. **Get explicit sign-off:** the design review comment must be posted on the issue before proceeding to Stage 4. Confirm it appears in `gh issue view <n> --comments`.
+
+**Artifact:** architecture decision record (ADR) or design summary comment posted on the GitHub issue, plus any updated `CONTEXT.md` glossary entries.
+
+**Handoff:** design approved → Stage 4 (Ticket → Code). If the design reveals the ticket is mis-scoped, file a new issue or amend the existing one via `file-issue --edit`.
+
+**Verification:** design review comment exists on the issue (`gh issue view <n> --comments` shows it); coupling classified as balanced; no unaddressed deepening opportunity; all four skills invoked.
+
+> Supplement — **context-engineering**: load only the relevant issue sections and source files into context at this stage rather than flooding the agent with the whole codebase.
+
+---
+
+## Stage 4 — Ticket → Code
 
 **Goal:** Implement a ticket test-first, in thin vertical slices.
 
 **Skill(s):** `implement` (drives `tdd` internally, closes with `code-review`) · `tdd` · `incremental-implementation`.
 
-**Inputs:** a `ready-for-agent` issue.
+**Inputs:** a `ready-for-agent` issue with approved design review (Stage 3 complete).
 
 **Procedure:**
-1. Read the issue: `gh issue view <n> --comments`.
+1. Read the issue: `gh issue view <n> --comments`. Confirm the design review output (ADR or comment) is linked.
 2. Run `implement` (it drives `tdd`: red → green → refactor, one slice at a time).
 3. Use `incremental-implementation` to land changes in thin, verifiable slices behind flags where risky.
 4. Keep `packages/core` free of `Illuminate\*`; Laravel code goes in `packages/laravel`.
@@ -203,17 +248,17 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 **Artifact:** code + tests on a branch.
 
-**Handoff:** branch ready → Stage 4.
+**Handoff:** branch ready → Stage 5.
 
 **Verification:** `make verify` green; no `Illuminate` leak in core; tests pass in random order.
 
-> Supplement — **quality bar** (`constraint-driven-development`): before the first ship, establish `CONSTRAINTS.md` (coverage thresholds, lint rules, perf budgets). Watch the diff for weakened bars (new `@ts-ignore`/suppressions, skipped tests, lowered thresholds). Applies to stages 3–6.
-
+> Supplement — **quality bar** (`constraint-driven-development`): before the first ship, establish `CONSTRAINTS.md` (coverage thresholds, lint rules, perf budgets). Watch the diff for weakened bars (new `@ts-ignore`/suppressions, skipped tests, lowered thresholds). Applies to stages 4–6.
+>
 > Supplement — **source-grounding** (`source-driven-development`): verify implementation decisions against official docs (PHP, PSR, OpenAPI, Arazzo spec) before coding; cite sources in the PR.
 
 ---
 
-## Stage 4 — Code → Review
+## Stage 5 — Code → Review
 
 **Goal:** Review the diff on two axes (Standards + Spec) before it enters main.
 
@@ -229,7 +274,7 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 **Artifact:** review verdict (findings resolved or explicitly accepted).
 
-**Handoff:** clean review → Stage 5.
+**Handoff:** clean review → Stage 6.
 
 **Verification:** both review axes pass; `make verify` green; no unresolved blocking findings.
 
@@ -237,7 +282,7 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 ---
 
-## Stage 5 — Review → PR
+## Stage 6 — Review → PR
 
 **Goal:** Prepare and open a pull request with gates green and a drafted title/body.
 
@@ -253,13 +298,13 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 **Artifact:** pull request.
 
-**Handoff:** PR opened → Stage 6 (on merge) or Stage 4 (on review feedback).
+**Handoff:** PR opened → Stage 7 (on merge) or Stage 4 (on review feedback).
 
 **Verification:** gates green in CI; PR body links to issue(s); no failing checks.
 
 ---
 
-## Stage 6 — PR → Release
+## Stage 7 — PR → Release
 
 **Goal:** Cut a release: version bump, changelog promotion, tag.
 
@@ -280,7 +325,7 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 ---
 
-## Stage 7 — Bug path
+## Stage 8 — Bug path
 
 **Goal:** Diagnose and fix a bug with a regression test, then re-enter the main flow at review.
 
@@ -294,11 +339,11 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 3. If the cause is unknown and evidence is needed, run `arazzo-detective` (§0.1) first, then file via §0.2.
 4. Write the regression test first (TDD), then fix.
 5. Run `make verify`; if touching parser/validator/runner, also run conformance (`OaiConformanceTest` + `FixtureTest`, sync + `QueueFixtureRunner` parity).
-6. Re-enter at Stage 4 (Code → Review).
+6. Re-enter at Stage 5 (Code → Review).
 
 **Artifact:** fix + regression test on a branch.
 
-**Handoff:** → Stage 4.
+**Handoff:** → Stage 5.
 
 **Verification:** regression test fails without the fix and passes with it (delete-the-fix check); `make verify` green.
 
@@ -306,7 +351,7 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 ---
 
-## Stage 8 — Quality bar (cross-cutting)
+## Stage 9 — Quality bar (cross-cutting)
 
 **Goal:** Establish and hold the project's quality bar so agents don't quietly lower it.
 
@@ -324,7 +369,7 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 **Artifact:** `CONSTRAINTS.md` + a verified, non-theatrical test suite.
 
-**Handoff:** gates stages 3–6; a failing gate blocks progression.
+**Handoff:** gates stages 4–6; a failing gate blocks progression.
 
 **Verification:** `make verify` green; mutation checked where relevant; no fake-test red flags; results reported as corroboration, not proof.
 
