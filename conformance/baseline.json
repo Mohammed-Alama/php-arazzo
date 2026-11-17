@@ -1,0 +1,17 @@
+{
+    "suite": "api-evangelist/arazzo-conformance",
+    "sha": "2a90e6b",
+    "accepted": "2026-11-17",
+    "validation": {
+        "total": 127,
+        "passed": 91
+    },
+    "execution": {
+        "total": 14,
+        "passed": 0
+    },
+    "notes": [
+        "Baseline recorded per issue #380 S2. The pinned suite SHA (2a90e6b) is not fetchable from this clone, so the accepted totals are taken from the issue's design review (validation 91/127, execution 0/14).",
+        "Baseline is immutable except by a deliberate commit that also bumps the pinned suite SHA (R3 / C1)."
+    ]
+}
