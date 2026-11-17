@@ -61,7 +61,7 @@ quadrantChart
     laravel/Persistence: [0.833, 1]
     laravel/Queue: [0.75, 1]
     laravel/State: [0.667, 1]
-    laravel/Support: [0.556, 0.5]
+    laravel/Support: [0.556, 0.75]
     runner/Async: [0.826, 1]
     runner/Execution: [0.643, 1]
     runner/Interfaces: [1, 0]
@@ -70,7 +70,7 @@ quadrantChart
     runtime/Policy: [0.75, 1]
     runtime/State: [0.25, 1]
     runtime/Telemetry: [0, 1]
-    sources/Normalizer: [0.357, 1]
+    sources/Normalizer: [0.385, 1]
     sources/Resolver: [0.273, 1]
     sources/Validator: [0.571, 1]
 ```
@@ -118,16 +118,16 @@ quadrantChart
 | `laravel/Persistence` | 0.83 | 6 | 4 | 100% |
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.67 | 3 | 1 | 100% |
-| `laravel/Support` | 0.56 | 2 | 4 | 50% |
+| `laravel/Support` | 0.56 | 3 | 4 | 75% |
 | `runner/Async` | 0.83 | 21 | 7 | 100% |
 | `runner/Execution` | 0.64 | 30 | 16 | 100% |
 | `runner/Interfaces` | 1.00 | 0 | 1 | 0% |
-| `runner/Sync` | 0.82 | 34 | 6 | 100% |
+| `runner/Sync` | 0.82 | 35 | 6 | 100% |
 | `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
 | `runtime/State` | 0.25 | 27 | 12 | 100% |
 | `runtime/Telemetry` | 0.00 | 2 | 2 | 100% |
-| `sources/Normalizer` | 0.36 | 19 | 11 | 100% |
+| `sources/Normalizer` | 0.39 | 19 | 11 | 100% |
 | `sources/Resolver` | 0.27 | 24 | 13 | 100% |
 | `sources/Validator` | 0.57 | 5 | 1 | 100% |
 

@@ -16,8 +16,9 @@ sankey-beta
 
 cli-Console,cli-Renderer,1
 cli-Console,contracts-Dependency,1
-cli-Console,contracts-Interfaces,7
-cli-Console,contracts-Spec,12
+cli-Console,contracts-Exceptions,1
+cli-Console,contracts-Interfaces,5
+cli-Console,contracts-Spec,9
 cli-Console,contracts-State,1
 cli-Console,document-Parser,6
 cli-Console,document-Validator,2
@@ -29,7 +30,6 @@ cli-Console,runner-Execution,1
 cli-Console,runner-root,5
 cli-Console,runtime-State,6
 cli-Console,runtime-Telemetry,1
-cli-Console,sources-Normalizer,1
 cli-Console,sources-Resolver,1
 cli-Console,sources-root,1
 cli-Generator,contracts-Interfaces,2

@@ -35,7 +35,7 @@ Published to `config/arazzo.php`:
 
 | Key | Env var | Default | Purpose |
 |---|---|---|---|
-| `strict_schema_validation` | `ARAZZO_STRICT_SCHEMA_VALIDATION` | `false` | When `true`, every step's HTTP response is validated against its OpenAPI response schema by default (a step can still opt in/out individually via its `x-strict-validation` extension). |
+| `strict_schema_validation` | `ARAZZO_STRICT_SCHEMA_VALIDATION` | `true` | When `true` (default), every step's HTTP response is validated against its OpenAPI response schema. A step can opt out individually with `x-strict-validation: false`. |
 | `idempotency.enabled` | `ARAZZO_IDEMPOTENCY_ENABLED` | `false` | Default for whether an idempotency key header is injected into outgoing requests (per-step override via `x-idempotency-key`). |
 | `idempotency.header` | `ARAZZO_IDEMPOTENCY_HEADER` | `Idempotency-Key` | Header name used when idempotency keys are injected. |
 | `openai.api_key` | `OPENAI_API_KEY` | `''` | API key for the optional AI-assisted workflow generator (`ArazzoGenerator`), used by the `/generate` builder endpoint. |

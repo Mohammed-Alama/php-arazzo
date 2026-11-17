@@ -58,6 +58,7 @@ Regenerated before every commit.
 | `ParseException` | `SymfonyYamlDecoder` |  |
 | `ParserException` | `ValidateCommand` |  |
 | `ParserException` | `DatabaseDefinitionRegistry` |  |
+| `SchemaValidationException` | `RunCommand` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
 | `SelectorEvaluationException` | `SelectorEvaluator` |  |
 | `Throwable` | `CriteriaEvaluator` |  |

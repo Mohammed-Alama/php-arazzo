@@ -294,14 +294,13 @@ flowchart LR
     C_cli_cli_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
     C_laravel_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
-    C_cli_cli_Console_RunCommand["RunCommand<br/><small>cli:Console</small>"]:::implCore
-    C_cli_cli_Console_RunCommand -.->|implements| I_OpenApiExecutorInterface
     C_cli_cli_Generator_OpenAiClient["OpenAiClient<br/><small>cli:Generator</small>"]:::implCore
     C_cli_cli_Generator_OpenAiClient -.->|implements| I_AiClientInterface
     C_laravel_laravel_Http_Psr18HttpClient["Psr18HttpClient<br/><small>laravel:Http</small>"]:::implLaravel
     C_laravel_laravel_Http_Psr18HttpClient -.->|implements| I_HttpClientInterface
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
+    N_OpenApiExecutorInterface["no implementation found"]:::orphan --> I_OpenApiExecutorInterface
     N_OperationResolverInterface["no implementation found"]:::orphan --> I_OperationResolverInterface
     N_OutputExtractorInterface["no implementation found"]:::orphan --> I_OutputExtractorInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface

@@ -12,32 +12,32 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "cli:Console", "document:Validator", "runner:Execution", "laravel:Http", "laravel:Persistence", "runner:Async", "expression:Interfaces", "laravel:Support", "document:Parser", "laravel:Queue", "sources:Normalizer"]
+    x-axis ["laravel:Bindings", "cli:Console", "document:Validator", "runner:Execution", "laravel:Http", "laravel:Persistence", "runner:Async", "laravel:Support", "expression:Interfaces", "document:Parser", "laravel:Queue", "sources:Normalizer"]
     y-axis "Touches" 0 --> 60
-    bar [47, 30, 27, 27, 22, 20, 17, 15, 15, 14, 14, 13]
+    bar [47, 31, 27, 27, 22, 20, 17, 16, 15, 14, 14, 13]
 ```
 
-Analyzed 422 total file-touches across 53 modules.
+Analyzed 426 total file-touches across 53 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 47 | 11% | 395 | 119 |
-| `cli:Console` | 30 | 7% | 946 | 31.7 |
+| `cli:Console` | 31 | 7% | 919 | 33.7 |
 | `document:Validator` | 27 | 6% | 4,096 | 6.6 |
 | `runner:Execution` | 27 | 6% | 383 | 70.5 |
 | `laravel:Http` | 22 | 5% | 187 | 117.6 |
 | `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
 | `runner:Async` | 17 | 4% | 1,346 | 12.6 |
+| `laravel:Support` | 16 | 4% | 272 | 58.8 |
 | `expression:Interfaces` | 15 | 4% | 211 | 71.1 |
-| `laravel:Support` | 15 | 4% | 272 | 55.1 |
 | `document:Parser` | 14 | 3% | 1,453 | 9.6 |
 | `laravel:Queue` | 14 | 3% | 109 | 128.4 |
 | `sources:Normalizer` | 13 | 3% | 1,282 | 10.1 |
 | `laravel:State` | 12 | 3% | 52 | 230.8 |
 | `contracts:Interfaces` | 11 | 3% | 367 | 30 |
 | `contracts:Spec` | 11 | 3% | 1,207 | 9.1 |
+| `runner:Sync` | 10 | 2% | 1,046 | 9.6 |
 | `laravel:Lock` | 9 | 2% | 52 | 173.1 |
-| `runner:Sync` | 8 | 2% | 1,046 | 7.6 |
 | `engine:Execution` | 7 | 2% | 1,000 | 7 |
 | `evaluation:Plugins` | 7 | 2% | 120 | 58.3 |
 | `evaluation:Condition` | 6 | 1% | 1,023 | 5.9 |

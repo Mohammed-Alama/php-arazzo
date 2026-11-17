@@ -76,7 +76,9 @@ $stepExecutor = new StepExecutor(
     new DefaultOpenApiExecutor($httpClient, $httpFactory),
     $expressionResolver,
     $operationResolver,
-    strictValidationDefault: false,
+    // Responses are validated against their OpenAPI schema by default; a
+    // step can opt out with `x-strict-validation: false`.
+    strictValidationDefault: true,
     injector: new IdempotencyKeyInjector(enabledDefault: false, headerDefault: 'Idempotency-Key'),
 );
 

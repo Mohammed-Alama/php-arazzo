@@ -11,7 +11,7 @@ return [
     ],
 
     /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
-    'strict_schema_validation' => env('ARAZZO_STRICT_SCHEMA_VALIDATION', false),
+    'strict_schema_validation' => env('ARAZZO_STRICT_SCHEMA_VALIDATION', true),
 
     'idempotency' => [
         /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */

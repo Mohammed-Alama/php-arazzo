@@ -47,7 +47,7 @@ final class ProtocolHttpRegistrar
         private readonly PendingCorrelationRegistryInterface $pendingCorrelations,
         private readonly HttpClientInterface $httpClient,
         private readonly ?RequestFactoryInterface $requestFactory = null,
-        private readonly bool $strictValidationDefault = false,
+        private readonly bool $strictValidationDefault = true,
         private readonly bool $idempotencyEnabled = false,
         private readonly string $idempotencyHeader = 'Idempotency-Key',
     ) {}

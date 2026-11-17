@@ -39,7 +39,7 @@ class StepExecutor
         private EvaluationEngineInterface $evaluationEngine,
         private OutputExtractorInterface $outputExtractor,
         private ResponseValidatorInterface $schemaValidator,
-        private bool $strictValidationDefault = false,
+        private bool $strictValidationDefault = true,
         private ?IdempotencyKeyInjector $injector = null,
         ?EventDispatcherInterface $events = null,
         private ?OperationExecutorRegistry $executors = null,
