@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Document\Validator;
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
+use Alama\Arazzo\Document\Validator\Rules\ActionOutputTargetExclusivityRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionRetryLimitsRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionReusableRefResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionTargetExclusivityRule;
@@ -103,6 +104,7 @@ final readonly class RuleSet
             new OfficialSchemaRule(),
             new ActionGotoTargetResolvesRule(),
             new ActionTargetExclusivityRule(),
+            new ActionOutputTargetExclusivityRule($engine),
             new ActionRetryLimitsRule(),
             new ActionReusableRefResolvesRule(),
             new ActionTypeValidRule(),

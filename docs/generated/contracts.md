@@ -114,6 +114,8 @@ flowchart LR
     C_document_document_Validator_OfficialSchemaRule -.->|implements| I_Rule
     C_document_document_Validator_ActionGotoTargetResolvesRule["ActionGotoTargetResolvesRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ActionGotoTargetResolvesRule -.->|implements| I_Rule
+    C_document_document_Validator_ActionOutputTargetExclusivityRule["ActionOutputTargetExclusivityRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ActionOutputTargetExclusivityRule -.->|implements| I_Rule
     C_document_document_Validator_ActionRetryLimitsRule["ActionRetryLimitsRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ActionRetryLimitsRule -.->|implements| I_Rule
     C_document_document_Validator_ActionReusableRefResolvesRule["ActionReusableRefResolvesRule<br/><small>document:Validator</small>"]:::implCore
