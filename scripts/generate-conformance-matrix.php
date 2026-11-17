@@ -6,108 +6,29 @@ declare(strict_types=1);
 error_reporting(E_ALL & ~E_DEPRECATED);
 
 /**
- * Generates docs/CONFORMANCE.md - the public conformance matrix - by
- * running the vendored official OAI example corpus through the same
- * stack used by the Pest suite.
+ * Generates docs/CONFORMANCE.md (the public conformance matrix) and
+ * docs/conformance/manifest.json (the machine-readable conformance
+ * capability manifest) from the same in-memory manifest model.
+ *
+ * Both outputs are produced by running the vendored official OAI example
+ * corpus through the same conformance stack used by the Pest suite.
  *
  * Usage: php scripts/generate-conformance-matrix.php
  */
 
-require __DIR__.'/../packages/core/vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/../packages/core/tests/Conformance/ConformanceHarness.php';
+require_once __DIR__.'/../packages/core/tests/Conformance/ConformanceManifestBuilder.php';
 require_once __DIR__.'/../packages/core/tests/Conformance/OaiCorpusRunner.php';
 require_once __DIR__.'/../packages/core/tests/Conformance/FakerOpenApiExecutor.php';
 require_once __DIR__.'/../packages/core/tests/Conformance/OaiFixtureRunner.php';
 require_once __DIR__.'/../packages/core/tests/Conformance/OaiQueueFixtureRunner.php';
 
-use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Tests\Conformance\ConformanceManifestBuilder;
 use Alama\Arazzo\Tests\Conformance\OaiCorpusRunner;
-use Alama\Arazzo\Tests\Conformance\OaiFixtureRunner;
-use Alama\Arazzo\Tests\Conformance\OaiQueueFixtureRunner;
 
-const UPSTREAM_DEFECTS = [
-    'FAPI-PAR' => 'arazzo references operationId "PAR" but companion OpenAPI declares "Par" (case mismatch)',
-    'LoginAndRetrievePets' => 'operationPath `#/paths/~1pet~1findByStatus` omits the HTTP-method segment required to reach an Operation Object',
-];
-
-const MISSING_SOURCES = ['ExtendedParametersExample' => 'companion `animals.yaml` is not shipped upstream'];
-
-function hasSubWorkflowSteps(string $path): bool
-{
-    $decoded = (new SymfonyYamlDecoder())->decode((string) file_get_contents($path));
-
-    foreach ($decoded['workflows'] ?? [] as $workflow) {
-        foreach ($workflow['steps'] ?? [] as $step) {
-            if (isset($step['workflowId'])) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-$rows = [];
-
-foreach (OaiCorpusRunner::documents() as $name => $path) {
-    $tier1 = OaiCorpusRunner::tier1($path);
-    $row = [
-        'document' => $name,
-        'version' => str_starts_with($name, 'pet-asyncapi') ? '1.1.0' : '1.0.0',
-        'parse_validate' => $tier1->isValid() ? 'pass' : 'FAIL',
-        'adapter' => '—',
-        'execute' => 'skipped',
-        'notes' => [],
-    ];
-
-    if (!$tier1->isValid()) {
-        foreach ($tier1->errors as $error) {
-            $row['notes'][] = '['.$error->code.'] '.$error->message;
-        }
-        $rows[] = $row;
-
-        continue;
-    }
-
-    if (isset(MISSING_SOURCES[$name])) {
-        $row['notes'][] = MISSING_SOURCES[$name];
-        $rows[] = $row;
-
-        continue;
-    }
-
-    if (array_key_exists($name, UPSTREAM_DEFECTS)) {
-        $row['execute'] = 'n/a (upstream defect)';
-        $row['notes'][] = UPSTREAM_DEFECTS[$name];
-        $rows[] = $row;
-
-        continue;
-    }
-
-    $fixture = [
-        'name' => $name,
-        'arazzoFile' => $path,
-        'responses' => [],
-        'inputs' => [],
-    ];
-
-    $runner = hasSubWorkflowSteps($path) ? new OaiQueueFixtureRunner() : new OaiFixtureRunner();
-    $row['adapter'] = $runner instanceof OaiQueueFixtureRunner ? 'queued (sub-workflow)' : 'sync';
-
-    try {
-        $observed = $runner->run($fixture);
-        $row['execute'] = $observed['status'];
-
-        foreach ($observed['errors'] as $error) {
-            $row['notes'][] = $error;
-        }
-    } catch (Throwable $e) {
-        $row['execute'] = 'ERROR';
-        $row['notes'][] = get_class($e).': '.$e->getMessage();
-    }
-
-    $rows[] = $row;
-}
+$documents = OaiCorpusRunner::documents();
+$model = ConformanceManifestBuilder::build($documents);
 
 $today = date('Y-m-d');
 $out = "# Conformance Matrix\n"
@@ -122,7 +43,7 @@ $out = "# Conformance Matrix\n"
     ."| Document | Arazzo | Parse + validate | Adapter | Execute | Notes |\n"
     ."|---|---|---|---|---|---|\n";
 
-foreach ($rows as $row) {
+foreach ($model['documents'] as $row) {
     $notes = $row['notes'] === [] ? '' : implode('<br>', array_map(
         fn (string $note): string => htmlspecialchars($note, ENT_QUOTES),
         $row['notes'],
@@ -130,9 +51,9 @@ foreach ($rows as $row) {
 
     $out .= sprintf(
         "| `%s` | %s | %s | %s | %s | %s |\n",
-        $row['document'],
+        $row['name'],
         $row['version'],
-        $row['parse_validate'],
+        $row['parseValidate'],
         $row['adapter'],
         $row['execute'],
         $notes,
@@ -151,4 +72,12 @@ $out .= "\n## Capability gaps surfaced by this harness\n\n"
 
 file_put_contents(__DIR__.'/../docs/CONFORMANCE.md', $out);
 
+$manifestDir = __DIR__.'/../docs/conformance';
+if (!is_dir($manifestDir)) {
+    mkdir($manifestDir, 0777, true);
+}
+
+file_put_contents($manifestDir.'/manifest.json', ConformanceManifestBuilder::serialize($model));
+
 echo "Wrote docs/CONFORMANCE.md\n";
+echo "Wrote docs/conformance/manifest.json\n";
