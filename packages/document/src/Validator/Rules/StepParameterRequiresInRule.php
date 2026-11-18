@@ -20,13 +20,14 @@ final class StepParameterRequiresInRule implements Rule
     {
         foreach ($doc->workflows as $wi => $w) {
             foreach ($w->steps as $si => $s) {
+                // Only HTTP operation steps require `in`; workflow steps and
+                // workflow-level parameters may pass values without it.
+                if ($s->target->operationId === null && $s->target->operationPath === null) {
+                    continue;
+                }
+
                 $this->checkStepParameters($s->io->parameters, $errors, "/workflows/{$wi}/steps/{$si}/parameters");
             }
-        }
-
-        // Also check workflow-level parameters
-        foreach ($doc->workflows as $wi => $w) {
-            $this->checkStepParameters($w->parameters, $errors, "/workflows/{$wi}/parameters");
         }
     }
 

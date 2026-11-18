@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Document\Validator\Rules;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Document\Validator\Data\SymbolTable;
@@ -48,11 +49,13 @@ final class StepParameterDuplicateRule implements Rule
         // Check for duplicate (name, in) pairs within the same scope
         $seen = [];
         foreach ($nonReusableParams as $pi => $p) {
-            $key = $p->name.':'.($p->in?->value ?? 'null'); // phpstan:ignore nullsafe.neverNull
+            $in = $p->in;
+            $inValue = $in instanceof ParameterIn ? $in->value : null;
+            $key = $p->name.':'.($inValue ?? 'null');
             if (isset($seen[$key])) {
                 $errors->error(
                     $this->code(),
-                    "Parameter '{$p->name}' with 'in' value '{$p->in?->value}' is duplicated.",
+                    "Parameter '{$p->name}' with 'in' value '".($inValue ?? 'null')."' is duplicated.",
                     "{$base}/{$pi}",
                 );
             }

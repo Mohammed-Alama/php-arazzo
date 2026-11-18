@@ -81,6 +81,66 @@ it('accepts operation parameter with in', function (): void {
     expect($errors->errors())->toHaveCount(0);
 });
 
+it('accepts workflow step parameter without in', function (): void {
+    $errors = new ErrorCollector();
+    $doc = new ArazzoDocument(
+        arazzo: '1.0.1',
+        info: new Info('T', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [
+            new Workflow(
+                workflowId: 'w',
+                summary: null,
+                description: null,
+                inputs: null,
+                dependsOn: [],
+                steps: [
+                    Fx::step('s', opId: null, wfId: 'other', params: [
+                        new Parameter('name', null, 'x'),
+                    ]),
+                ],
+                successActions: [],
+                failureActions: [],
+                outputs: [],
+                parameters: [],
+            ),
+        ],
+        components: new Components([], [], [], []),
+        specificationExtensions: [],
+        specVersion: SpecVersion::V1_0,
+    );
+    (new StepParameterRequiresInRule())->check($doc, SymbolTable::build($doc), $errors);
+    expect($errors->errors())->toHaveCount(0);
+});
+
+it('accepts workflow-level parameter without in', function (): void {
+    $errors = new ErrorCollector();
+    $doc = new ArazzoDocument(
+        arazzo: '1.1.0',
+        info: new Info('T', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [
+            new Workflow(
+                workflowId: 'w',
+                summary: null,
+                description: null,
+                inputs: null,
+                dependsOn: [],
+                steps: [],
+                successActions: [],
+                failureActions: [],
+                outputs: [],
+                parameters: [new Parameter('name', null, 'x')],
+            ),
+        ],
+        components: new Components([], [], [], []),
+        specificationExtensions: [],
+        specVersion: SpecVersion::V1_1,
+    );
+    (new StepParameterRequiresInRule())->check($doc, SymbolTable::build($doc), $errors);
+    expect($errors->errors())->toHaveCount(0);
+});
+
 it('skips reusable parameter without in', function (): void {
     $errors = new ErrorCollector();
     $doc = new ArazzoDocument(
