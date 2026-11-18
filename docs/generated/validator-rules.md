@@ -9,7 +9,7 @@ every commit.
 
 ```mermaid
 flowchart TD
-    ROOT["Validator rules (56)"]
+    ROOT["Validator rules (60)"]
     G_Actions["Actions — 6"]
     ROOT --> G_Actions
     R_ActionGotoTargetResolvesRule["ActionGotoTargetResolves"]
@@ -98,7 +98,7 @@ flowchart TD
     ROOT --> G_Specification_extensions
     R_ExtensionsXPrefixRule["ExtensionsXPrefix"]
     G_Specification_extensions --> R_ExtensionsXPrefixRule
-    G_Step_level["Step-level — 16"]
+    G_Step_level["Step-level — 20"]
     ROOT --> G_Step_level
     R_StepAtLeastOneRule["StepAtLeastOne"]
     G_Step_level --> R_StepAtLeastOneRule
@@ -120,12 +120,20 @@ flowchart TD
     G_Step_level --> R_StepOperationTargetPresentRule
     R_StepOutputsUniqueRule["StepOutputsUnique"]
     G_Step_level --> R_StepOutputsUniqueRule
+    R_StepParameterDuplicateRule["StepParameterDuplicate"]
+    G_Step_level --> R_StepParameterDuplicateRule
     R_StepParameterInValidRule["StepParameterInValid"]
     G_Step_level --> R_StepParameterInValidRule
+    R_StepParameterRequiresInRule["StepParameterRequiresIn"]
+    G_Step_level --> R_StepParameterRequiresInRule
     R_StepParametersHaveNameRule["StepParametersHaveName"]
     G_Step_level --> R_StepParametersHaveNameRule
     R_StepRequestBodyReplacementsTargetRule["StepRequestBodyReplacementsTarget"]
     G_Step_level --> R_StepRequestBodyReplacementsTargetRule
+    R_StepRequestBodyWorkflowRule["StepRequestBodyWorkflow"]
+    G_Step_level --> R_StepRequestBodyWorkflowRule
+    R_StepSuccessActionParameterInRule["StepSuccessActionParameterIn"]
+    G_Step_level --> R_StepSuccessActionParameterInRule
     R_StepSuccessCriteriaConditionRule["StepSuccessCriteriaCondition"]
     G_Step_level --> R_StepSuccessCriteriaConditionRule
     R_StepTimeoutRequires11Rule["StepTimeoutRequires11"]
@@ -160,5 +168,5 @@ flowchart TD
 | **Selectors** | `SelectorTypeSupportedRule` |
 | **Sources** | `SelfUriSyntaxRule`, `SourceTypeMatchesRule`, `SourceUniqueNameRule`, `SourceUrlSyntaxRule` |
 | **Specification extensions** | `ExtensionsXPrefixRule` |
-| **Step-level** | `StepAtLeastOneRule`, `StepCriteriaTypeContextRule`, `StepDependsOnNoCycleRule`, `StepIdPatternRule`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule`, `StepOperationIdSourceScopedRule`, `StepOperationPathSyntaxRule`, `StepOperationTargetPresentRule`, `StepOutputsUniqueRule`, `StepParameterInValidRule`, `StepParametersHaveNameRule`, `StepRequestBodyReplacementsTargetRule`, `StepSuccessCriteriaConditionRule`, `StepTimeoutRequires11Rule`, `StepUniqueIdRule` |
+| **Step-level** | `StepAtLeastOneRule`, `StepCriteriaTypeContextRule`, `StepDependsOnNoCycleRule`, `StepIdPatternRule`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule`, `StepOperationIdSourceScopedRule`, `StepOperationPathSyntaxRule`, `StepOperationTargetPresentRule`, `StepOutputsUniqueRule`, `StepParameterDuplicateRule`, `StepParameterInValidRule`, `StepParameterRequiresInRule`, `StepParametersHaveNameRule`, `StepRequestBodyReplacementsTargetRule`, `StepRequestBodyWorkflowRule`, `StepSuccessActionParameterInRule`, `StepSuccessCriteriaConditionRule`, `StepTimeoutRequires11Rule`, `StepUniqueIdRule` |
 | **Workflow-level** | `WorkflowAtLeastOneRule`, `WorkflowDependsOnExistsRule`, `WorkflowDependsOnNoCycleRule`, `WorkflowIdPatternRule`, `WorkflowInputsValidSchemaRule`, `WorkflowUniqueIdRule` |

@@ -53,7 +53,7 @@ Evans' first question: does the code speak one language?
 
 - **Flow**: `RunControlFlow`, `StepFlow` (2 types)
 - **Process**: `InProcessExecutionRegistry`, `InProcessPendingCorrelationRegistry` (2 types)
-- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 27 more (31 types)
+- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 28 more (32 types)
 
 ### render vs generate
 

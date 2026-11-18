@@ -47,9 +47,13 @@ use Alama\Arazzo\Document\Validator\Rules\StepOperationIdSourceScopedRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationPathSyntaxRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationTargetPresentRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOutputsUniqueRule;
+use Alama\Arazzo\Document\Validator\Rules\StepParameterDuplicateRule;
 use Alama\Arazzo\Document\Validator\Rules\StepParameterInValidRule;
+use Alama\Arazzo\Document\Validator\Rules\StepParameterRequiresInRule;
 use Alama\Arazzo\Document\Validator\Rules\StepParametersHaveNameRule;
 use Alama\Arazzo\Document\Validator\Rules\StepRequestBodyReplacementsTargetRule;
+use Alama\Arazzo\Document\Validator\Rules\StepRequestBodyWorkflowRule;
+use Alama\Arazzo\Document\Validator\Rules\StepSuccessActionParameterInRule;
 use Alama\Arazzo\Document\Validator\Rules\StepSuccessCriteriaConditionRule;
 use Alama\Arazzo\Document\Validator\Rules\StepTimeoutRequires11Rule;
 use Alama\Arazzo\Document\Validator\Rules\StepUniqueIdRule;
@@ -141,7 +145,11 @@ final readonly class RuleSet
             new WsdlStepRule($engine),
             new StepTimeoutRequires11Rule(),
             new StepOutputsUniqueRule(),
+            new StepParameterDuplicateRule(),
+            new StepParameterRequiresInRule(),
+            new StepSuccessActionParameterInRule(),
             new StepParameterInValidRule(),
+            new StepRequestBodyWorkflowRule(),
             new StepParametersHaveNameRule(),
             new StepRequestBodyReplacementsTargetRule(),
             new StepSuccessCriteriaConditionRule(),
