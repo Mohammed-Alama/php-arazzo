@@ -17,7 +17,7 @@ when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 6 | 3 | **forbidden** ⚠ |
+| `GuzzleHttp` | 5 | 3 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 46 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 25 | 0 | _unclassified_ ⚠ |
@@ -52,7 +52,7 @@ when a boundary consciously moves.
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
 | sources | `sources:Resolver` | `Psr` | 4 |
 | sources | `sources:Validator` | `JsonSchema` | 3 |
-| sources | `sources:_` | `GuzzleHttp` | 2 |
+| sources | `sources:_` | `GuzzleHttp` | 1 |
 | sources | `sources:_` | `Psr` | 2 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
@@ -85,7 +85,7 @@ when a boundary consciously moves.
 - `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
-- `sources:_` imports `GuzzleHttp\*` (2 refs)
+- `sources:_` imports `GuzzleHttp\*` (1 refs)
 
 ## Core aggregator emptiness
 

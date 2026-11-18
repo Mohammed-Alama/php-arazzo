@@ -43,6 +43,7 @@ use Alama\Arazzo\Document\Validator\Rules\StepDependsOnNoCycleRule;
 use Alama\Arazzo\Document\Validator\Rules\StepIdPatternRule;
 use Alama\Arazzo\Document\Validator\Rules\StepNestedWorkflowExistsRule;
 use Alama\Arazzo\Document\Validator\Rules\StepNestedWorkflowNoCycleRule;
+use Alama\Arazzo\Document\Validator\Rules\StepOperationIdResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationIdSourceScopedRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationPathSyntaxRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationTargetPresentRule;
@@ -139,6 +140,7 @@ final readonly class RuleSet
             new StepIdPatternRule(),
             new StepNestedWorkflowExistsRule(),
             new StepNestedWorkflowNoCycleRule(),
+            new StepOperationIdResolvesRule(),
             new StepOperationIdSourceScopedRule(),
             new StepOperationPathSyntaxRule($engine),
             new StepOperationTargetPresentRule(),

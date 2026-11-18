@@ -122,6 +122,14 @@
     ],
     "documents": [
         {
+            "name": "bnpl-arazzo",
+            "version": "1.0.0",
+            "parseValidate": "pass",
+            "adapter": "sync",
+            "execute": "succeeded",
+            "notes": []
+        },
+        {
             "name": "ExtendedParametersExample",
             "version": "1.0.0",
             "parseValidate": "pass",
@@ -150,14 +158,6 @@
             "notes": [
                 "operationPath `#/paths/~1pet~1findByStatus` omits the HTTP-method segment required to reach an Operation Object"
             ]
-        },
-        {
-            "name": "bnpl-arazzo",
-            "version": "1.0.0",
-            "parseValidate": "pass",
-            "adapter": "sync",
-            "execute": "succeeded",
-            "notes": []
         },
         {
             "name": "oauth",

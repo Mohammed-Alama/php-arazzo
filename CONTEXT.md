@@ -18,7 +18,7 @@ same pull request.
 
 | Term | Meaning |
 |------|---------|
-| **arazzo-conformance** | The [`api-evangelist/arazzo-conformance`](https://github.com/api-evangelist/arazzo-conformance) scored test suite (SHA `2a90e6b` is the conformance oracle). php-arazzo targets 100% of scored validation cases (127) and 100% of scored execution cases (14). |
+| **arazzo-conformance** | The [`api-evangelist/arazzo-conformance`](https://github.com/api-evangelist/arazzo-conformance) scored test suite (SHA `6e93591` is the conformance oracle). php-arazzo targets 100% of scored validation cases (127) and 100% of scored execution cases (14). |
 | **Conformance capability manifest** | Machine-readable JSON at `docs/conformance/manifest.json` recording, per capability, whether php-arazzo supports it (`supported` / `partial` / `unsupported` / `not-applicable`), with `evidence` references. Emitted by `scripts/generate-conformance-matrix.php` alongside `docs/CONFORMANCE.md`. |
 | **Drift guard** | `scripts/check-conformance-manifest.php`: re-runs the corpus, rebuilds the manifest model, compares to the committed manifest, exits non-zero on mismatch. Runs in CI on every PR. |
 | **OAI corpus** | Vendored official OAI Arazzo examples under `packages/core/tests/Conformance/corpus/oai/`. Source of truth for what the manifest claims. |
@@ -44,6 +44,8 @@ same pull request.
 | **Source qualification** | Requiring `operationId` to be source-qualified (e.g. `sourceName.operationId`) only when multiple non-arazo sources exist; single source allows unqualified (issue #388 R2/C1). |
 | **Cross-workflow dependsOn** | Validator accepts `$workflows.<id>.steps.<stepId>` in `dependsOn` (issue #388 R1). |
 | **Strict validation** | Default `true`: a response violating its OpenAPI response schema fails the step (issue #334). Opt-out per step via `x-strict-validation: false`. |
+| **Reference resolution (validate)** | `operationId` is resolved against locally-loaded source operations; `$sourceDescriptions.<name>` and `$components.<type>.<name>` are checked against the symbol table. Local sources resolve offline; unreachable remote sources are skipped, never fail validation (issue #384). |
+| **Source resolution seam** | Performed in `cli` (`ValidateCommand` → `SourceLoader`); the `document` validator never imports `sources` (issue #384). |
 
 ## 5. Packages
 
@@ -67,6 +69,7 @@ same pull request.
 | ADR-002 | Conformance capability manifest + drift guard | #340 |
 | ADR-003 | Runner semantics: retry/goto/criteria/workflowId via shared seam | #382 |
 | ADR-004 | Cross-workflow dependsOn + source qualification in RuleSet | #388 |
+| ADR-005 | Validation degrades gracefully on unreachable remote sources | #384 |
 
 ## 7. How to update this file
 

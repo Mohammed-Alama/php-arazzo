@@ -281,11 +281,11 @@ flowchart LR
     cli_Console --> document_Parser
     cli_Console --> document_Validator
     cli_Console --> expression__
+    cli_Console --> sources__
     cli_Console --> contracts_Dependency
     cli_Console --> cli_Renderer
     cli_Console --> contracts_Exceptions
     cli_Console --> sources_Resolver
-    cli_Console --> sources__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
     laravel_Bindings --> evaluation__

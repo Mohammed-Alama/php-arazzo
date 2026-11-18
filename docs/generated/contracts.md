@@ -186,6 +186,8 @@ flowchart LR
     C_document_document_Validator_StepNestedWorkflowExistsRule -.->|implements| I_Rule
     C_document_document_Validator_StepNestedWorkflowNoCycleRule["StepNestedWorkflowNoCycleRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepNestedWorkflowNoCycleRule -.->|implements| I_Rule
+    C_document_document_Validator_StepOperationIdResolvesRule["StepOperationIdResolvesRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepOperationIdResolvesRule -.->|implements| I_Rule
     C_document_document_Validator_StepOperationIdSourceScopedRule["StepOperationIdSourceScopedRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepOperationIdSourceScopedRule -.->|implements| I_Rule
     C_document_document_Validator_StepOperationPathSyntaxRule["StepOperationPathSyntaxRule<br/><small>document:Validator</small>"]:::implCore

@@ -13,13 +13,21 @@ use Alama\Arazzo\Document\Validator\Data\ValidationResult;
  */
 final readonly class Validator
 {
+    /**
+     * @param  array<string,array<string,true>>  $resolvedOperations
+     */
     public function __construct(
         private readonly RuleSet $rules,
+        private readonly array $resolvedOperations = [],
     ) {}
 
-    public function validate(ArazzoDocument $doc): ValidationResult
+    /**
+     * @param  array<string,array<string,true>>|null  $resolvedOperations
+     */
+    public function validate(ArazzoDocument $doc, ?array $resolvedOperations = null): ValidationResult
     {
-        $symbols = SymbolTable::build($doc);
+        $resolved = $resolvedOperations ?? $this->resolvedOperations;
+        $symbols = SymbolTable::build($doc, $resolved);
         $collector = new ErrorCollector();
 
         foreach ($this->rules->activeRules() as $rule) {

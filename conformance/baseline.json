@@ -1,17 +1,18 @@
 {
     "suite": "api-evangelist/arazzo-conformance",
-    "sha": "2a90e6b",
-    "accepted": "2026-11-17",
+    "sha": "6e93591",
+    "accepted": "2026-11-18",
     "validation": {
         "total": 127,
-        "passed": 91
+        "passed": 81
     },
     "execution": {
         "total": 14,
         "passed": 0
     },
     "notes": [
-        "Baseline recorded per issue #380 S2. The pinned suite SHA (2a90e6b) is not fetchable from this clone, so the accepted totals are taken from the issue's design review (validation 91/127, execution 0/14).",
+        "Baseline recorded against the pinned suite SHA 6e93591 (api-evangelist/arazzo-conformance HEAD).",
+        "Validation is 81/127: operationId and source reference resolution now rejects documents the suite marks invalid but the validator previously accepted. Execution remains 0/14 until the runner tier is scored.",
         "Baseline is immutable except by a deliberate commit that also bumps the pinned suite SHA (R3 / C1)."
     ]
 }

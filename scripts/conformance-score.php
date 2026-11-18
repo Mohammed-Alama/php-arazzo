@@ -9,8 +9,8 @@ error_reporting(E_ALL & ~E_DEPRECATED);
  * Scores php-arazzo against the api-evangelist/arazzo-conformance suite.
  *
  * Clones the suite at a pinned SHA (api-evangelist/arazzo-conformance,
- * SHA 2a90e6b), runs every validation and execution case against
- * `vendor/bin/arazzi` (mock petstore on 127.0.0.1:4010), and writes
+ * SHA 6e93591), runs every validation and execution case against
+ * `vendor/bin/arazzo` (mock petstore on 127.0.0.1:4010), and writes
  * conformance/score.json with per-case verdicts, versions and suite SHA.
  *
  * Requires: Python 3 + pyyaml (the suite's run.py / mock-petstore.py use
@@ -20,7 +20,7 @@ error_reporting(E_ALL & ~E_DEPRECATED);
  *   php scripts/conformance-score.php \
  *       --output conformance/score.json \
  *       --binary vendor/bin/arazzi \
- *       --sha 2a90e6b
+ *       --sha 6e93591
  *
  * Options:
  *   --suite-dir  Use an already-cloned suite directory instead of cloning
