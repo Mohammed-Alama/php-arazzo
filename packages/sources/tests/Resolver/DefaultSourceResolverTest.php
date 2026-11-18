@@ -97,3 +97,10 @@ it('resolves relative URLs with parent directories to canonical URIs', function 
 
     expect($result->canonicalUri)->toBe('file:///path/to/sibling/api.json');
 });
+
+it('bounds default remote fetches so an unreachable source cannot hang validation', function (): void {
+    $config = DefaultSourceResolver::defaultHttpClient()->getConfig();
+
+    expect($config['connect_timeout'])->toBeFloat()->toBeGreaterThan(0.0)
+        ->and($config['timeout'])->toBeFloat()->toBeGreaterThan(0.0);
+});

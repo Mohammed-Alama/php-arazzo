@@ -18,7 +18,7 @@ same pull request.
 
 | Term | Meaning |
 |------|---------|
-| **arazzo-conformance** | The [`api-evangelist/arazzo-conformance`](https://github.com/api-evangelist/arazzo-conformance) scored test suite (SHA `2a90e6b` is the conformance oracle). php-arazzo targets 100% of scored validation cases (127) and 100% of scored execution cases (14). |
+| **arazzo-conformance** | The [`api-evangelist/arazzo-conformance`](https://github.com/api-evangelist/arazzo-conformance) scored test suite (SHA `6e93591` is the conformance oracle). php-arazzo targets 100% of scored validation cases (127) and 100% of scored execution cases (14). |
 | **Conformance capability manifest** | Machine-readable JSON at `docs/conformance/manifest.json` recording, per capability, whether php-arazzo supports it (`supported` / `partial` / `unsupported` / `not-applicable`), with `evidence` references. Emitted by `scripts/generate-conformance-matrix.php` alongside `docs/CONFORMANCE.md`. |
 | **Drift guard** | `scripts/check-conformance-manifest.php`: re-runs the corpus, rebuilds the manifest model, compares to the committed manifest, exits non-zero on mismatch. Runs in CI on every PR. |
 | **OAI corpus** | Vendored official OAI Arazzo examples under `packages/core/tests/Conformance/corpus/oai/`. Source of truth for what the manifest claims. |

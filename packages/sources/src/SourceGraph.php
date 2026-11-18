@@ -25,7 +25,6 @@ use Alama\Arazzo\Sources\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Sources\Resolver\SourceNormalizerRegistry;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\Validator\PreflightValidator;
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -60,7 +59,7 @@ final class SourceGraph
         ?ClientInterface $httpClient = null,
         ?RequestFactoryInterface $httpFactory = null,
     ): SourceRegistry {
-        $client = $httpClient ?? new Client();
+        $client = $httpClient ?? DefaultSourceResolver::defaultHttpClient();
         $factory = $httpFactory ?? new HttpFactory();
 
         return new SourceRegistry(DefaultSourceResolver::withFetchers([

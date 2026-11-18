@@ -34,13 +34,13 @@ function conformanceGateFixtures(array $baseline = [], array $score = []): array
 
     $baselineDoc = array_merge([
         'suite' => 'api-evangelist/arazzo-conformance',
-        'sha' => '2a90e6b',
+        'sha' => '6e93591',
         'validation' => ['total' => 127, 'passed' => 91],
         'execution' => ['total' => 14, 'passed' => 0],
     ], $baseline);
     $scoreDoc = array_merge([
         'suite' => 'api-evangelist/arazzo-conformance',
-        'sha' => '2a90e6b',
+        'sha' => '6e93591',
         'validation' => ['total' => 127, 'passed' => 91],
         'execution' => ['total' => 14, 'passed' => 0],
     ], $score);

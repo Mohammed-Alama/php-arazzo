@@ -90,4 +90,6 @@ Regenerated before every commit.
 | prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
 | prop stateTtlSeconds | `UnifiedStepCarrier` | `86400` |
 | prop stateTtlSeconds | `StoredWorkflowStateRepository` | `86400` |
+| const HTTP_CONNECT_TIMEOUT | `DefaultSourceResolver` | `2.0` |
+| const HTTP_REQUEST_TIMEOUT | `DefaultSourceResolver` | `5.0` |
 | prop ttlSeconds | `CachedFetcher` | `3600` |

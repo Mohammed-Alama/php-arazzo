@@ -69,9 +69,9 @@ targets. Regenerated before every commit.
 | `runtime:State` | 12 | 1044 | 9 | 3 | 0.25 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `sources:Normalizer` | 11 | 1271 | 8 | 5 | 0.38 |  |
-| `sources:Resolver` | 13 | 477 | 8 | 3 | 0.27 |  |
+| `sources:Resolver` | 13 | 499 | 8 | 3 | 0.27 |  |
 | `sources:Validator` | 1 | 324 | 3 | 4 | 0.57 |  |
-| `(sources root)` | 3 | 336 | 2 | 10 | 0.83 |  |
+| `(sources root)` | 3 | 335 | 2 | 10 | 0.83 |  |
 
 Total cross-module edges: **1146**
 
