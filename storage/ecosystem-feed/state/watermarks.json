@@ -38,7 +38,7 @@
                     "lastSeenUpdatedAt": "2026-11-15T21:54:02Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-17T07:00:07Z"
+                    "lastSeenUpdatedAt": "2026-11-18T15:06:47Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-05-18T11:11:50Z",
@@ -132,7 +132,7 @@
         "OAI/org": {
             "endpoints": {
                 "org_diff": {
-                    "lastSeenUpdatedAt": "2026-11-17T15:56:23+00:00"
+                    "lastSeenUpdatedAt": "2026-11-18T15:35:23+00:00"
                 }
             }
         },
@@ -190,8 +190,8 @@
         "Redocly/redocly-cli": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-11-16T08:12:16Z",
-                    "lastTag": "@redocly/respect-core@2.79.0"
+                    "lastSeenUpdatedAt": "2026-11-18T13:03:44Z",
+                    "lastTag": "@redocly/respect-core@2.80.0"
                 }
             }
         },
@@ -238,8 +238,8 @@
         "jentic/jentic-arazzo-tools": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-11-09T10:41:50Z",
-                    "lastTag": "v1.0.0-alpha.33"
+                    "lastSeenUpdatedAt": "2026-11-18T14:06:00Z",
+                    "lastTag": "v1.0.0-alpha.34"
                 }
             }
         },
@@ -353,7 +353,7 @@
         "strefethen/arazzo-cli": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-11-15T20:11:27Z"
+                    "lastSeenUpdatedAt": "2026-11-17T20:43:49Z"
                 },
                 "issues": {
                     "lastSeenUpdatedAt": "2026-08-26T23:48:42Z"
@@ -388,7 +388,7 @@
                     "lastSeenUpdatedAt": "2026-11-16T21:14:47Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-16T23:17:16Z"
+                    "lastSeenUpdatedAt": "2026-11-18T13:51:30Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-11-16T09:42:41Z",
@@ -399,14 +399,14 @@
         "usearazzo/website": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-11-16T09:40:32Z"
+                    "lastSeenUpdatedAt": "2026-11-18T09:15:04Z"
                 }
             }
         },
         "usearazzo/website.ecosystem.atom": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-11-02T08:10:38+00:00"
+                    "lastSeenUpdatedAt": "2026-11-18T09:15:04+00:00"
                 }
             }
         },

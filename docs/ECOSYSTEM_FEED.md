@@ -1,6 +1,6 @@
 # Ecosystem Feed — Digest
 
-> **Generated:** 2026-11-17T15:57:04+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-11-18T15:36:03+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` · **Watchlist:** `config/ecosystem/watchlist.json`
 > **Legend:** **Act** = worth a decision · **Watch** = context, collapsed · **Noise** = counted only
 
@@ -29,15 +29,23 @@ _No peer releases in this window._
 
 _No scheduled meeting items._
 
-## Watch — 3 collapsed
+## Watch — 11 collapsed
 
 <details>
-<summary>3 topic-matched items — click to expand</summary>
+<summary>11 topic-matched items — click to expand</summary>
 
-- `2026-11-16` [feat(runner): emit HTTP request events with credentials masked](https://github.com/usearazzo/arazzo-toolkit/pull/356) — `usearazzo/arazzo-toolkit` · `pr.state_changed` · state `open` → `merged` · topics `criterion-regex`, `runner` → `plan:expression-evaluation-parity-hardening`, `plan:phase-e-runner-oms`
-- `2026-11-16` [runner: opt-in request/response validation against OpenAPI operation schemas](https://github.com/usearazzo/arazzo-toolkit/issues/100) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `open` · topics `criterion-regex`, `runner` → `plan:expression-evaluation-parity-hardening`, `plan:phase-e-runner-oms`
-- `2026-11-17` [OAI org diff: +1 -0](https://github.com/orgs/OAI/repositories) — `OAI/org` · `entity.created` · entity.created
+- `2026-11-18` [feat(runner): locate events in the documents that define them](https://github.com/usearazzo/arazzo-toolkit/pull/362) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `open` · topics `criterion-regex`, `retry-outputs`, `runner` → `plan:expression-evaluation-parity-hardening`, `plan:phase-e-runner-oms`
+- `2026-11-17` [feat(cli): restore serve under the operator-trust model with limit flags](https://github.com/strefethen/arazzo-cli/commit/77426c8627eb2eb8fc9cb14c2cee6e39f3ebe796) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `cli`, `mcp` → `plan:phase-f-protocol-packages`, `plan:php-arazzo-spec-suite-plan-index`
+- `2026-11-17` [fix(mcp): write each test request frame in one pipe write](https://github.com/strefethen/arazzo-cli/commit/02cf991243556599eb9eb5f09dcbe6347916f687) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `mcp` → `plan:phase-f-protocol-packages`
+- `2026-11-17` [feat(mcp): add hermetic end-to-end suite for the supported MCP surface](https://github.com/strefethen/arazzo-cli/commit/fcc0ddf733d1ccf711af7595cc693e7dc7359f9c) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `mcp` → `plan:phase-f-protocol-packages`
+- `2026-11-17` [fix(mcp): redact failure text and honour Kafka env credentials](https://github.com/strefethen/arazzo-cli/commit/5c28bf25c625fd2ffc320886a6b8166145dd2d92) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `mcp` → `plan:phase-f-protocol-packages`
+- `2026-11-17` [feat(mcp): cancel in-flight run_workflow on disconnect or cancellation notice](https://github.com/strefethen/arazzo-cli/commit/2fb169e58dd8c856b35a0639ffa8f123cf838429) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `mcp` → `plan:phase-f-protocol-packages`
+- `2026-11-17` [feat(mcp): bound frames, request backlog, and tool results with configurable limits](https://github.com/strefethen/arazzo-cli/commit/c7292dbc6ffdbf2e672483568ca10b76a3afba15) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `mcp` → `plan:phase-f-protocol-packages`
+- `2026-11-18` [feat(ecosystem): add Solving the Agent API Bottleneck article](https://github.com/usearazzo/website/commit/9224c0e3a0941aa86770a0fa594441e865e2ddb2) — `usearazzo/website` · `entity.created` · entity.created
+- `2026-11-18` [feat(ecosystem): add Solving the Agent API Bottleneck article](https://github.com/usearazzo/website/commit/9224c0e3a0941aa86770a0fa594441e865e2ddb2) — `usearazzo/website.ecosystem.atom` · `entity.created` · entity.created
+- `2026-11-17` [feat(expr): make an unreadable value a hard resolution error](https://github.com/strefethen/arazzo-cli/commit/cf5aa3462eaf878990712259d34d4f783dee1637) — `strefethen/arazzo-cli` · `entity.created` · entity.created
+- `2026-11-18` [OAI org diff: +1 -0](https://github.com/orgs/OAI/repositories) — `OAI/org` · `entity.created` · entity.created
 
 </details>
 
-suppressed: 3 bot PRs
+suppressed: 7 bot PRs, 2 dependency/CI noise
