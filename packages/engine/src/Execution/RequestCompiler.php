@@ -60,9 +60,11 @@ final readonly class RequestCompiler
         $bodyData = [];
 
         if ($step->io->requestBody && $step->io->requestBody->payload !== null) {
+            $payloadBody = is_array($step->io->requestBody->payload) ? $step->io->requestBody->payload : [];
+
             $bodyData = $this->evaluationEngine->replacePayload(
                 $step,
-                is_array($step->io->requestBody->payload) ? $step->io->requestBody->payload : [],
+                $this->resolveBodyValues($payloadBody, $context, $step->stepId),
                 fn (PayloadReplacement $replacement) => $this->evaluationEngine->resolveValue($replacement->value, $context, $step->stepId),
                 $context,
             );
@@ -73,6 +75,35 @@ final readonly class RequestCompiler
         $payload = new OpenApiPayload(path: $path, query: $query, header: $header, auto: $auto, body: $body);
 
         return ['payload' => $payload, 'resolvedInputs' => $resolvedInputs];
+    }
+
+    /**
+     * Resolves runtime expressions in every string value of a request body,
+     * preserving keys, list order, nesting and non-string scalars.
+     *
+     * Payload values are resolved before replacements are applied, so a
+     * replacement can still overwrite any node the document declares.
+     *
+     * @param  array<array-key, mixed>  $body
+     * @return array<array-key, mixed>
+     */
+    private function resolveBodyValues(array $body, WorkflowContext $context, string $stepId): array
+    {
+        $resolved = [];
+
+        foreach ($body as $key => $value) {
+            if (is_array($value)) {
+                $resolved[$key] = $this->resolveBodyValues($value, $context, $stepId);
+
+                continue;
+            }
+
+            $resolved[$key] = is_string($value)
+                ? $this->evaluationEngine->resolveValue($value, $context, $stepId)
+                : $value;
+        }
+
+        return $resolved;
     }
 
     /**

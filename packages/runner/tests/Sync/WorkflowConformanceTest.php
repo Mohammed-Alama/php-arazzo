@@ -11,9 +11,13 @@ use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
+use Alama\Arazzo\Contracts\Spec\RequestBody;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
@@ -92,13 +96,13 @@ function confExecutor(array $workflows, array $responses = []): array
 }
 
 /** @param  list<SuccessCriterion>  $criteria  @param  mixed[]  $onSuccess  @param  mixed[]  $onFailure  @param  array<string,Expression>  $outputs */
-function confStep(string $id, string $opId, array $criteria = [], array $onSuccess = [], array $onFailure = [], array $outputs = []): Step
+function confStep(string $id, string $opId, array $criteria = [], array $onSuccess = [], array $onFailure = [], array $outputs = [], ?RequestBody $requestBody = null): Step
 {
     return StepFactory::http(
         stepId: $id,
         description: null,
         flow: new StepFlow(onSuccess: $onSuccess, onFailure: $onFailure),
-        io: new StepIo(successCriteria: $criteria, outputs: $outputs),
+        io: new StepIo(successCriteria: $criteria, outputs: $outputs, requestBody: $requestBody),
         operationId: $opId,
     );
 }
@@ -116,6 +120,9 @@ final class SequenceOpenApiExecutor implements OpenApiExecutorInterface
     /** @var list<ResponseInterface> */
     public array $queue;
 
+    /** @var list<mixed> */
+    public array $payloads = [];
+
     public int $calls = 0;
 
     /** @param  list<ResponseInterface>  $queue */
@@ -127,6 +134,7 @@ final class SequenceOpenApiExecutor implements OpenApiExecutorInterface
     public function execute($operation, $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null): ResponseInterface
     {
         $this->calls++;
+        $this->payloads[] = $payload;
         $last = array_key_last($this->queue);
 
         return $this->queue[$this->calls - 1] ?? $this->queue[$last] ?? $this->queue[0] ?? new Response(200);
@@ -350,5 +358,94 @@ describe('conformance: workflowId child invocation', function () {
             ->and($result->stepResults['call-child']->success)->toBeTrue()
             ->and($result->stepResults['call-child']->outputs)->toBe(['order_id' => 'ord_1'])
             ->and($result->outputs)->toBe(['order_id' => 'ord_1']);
+    });
+});
+
+describe('conformance: $inputs.* in request bodies', function () {
+    it('S1: substitutes $inputs.name in a request body payload before sending', function () {
+        $step = confStep('create', 'create-pet', requestBody: new RequestBody(
+            contentType: 'application/json',
+            payload: ['name' => '$inputs.name'],
+            replacements: [],
+        ));
+
+        $workflow = new Workflow('wf', null, null, null, [], [$step], [], [], [], []);
+        [$executor, $fake, $document] = confExecutor([$workflow], [
+            new Response(201, ['Content-Type' => 'application/json'], '{"id":"pet-1"}'),
+        ]);
+
+        $result = $executor->execute($workflow, $document, ['name' => 'Rex']);
+
+        expect($result->status)->toBe('succeeded')
+            ->and($fake->calls)->toBe(1)
+            ->and($fake->payloads[0]->body)->toBe(['name' => 'Rex']);
+    });
+
+    it('S2: resolves $inputs.* in a payload replacement value', function () {
+        $step = confStep('create', 'create-pet', requestBody: new RequestBody(
+            contentType: 'application/json',
+            payload: ['name' => '$inputs.name', 'status' => 'available'],
+            replacements: [new PayloadReplacement('/status', '$inputs.status')],
+        ));
+
+        $workflow = new Workflow('wf', null, null, null, [], [$step], [], [], [], []);
+        [$executor, $fake, $document] = confExecutor([$workflow], [
+            new Response(201, ['Content-Type' => 'application/json'], '{"id":"pet-1"}'),
+        ]);
+
+        $result = $executor->execute($workflow, $document, ['name' => 'Rex', 'status' => 'sold']);
+
+        expect($result->status)->toBe('succeeded')
+            ->and($fake->payloads[0]->body)->toBe(['name' => 'Rex', 'status' => 'sold']);
+    });
+
+    it('S3: resolves $inputs.* in a sub-workflow step payload', function () {
+        $child = new Workflow(
+            workflowId: 'adopt',
+            summary: null,
+            description: null,
+            inputs: null,
+            dependsOn: [],
+            steps: [
+                confStep('create', 'create-pet', requestBody: new RequestBody(
+                    contentType: 'application/json',
+                    payload: ['name' => '$inputs.name'],
+                    replacements: [],
+                )),
+            ],
+            successActions: [],
+            failureActions: [],
+            outputs: [],
+            parameters: [],
+        );
+
+        $parent = new Workflow(
+            workflowId: 'run',
+            summary: null,
+            description: null,
+            inputs: null,
+            dependsOn: [],
+            steps: [
+                StepFactory::workflow(
+                    'sub', null, new StepFlow(),
+                    new StepIo(parameters: [new Parameter('name', ParameterIn::Body, 'Rex')]),
+                    'adopt',
+                ),
+            ],
+            successActions: [],
+            failureActions: [],
+            outputs: [],
+            parameters: [],
+        );
+
+        [$executor, $fake, $document] = confExecutor([$parent, $child], [
+            new Response(201, ['Content-Type' => 'application/json'], '{"id":"pet-1"}'),
+        ]);
+
+        $result = $executor->execute($parent, $document, []);
+
+        expect($result->status)->toBe('succeeded')
+            ->and($fake->calls)->toBe(1)
+            ->and($fake->payloads[0]->body)->toBe(['name' => 'Rex']);
     });
 });
