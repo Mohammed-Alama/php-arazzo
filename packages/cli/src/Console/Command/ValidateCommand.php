@@ -10,6 +10,7 @@ use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Sources\SourceGraph;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,7 +39,20 @@ final class ValidateCommand extends Command
         }
 
         $engine = new ExpressionEngine();
-        $result = (new Validator(RuleSet::default($engine)))->validate($document);
+
+        // Resolve source operations for reference validation (R4/R5).
+        $resolvedOperations = [];
+        try {
+            $loader = SourceGraph::loader();
+            $index = $loader->normalizeSources($document, (string) dirname($file));
+            foreach ($index as $key => $resolved) {
+                $resolvedOperations[$resolved->source->name][$key] = true;
+            }
+        } catch (\Throwable $e) {
+            // Degrade gracefully: never fail validation due to source loading.
+        }
+
+        $result = (new Validator(RuleSet::default($engine), $resolvedOperations))->validate($document);
 
         if ($result->isValid()) {
             $output->writeln('<info>✔ valid</info> '.$file);

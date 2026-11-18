@@ -444,7 +444,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function __construct(public string $code, public string $message, public string $path, public ?int $line = null, public Severity $severity = Severity::Error)`
 
 #### `SymbolTable` class
-- `public function __construct(public array $workflows, public array $sourceDescriptions, public array $components)`
+- `public function __construct(public array $workflows, public array $sourceDescriptions, public array $components, public array $resolvedOperations = [])`
 
 #### `ValidationResult` class
 - `public function __construct(public ArazzoDocument $document, public array $errors, public array $warnings, public array $inputs = [])`

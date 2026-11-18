@@ -9,7 +9,7 @@ every commit.
 
 ```mermaid
 flowchart TD
-    ROOT["Validator rules (56)"]
+    ROOT["Validator rules (57)"]
     G_Actions["Actions — 6"]
     ROOT --> G_Actions
     R_ActionGotoTargetResolvesRule["ActionGotoTargetResolves"]
@@ -98,7 +98,7 @@ flowchart TD
     ROOT --> G_Specification_extensions
     R_ExtensionsXPrefixRule["ExtensionsXPrefix"]
     G_Specification_extensions --> R_ExtensionsXPrefixRule
-    G_Step_level["Step-level — 16"]
+    G_Step_level["Step-level — 17"]
     ROOT --> G_Step_level
     R_StepAtLeastOneRule["StepAtLeastOne"]
     G_Step_level --> R_StepAtLeastOneRule
@@ -112,6 +112,8 @@ flowchart TD
     G_Step_level --> R_StepNestedWorkflowExistsRule
     R_StepNestedWorkflowNoCycleRule["StepNestedWorkflowNoCycle"]
     G_Step_level --> R_StepNestedWorkflowNoCycleRule
+    R_StepOperationIdResolvesRule["StepOperationIdResolves"]
+    G_Step_level --> R_StepOperationIdResolvesRule
     R_StepOperationIdSourceScopedRule["StepOperationIdSourceScoped"]
     G_Step_level --> R_StepOperationIdSourceScopedRule
     R_StepOperationPathSyntaxRule["StepOperationPathSyntax"]
@@ -160,5 +162,5 @@ flowchart TD
 | **Selectors** | `SelectorTypeSupportedRule` |
 | **Sources** | `SelfUriSyntaxRule`, `SourceTypeMatchesRule`, `SourceUniqueNameRule`, `SourceUrlSyntaxRule` |
 | **Specification extensions** | `ExtensionsXPrefixRule` |
-| **Step-level** | `StepAtLeastOneRule`, `StepCriteriaTypeContextRule`, `StepDependsOnNoCycleRule`, `StepIdPatternRule`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule`, `StepOperationIdSourceScopedRule`, `StepOperationPathSyntaxRule`, `StepOperationTargetPresentRule`, `StepOutputsUniqueRule`, `StepParameterInValidRule`, `StepParametersHaveNameRule`, `StepRequestBodyReplacementsTargetRule`, `StepSuccessCriteriaConditionRule`, `StepTimeoutRequires11Rule`, `StepUniqueIdRule` |
+| **Step-level** | `StepAtLeastOneRule`, `StepCriteriaTypeContextRule`, `StepDependsOnNoCycleRule`, `StepIdPatternRule`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule`, `StepOperationIdResolvesRule`, `StepOperationIdSourceScopedRule`, `StepOperationPathSyntaxRule`, `StepOperationTargetPresentRule`, `StepOutputsUniqueRule`, `StepParameterInValidRule`, `StepParametersHaveNameRule`, `StepRequestBodyReplacementsTargetRule`, `StepSuccessCriteriaConditionRule`, `StepTimeoutRequires11Rule`, `StepUniqueIdRule` |
 | **Workflow-level** | `WorkflowAtLeastOneRule`, `WorkflowDependsOnExistsRule`, `WorkflowDependsOnNoCycleRule`, `WorkflowIdPatternRule`, `WorkflowInputsValidSchemaRule`, `WorkflowUniqueIdRule` |

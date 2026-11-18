@@ -63,12 +63,14 @@ Regenerated before every commit.
 | `SchemaValidationException` | `RunCommand` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
 | `SelectorEvaluationException` | `SelectorEvaluator` |  |
+| `Throwable` | `ValidateCommand` |  |
 | `Throwable` | `CriteriaEvaluator` |  |
 | `Throwable` | `DatabaseEventLedger` |  |
 | `Throwable` | `StepExecutionWorker` |  |
 | `Throwable` | `StepExecutor` |  |
 | `Throwable` | `WorkflowExecutor` |  |
 | `Throwable` | `DefaultSourceResolver` |  |
+| `Throwable` | `SourceLoader` |  |
 | `Throwable` | `PreflightValidator` |  |
 
 ## Safety interlocks

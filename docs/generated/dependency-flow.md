@@ -31,7 +31,7 @@ cli-Console,runner-root,5
 cli-Console,runtime-State,6
 cli-Console,runtime-Telemetry,1
 cli-Console,sources-Resolver,1
-cli-Console,sources-root,1
+cli-Console,sources-root,2
 cli-Generator,contracts-Interfaces,2
 cli-Renderer,contracts-Spec,8
 contracts-Dependency,contracts-Spec,6
@@ -43,7 +43,7 @@ contracts-State,contracts-Spec,3
 document-Parser,contracts-Spec,38
 document-Parser,contracts-Support,2
 document-Validator,contracts-Dependency,1
-document-Validator,contracts-Spec,116
+document-Validator,contracts-Spec,118
 document-Validator,contracts-Support,2
 document-Validator,expression-Data,2
 document-Validator,expression-Enum,10

@@ -14,14 +14,19 @@ final readonly class SymbolTable
      * @param  array<string,WorkflowSymbols>  $workflows
      * @param  array<string,true>  $sourceDescriptions
      * @param  array<string,array<string,true>>  $components
+     * @param  array<string,array<string,true>>  $resolvedOperations
      */
     public function __construct(
         public array $workflows,
         public array $sourceDescriptions,
         public array $components,
+        public array $resolvedOperations = [],
     ) {}
 
-    public static function build(ArazzoDocument $doc): self
+    /**
+     * @param  array<string,array<string,true>>  $resolvedOperations
+     */
+    public static function build(ArazzoDocument $doc, array $resolvedOperations = []): self
     {
         $sources = [];
         foreach ($doc->sourceDescriptions as $s) {
@@ -40,7 +45,7 @@ final readonly class SymbolTable
             $workflows[$wf->workflowId] = self::buildWorkflow($wf);
         }
 
-        return new self($workflows, $sources, $components);
+        return new self($workflows, $sources, $components, $resolvedOperations);
     }
 
     /**
