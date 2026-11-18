@@ -43,7 +43,7 @@ contracts-State,contracts-Spec,3
 document-Parser,contracts-Spec,38
 document-Parser,contracts-Support,2
 document-Validator,contracts-Dependency,1
-document-Validator,contracts-Spec,116
+document-Validator,contracts-Spec,130
 document-Validator,contracts-Support,2
 document-Validator,expression-Data,2
 document-Validator,expression-Enum,10

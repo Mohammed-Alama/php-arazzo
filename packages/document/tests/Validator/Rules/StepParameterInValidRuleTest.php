@@ -57,6 +57,35 @@ it('rejects querystring on 1.0 docs', function () {
         ->and($errs[0]->message)->toBe("Parameter 'in' value 'querystring' requires Arazzo 1.1.0.");
 });
 
+it('rejects in values outside the 1.0 enum on 1.0 docs', function () {
+    $errors = new ErrorCollector();
+    $doc = docWithParams([new Parameter('p', ParameterIn::Body, 'x')], SpecVersion::V1_0);
+    (new StepParameterInValidRule())->check(
+        $doc,
+        SymbolTable::build($doc),
+        $errors,
+    );
+    $errs = $errors->errors();
+    expect($errs)->toHaveCount(1)
+        ->and($errs[0]->code)->toBe('step.parameter_in_valid');
+});
+
+it('accepts 1.1-only in values on 1.1 docs', function () {
+    $errors = new ErrorCollector();
+    $doc = docWithParams([
+        new Parameter('body', ParameterIn::Body, 'x'),
+        new Parameter('meta', ParameterIn::Metadata, 'x'),
+        new Parameter('var', ParameterIn::Variable, 'x'),
+        new Parameter('qs', ParameterIn::Querystring, 'x'),
+    ]);
+    (new StepParameterInValidRule())->check(
+        $doc,
+        SymbolTable::build($doc),
+        $errors,
+    );
+    expect($errors->errors())->toBe([]);
+});
+
 it('rejects querystring in component parameters on 1.0 docs', function () {
     $errors = new ErrorCollector();
     $doc = new ArazzoDocument(
