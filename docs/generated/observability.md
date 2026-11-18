@@ -61,9 +61,13 @@ _No catalog found (LedgerAppendingListener not found)._
 | `StepOperationIdSourceScopedRule` <small>core</small> | `error` | 1 |
 | `StepOperationPathSyntaxRule` <small>core</small> | `error` | 4 |
 | `StepOperationTargetPresentRule` <small>core</small> | `error` | 1 |
-| `StepParameterInValidRule` <small>core</small> | `error` | 2 |
+| `StepParameterDuplicateRule` <small>core</small> | `error` | 1 |
+| `StepParameterInValidRule` <small>core</small> | `error` | 1 |
+| `StepParameterRequiresInRule` <small>core</small> | `error` | 1 |
 | `StepParametersHaveNameRule` <small>core</small> | `error` | 1 |
 | `StepRequestBodyReplacementsTargetRule` <small>core</small> | `error` | 1 |
+| `StepRequestBodyWorkflowRule` <small>core</small> | `error` | 1 |
+| `StepSuccessActionParameterInRule` <small>core</small> | `error` | 1 |
 | `StepSuccessCriteriaConditionRule` <small>core</small> | `error` | 3 |
 | `StepTimeoutRequires11Rule` <small>core</small> | `error` | 2 |
 | `StepUniqueIdRule` <small>core</small> | `error` | 1 |
@@ -78,7 +82,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `WorkflowDependencyCycleWalker` <small>core</small> | `error` | 1 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 
-92 logging calls total. PSR-14 events are dispatched independently (see events.md).
+95 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 

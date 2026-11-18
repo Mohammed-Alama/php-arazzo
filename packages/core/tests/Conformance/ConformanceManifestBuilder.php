@@ -64,7 +64,7 @@ final class ConformanceManifestBuilder
      */
     public static function build(array $documents): array
     {
-        ksort($documents);
+        uksort($documents, 'strcasecmp');
 
         /** @var list<array<string, mixed>> $rows */
         $rows = [];

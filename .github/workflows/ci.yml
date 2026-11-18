@@ -264,6 +264,6 @@ jobs:
       - name: Install pyyaml
         run: pip install pyyaml --quiet
       - name: Score against the conformance suite
-        run: php scripts/conformance-score.php --output conformance/score.json --binary vendor/bin/arazzi --sha 2a90e6b
+        run: php scripts/conformance-score.php --output conformance/score.json --binary vendor/bin/arazzo --sha 2a90e6b
       - name: Check conformance regression gate
         run: php scripts/conformance-gate.php --score conformance/score.json --baseline conformance/baseline.json

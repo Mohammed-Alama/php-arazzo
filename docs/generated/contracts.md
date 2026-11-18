@@ -196,12 +196,20 @@ flowchart LR
     C_document_document_Validator_StepOperationTargetPresentRule -.->|implements| I_Rule
     C_document_document_Validator_StepOutputsUniqueRule["StepOutputsUniqueRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepOutputsUniqueRule -.->|implements| I_Rule
+    C_document_document_Validator_StepParameterDuplicateRule["StepParameterDuplicateRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepParameterDuplicateRule -.->|implements| I_Rule
     C_document_document_Validator_StepParameterInValidRule["StepParameterInValidRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepParameterInValidRule -.->|implements| I_Rule
+    C_document_document_Validator_StepParameterRequiresInRule["StepParameterRequiresInRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepParameterRequiresInRule -.->|implements| I_Rule
     C_document_document_Validator_StepParametersHaveNameRule["StepParametersHaveNameRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepParametersHaveNameRule -.->|implements| I_Rule
     C_document_document_Validator_StepRequestBodyReplacementsTargetRule["StepRequestBodyReplacementsTargetRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepRequestBodyReplacementsTargetRule -.->|implements| I_Rule
+    C_document_document_Validator_StepRequestBodyWorkflowRule["StepRequestBodyWorkflowRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepRequestBodyWorkflowRule -.->|implements| I_Rule
+    C_document_document_Validator_StepSuccessActionParameterInRule["StepSuccessActionParameterInRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepSuccessActionParameterInRule -.->|implements| I_Rule
     C_document_document_Validator_StepSuccessCriteriaConditionRule["StepSuccessCriteriaConditionRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepSuccessCriteriaConditionRule -.->|implements| I_Rule
     C_document_document_Validator_StepTimeoutRequires11Rule["StepTimeoutRequires11Rule<br/><small>document:Validator</small>"]:::implCore
