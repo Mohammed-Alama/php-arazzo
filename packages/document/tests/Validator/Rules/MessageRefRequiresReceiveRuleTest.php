@@ -44,7 +44,8 @@ function messageRuleDocument(
     );
 }
 
-function httpRuleDocument(SpecVersion $sv, array $outputs = []): ArazzoDocument {
+function httpRuleDocument(SpecVersion $sv, array $outputs = []): ArazzoDocument
+{
     $step = new Step(
         'fetch',
         null,
