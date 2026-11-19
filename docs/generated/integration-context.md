@@ -22,27 +22,6 @@ flowchart LR
         LARAVEL --> BRIDGE
         BRIDGE --> CORE
     end
-        A_Alama_Arazzo_Laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager"]:::adapter
-        A_Alama_Arazzo_Laravel_Lock_LaravelRedisLockManager --- BRIDGE
-        A_Alama_Arazzo_Laravel_Lock_LaravelRedisLockManager --- redis
-        A_Alama_Arazzo_Laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry"]:::adapter
-        A_Alama_Arazzo_Laravel_Persistence_DatabaseDefinitionRegistry --- BRIDGE
-        A_Alama_Arazzo_Laravel_Persistence_DatabaseDefinitionRegistry --- sql
-        A_Alama_Arazzo_Laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger"]:::adapter
-        A_Alama_Arazzo_Laravel_Persistence_DatabaseEventLedger --- BRIDGE
-        A_Alama_Arazzo_Laravel_Persistence_DatabaseEventLedger --- sql
-        A_Alama_Arazzo_Laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry"]:::adapter
-        A_Alama_Arazzo_Laravel_Persistence_DatabaseExecutionRegistry --- BRIDGE
-        A_Alama_Arazzo_Laravel_Persistence_DatabaseExecutionRegistry --- sql
-        A_Alama_Arazzo_Laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry"]:::adapter
-        A_Alama_Arazzo_Laravel_Persistence_DatabasePendingCorrelationRegistry --- BRIDGE
-        A_Alama_Arazzo_Laravel_Persistence_DatabasePendingCorrelationRegistry --- sql
-        A_Alama_Arazzo_Laravel_Queue_LaravelQueueDriver["LaravelQueueDriver"]:::adapter
-        A_Alama_Arazzo_Laravel_Queue_LaravelQueueDriver --- BRIDGE
-        A_Alama_Arazzo_Laravel_Queue_LaravelQueueDriver --- queue
-        A_Alama_Arazzo_Laravel_State_RedisHotStateStore["RedisHotStateStore"]:::adapter
-        A_Alama_Arazzo_Laravel_State_RedisHotStateStore --- BRIDGE
-        A_Alama_Arazzo_Laravel_State_RedisHotStateStore --- redis
         A_Alama_Arazzo_Runner_Execution_SyncQueueDriver["SyncQueueDriver"]:::adapter
         A_Alama_Arazzo_Runner_Execution_SyncQueueDriver --- BRIDGE
         A_Alama_Arazzo_Runner_Execution_SyncQueueDriver --- queue
@@ -52,12 +31,6 @@ flowchart LR
         A_Alama_Arazzo_Cli_Generator_Clients_OpenAiClient["OpenAiClient"]:::adapter
         A_Alama_Arazzo_Cli_Generator_Clients_OpenAiClient --- CORE
         A_Alama_Arazzo_Cli_Generator_Clients_OpenAiClient --- openai
-        A_Alama_Arazzo_Laravel_Bindings_HttpBindings["HttpBindings"]:::adapter
-        A_Alama_Arazzo_Laravel_Bindings_HttpBindings --- CORE
-        A_Alama_Arazzo_Laravel_Bindings_HttpBindings --- net
-        A_Alama_Arazzo_Laravel_Http_Psr18HttpClient["Psr18HttpClient"]:::adapter
-        A_Alama_Arazzo_Laravel_Http_Psr18HttpClient --- CORE
-        A_Alama_Arazzo_Laravel_Http_Psr18HttpClient --- net
         A_Alama_Arazzo_Sources_Resolver_DefaultSourceResolver["DefaultSourceResolver"]:::adapter
         A_Alama_Arazzo_Sources_Resolver_DefaultSourceResolver --- CORE
         A_Alama_Arazzo_Sources_Resolver_DefaultSourceResolver --- net
@@ -67,8 +40,6 @@ flowchart LR
     net["HTTP network"]:::system
     openai["OpenAI API"]:::system
     queue["Application queue backend"]:::system
-    redis["Redis"]:::system
-    sql["SQL database"]:::system
     classDef host fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
     classDef package fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef adapter fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;

@@ -18,29 +18,28 @@ Regenerated before every commit.
 |---|---|
 | **ConditionSyntaxException** | `AccessorParser` <small>evaluation:Condition</small>, `ConditionEvaluator` <small>evaluation:Condition</small>, `Lexer` <small>evaluation:Condition</small>, `Parser` <small>evaluation:Condition</small> |
 | **DecodeException** | `NativeJsonDecoder` <small>document:Parser</small>, `SymfonyYamlDecoder` <small>document:Parser</small> |
-| **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>laravel:Persistence</small> |
 | **ExecutionError** | `WorkflowEngine` <small>runner:Sync</small> |
-| **ExecutionException** | `AsyncExecutionGraphAssembler` <small>runner:Async</small>, `StepExecutionWorker` <small>runner:Async</small>, `RunnerGraphBuilder` <small>(runner root)</small>, `ExecutionGraphFactory` <small>runner:Sync</small>, `StepExecutor` <small>runner:Sync</small> |
+| **ExecutionException** | `RpcOperationExecutor` <small>protocol-rpc:Execution</small>, `RpcRequestBuilder` <small>protocol-rpc:Execution</small>, `SoapOperationExecutor` <small>protocol-soap:Execution</small>, `SoapRequestBuilder` <small>protocol-soap:Execution</small>, `AsyncExecutionGraphAssembler` <small>runner:Async</small>, `StepExecutionWorker` <small>runner:Async</small>, `RunnerGraphBuilder` <small>(runner root)</small>, `ExecutionGraphFactory` <small>runner:Sync</small>, `StepExecutor` <small>runner:Sync</small> |
 | **ExpressionSyntaxException** | `EmbeddedExpressionSplitter` <small>expression:Internal</small>, `Interpolator` <small>(expression root)</small>, `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>runner:Sync</small> |
-| **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `TypeCaster` <small>engine:Execution</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `OpenApi30Normalizer` <small>sources:Normalizer</small>, `OpenApiSourceNormalizer` <small>sources:Normalizer</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small>, `WsdlSourceNormalizer` <small>sources:Normalizer</small> |
-| **LogicException** | `StepExecutionWorker` <small>runner:Async</small>, `WorkflowExecutor` <small>runner:Sync</small>, `UnifiedStepCarrier` <small>(runner root)</small> |
+| **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `TypeCaster` <small>engine:Execution</small>, `ProtoParser` <small>protocol-rpc:Normalizer</small>, `OpenApi30Normalizer` <small>sources:Normalizer</small>, `OpenApiSourceNormalizer` <small>sources:Normalizer</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small>, `WsdlSourceNormalizer` <small>sources:Normalizer</small> |
+| **LogicException** | `AsyncApiStepExecutor` <small>protocol-http:Protocol</small>, `StepExecutionWorker` <small>runner:Async</small>, `WorkflowExecutor` <small>runner:Sync</small>, `UnifiedStepCarrier` <small>(runner root)</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>sources:Normalizer</small> |
 | **PreflightFailureException** | `StepExecutionWorker` <small>runner:Async</small>, `WorkflowExecutor` <small>runner:Sync</small> |
-| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>engine:Execution</small>, `BuiltInCriterionEvaluator` <small>(evaluation root)</small>, `CriteriaEvaluator` <small>(evaluation root)</small>, `RunnerFacade` <small>(runner root)</small>, `FileLockStrategy` <small>runtime:Infrastructure</small>, `FileStateStore` <small>runtime:State</small>, `OtelSetup` <small>runtime:Telemetry</small>, `OpenApiOperationResolver` <small>sources:Normalizer</small> |
+| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>engine:Execution</small>, `BuiltInCriterionEvaluator` <small>(evaluation root)</small>, `CriteriaEvaluator` <small>(evaluation root)</small>, `ProtobufOperationResolver` <small>protocol-rpc:Protocol</small>, `RpcMessageCodec` <small>protocol-rpc:Protocol</small>, `SoapEnvelope` <small>protocol-soap:Execution</small>, `WsdlOperationResolver` <small>protocol-soap:Execution</small>, `RunnerFacade` <small>(runner root)</small>, `FileLockStrategy` <small>engine:Runtime</small>, `FileStateStore` <small>engine:Runtime</small>, `OtelSetup` <small>engine:Runtime</small>, `OpenApiOperationResolver` <small>sources:Normalizer</small> |
+| **SchemaValidationException** | `ResponseSchemaValidator` <small>protocol-http:Execution</small>, `XsdResponseValidator` <small>protocol-soap:Validation</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>(expression root)</small> |
-| **SourceFetchException** | `SchemeSourceFetcher` <small>laravel:Support</small>, `DefaultSourceResolver` <small>sources:Resolver</small>, `HttpFetcher` <small>sources:Resolver</small>, `LocalFetcher` <small>sources:Resolver</small> |
+| **SourceFetchException** | `DefaultSourceResolver` <small>sources:Resolver</small>, `HttpFetcher` <small>sources:Resolver</small>, `LocalFetcher` <small>sources:Resolver</small> |
 | **SourceParseException** | `DefaultSourceResolver` <small>sources:Resolver</small> |
 | **StepBudgetExceededException** | `WorkflowEngine` <small>runner:Sync</small> |
-| **UnexpectedValueException** | `DatabasePendingCorrelationRegistry` <small>laravel:Persistence</small> |
 | **UnresolvableReferenceException** | `SourceRegistry` <small>sources:Resolver</small> |
 | **UnsupportedSerializationStyleException** | `ParameterSerializer` <small>engine:Execution</small> |
 | **WorkflowCycleException** | `WorkflowEngine` <small>runner:Sync</small> |
 | **WorkflowDepthExceededException** | `WorkflowEngine` <small>runner:Sync</small> |
 | **ArazzoException** | _(never raised in src)_ |
+| **DefinitionHydrationException** | _(never raised in src)_ |
 | **LoaderException** | _(never raised in src)_ |
 | **ParserException** | _(never raised in src)_ |
-| **SchemaValidationException** | _(never raised in src)_ |
 | **SourceResolutionException** | _(never raised in src)_ |
 | **UnsupportedSourceVersionException** | _(never raised in src)_ |
 
@@ -48,24 +47,30 @@ Regenerated before every commit.
 
 | Caught type | Handled by | Flag |
 |---|---|---|
+| `ClientExceptionInterface` | `RpcOperationExecutor` |  |
+| `ClientExceptionInterface` | `SoapOperationExecutor` |  |
 | `ClientExceptionInterface` | `HttpFetcher` |  |
 | `ConditionSyntaxException` | `CriteriaEvaluator` |  |
 | `DecodeException` | `Loader` |  |
+| `Exception` | `DefaultOpenApiExecutor` |  |
 | `ExpressionSyntaxException` | `EmbeddedExpressionSplitter` |  |
 | `ExpressionSyntaxException` | `Parser` |  |
+| `InvalidArgumentException` | `StepOutputExtractor` |  |
 | `JsonException` | `NativeJsonDecoder` |  |
+| `JsonException` | `AsyncApiStepExecutor` |  |
 | `LoaderException` | `RunCommand` |  |
 | `LoaderException` | `ValidateCommand` |  |
 | `ParseException` | `SymfonyYamlDecoder` |  |
 | `ParserException` | `RunCommand` |  |
 | `ParserException` | `ValidateCommand` |  |
-| `ParserException` | `DatabaseDefinitionRegistry` |  |
+| `RuntimeException` | `RpcOperationExecutor` |  |
+| `RuntimeException` | `SoapOperationExecutor` |  |
 | `SchemaValidationException` | `RunCommand` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
 | `SelectorEvaluationException` | `SelectorEvaluator` |  |
 | `Throwable` | `ValidateCommand` |  |
 | `Throwable` | `CriteriaEvaluator` |  |
-| `Throwable` | `DatabaseEventLedger` |  |
+| `Throwable` | `HttpStepExecutor` |  |
 | `Throwable` | `StepExecutionWorker` |  |
 | `Throwable` | `StepExecutor` |  |
 | `Throwable` | `WorkflowExecutor` |  |
@@ -85,7 +90,6 @@ Regenerated before every commit.
 | const TERMINAL_STATES | `StepStateMachineEngine` | `[StepState::Completed, StepState::Failed, StepState::Cancelled]` |
 | prop max | `ConditionCache` | `256` |
 | prop max | `AstCache` | `256` |
-| prop defaultTtlSeconds | `RedisHotStateStore` | `86400` |
 | prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
 | prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
 | prop stateTtlSeconds | `UnifiedStepCarrier` | `86400` |

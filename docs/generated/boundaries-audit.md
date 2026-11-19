@@ -17,14 +17,12 @@ when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 5 | 3 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 46 | **forbidden** |
+| `GuzzleHttp` | 7 | 0 | **forbidden** ⚠ |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 25 | 0 | _unclassified_ ⚠ |
-| `Psr` | 35 | 26 | allowed |
-| `Spatie` | 0 | 2 | _unclassified_ |
+| `Psr` | 60 | 0 | allowed |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 10 | 0 | **forbidden** ⚠ |
+| `cebe` | 18 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
@@ -40,48 +38,41 @@ when a boundary consciously moves.
 | document | `document:Validator` | `JsonSchema` | 4 |
 | engine | `engine:Execution` | `Psr` | 4 |
 | engine | `engine:Execution` | `cebe` | 2 |
+| engine | `engine:Runtime` | `OpenTelemetry` | 23 |
 | evaluation | `evaluation:_` | `Psr` | 2 |
 | expression | `expression:_` | `Flow` | 1 |
+| protocol-http | `protocol-http:Execution` | `GuzzleHttp` | 2 |
+| protocol-http | `protocol-http:Execution` | `Psr` | 8 |
+| protocol-http | `protocol-http:Execution` | `cebe` | 8 |
+| protocol-http | `protocol-http:Protocol` | `Psr` | 6 |
+| protocol-http | `protocol-http:Registrar` | `Psr` | 1 |
+| protocol-rpc | `protocol-rpc:Execution` | `Psr` | 4 |
+| protocol-rpc | `protocol-rpc:Transfer` | `Psr` | 1 |
+| protocol-soap | `protocol-soap:Execution` | `Psr` | 4 |
+| protocol-soap | `protocol-soap:Transfer` | `Psr` | 1 |
 | runner | `runner:Async` | `OpenTelemetry` | 2 |
 | runner | `runner:Async` | `Psr` | 3 |
 | runner | `runner:Execution` | `Psr` | 2 |
 | runner | `runner:Sync` | `Psr` | 3 |
 | runner | `runner:_` | `Psr` | 2 |
-| runtime | `runtime:Telemetry` | `OpenTelemetry` | 23 |
 | sources | `sources:Normalizer` | `cebe` | 8 |
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
 | sources | `sources:Resolver` | `Psr` | 4 |
 | sources | `sources:Validator` | `JsonSchema` | 3 |
 | sources | `sources:_` | `GuzzleHttp` | 1 |
 | sources | `sources:_` | `Psr` | 2 |
-| laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
-| laravel | `laravel:Bindings` | `Illuminate` | 9 |
-| laravel | `laravel:Bindings` | `Psr` | 11 |
-| laravel | `laravel:Events` | `Illuminate` | 1 |
-| laravel | `laravel:Events` | `Psr` | 1 |
-| laravel | `laravel:Http` | `GuzzleHttp` | 1 |
-| laravel | `laravel:Http` | `Illuminate` | 6 |
-| laravel | `laravel:Http` | `Psr` | 2 |
-| laravel | `laravel:Lock` | `Illuminate` | 2 |
-| laravel | `laravel:Persistence` | `Illuminate` | 5 |
-| laravel | `laravel:Persistence` | `Psr` | 1 |
-| laravel | `laravel:Queue` | `Illuminate` | 11 |
-| laravel | `laravel:State` | `Illuminate` | 1 |
-| laravel | `laravel:Support` | `Illuminate` | 3 |
-| laravel | `laravel:Support` | `Psr` | 4 |
-| laravel | `laravel:_` | `Illuminate` | 8 |
-| laravel | `laravel:_` | `Psr` | 7 |
-| laravel | `laravel:_` | `Spatie` | 2 |
 
-**12 library boundary violation(s):**
+**14 library boundary violation(s):**
 - `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (4 refs)
 - `engine:Execution` imports `cebe\*` (2 refs)
+- `engine:Runtime` imports `OpenTelemetry\*` (23 refs)
 - `expression:_` imports `Flow\*` (1 refs)
+- `protocol-http:Execution` imports `GuzzleHttp\*` (2 refs)
+- `protocol-http:Execution` imports `cebe\*` (8 refs)
 - `runner:Async` imports `OpenTelemetry\*` (2 refs)
-- `runtime:Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
@@ -115,27 +106,42 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
 | `evaluation` | `EvaluationContext` | `expression` | 5 | `ConditionEvaluator` |
 | `evaluation` | `Parser` | `expression` | 1 | `AccessorParser` |
-| `runner` | `CorrelationPendingEvent` | `events` | 2 | `StepExecutionWorker` |
-| `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
+| `protocol-http` | `EvaluationContext` | `expression` | 2 | `StepOutputExtractor` |
+| `protocol-http` | `IdempotencyKeyInjector` | `engine` | 2 | `HttpStepExecutor` |
+| `protocol-http` | `OpenApi30Normalizer` | `sources` | 1 | `ProtocolHttpRegistrar` |
+| `protocol-http` | `OpenApi31Normalizer` | `sources` | 1 | `ProtocolHttpRegistrar` |
+| `protocol-http` | `OpenApiDocumentLoader` | `sources` | 1 | `ProtocolHttpRegistrar` |
+| `protocol-http` | `OpenApiOperationHandle` | `sources` | 3 | `StepOutputExtractor` |
+| `protocol-http` | `OpenApiOperationResolver` | `sources` | 4 | `ResponseSchemaValidator` |
+| `protocol-http` | `OpenApiSourceNormalizer` | `sources` | 1 | `ProtocolHttpRegistrar` |
+| `protocol-http` | `OpenApiVersionDetector` | `sources` | 1 | `ProtocolHttpRegistrar` |
+| `protocol-http` | `ParameterSerializer` | `engine` | 1 | `DefaultOpenApiExecutor` |
+| `protocol-http` | `RequestCompiler` | `engine` | 1 | `HttpStepExecutor` |
+| `protocol-http` | `ReusableParameterResolver` | `engine` | 1 | `AsyncApiStepExecutor` |
+| `protocol-http` | `SchemaValidator` | `engine` | 1 | `ResponseSchemaValidator` |
+| `protocol-http` | `TypeCaster` | `engine` | 2 | `StepOutputExtractor` |
+| `protocol-rpc` | `NormalizedOpenApiOperation` | `document` | 1 | `ProtoSourceNormalizer` |
+| `protocol-rpc` | `RequestCompiler` | `engine` | 1 | `RpcRequestBuilder` |
+| `protocol-rpc` | `ResolvedOperation` | `document` | 4 | `RpcRequestBuilder` |
+| `protocol-rpc` | `ReusableParameterResolver` | `engine` | 1 | `RpcRequestBuilder` |
+| `protocol-rpc` | `SourceFetcher` | `sources` | 1 | `ProtobufOperationResolver` |
+| `protocol-soap` | `NormalizedOpenApiOperation` | `document` | 1 | `SoapRequestBuilder` |
+| `protocol-soap` | `RequestCompiler` | `engine` | 1 | `SoapRequestBuilder` |
+| `protocol-soap` | `ResolvedOperation` | `document` | 3 | `WsdlOperationResolver` |
+| `protocol-soap` | `SourceFetcher` | `sources` | 1 | `WsdlOperationResolver` |
+| `protocol-soap` | `WsdlSourceNormalizer` | `sources` | 2 | `WsdlOperationResolver` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 2 | `StepOutcomeHandler` |
 | `runner` | `EvaluationContext` | `expression` | 5 | `SubWorkflowInvoker` |
-| `runner` | `ExecutionContext` | `runtime` | 2 | `Transition` |
+| `runner` | `ExecutionContext` | `engine` | 2 | `Transition` |
 | `runner` | `IdempotencyKeyInjector` | `engine` | 2 | `AsyncExecutionGraphAssembler` |
 | `runner` | `OpenApiOperationHandle` | `sources` | 2 | `OpenApiExecutorInterface` |
 | `runner` | `OpenApiOperationResolver` | `sources` | 3 | `OperationRuntime` |
-| `runner` | `OtelSetup` | `runtime` | 1 | `StepExecutionWorker` |
+| `runner` | `OtelSetup` | `engine` | 1 | `StepExecutionWorker` |
 | `runner` | `RequestCompiler` | `engine` | 1 | `StepExecutor` |
-| `runner` | `RetryPolicy` | `runtime` | 1 | `WorkflowEngine` |
+| `runner` | `RetryPolicy` | `engine` | 1 | `WorkflowEngine` |
 | `runner` | `ReusableParameterResolver` | `engine` | 1 | `SubWorkflowStepExecutor` |
-| `runner` | `RunCompletedEvent` | `events` | 3 | `StepExecutionWorker` |
-| `runner` | `RunFailedEvent` | `events` | 3 | `StepExecutionWorker` |
-| `runner` | `RunStartedEvent` | `events` | 1 | `WorkflowExecutor` |
-| `runner` | `StepExecutedEvent` | `events` | 2 | `StepExecutionWorker` |
-| `runner` | `StepFailedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `StepParameterMerger` | `engine` | 2 | `StepExecutionWorker` |
-| `runner` | `StepRetriedEvent` | `events` | 2 | `StepOutcomeHandler` |
-| `runner` | `StepStartedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
 | `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
 | `sources` | `Loader` | `document` | 1 | `SourceGraph` |

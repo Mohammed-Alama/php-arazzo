@@ -3,7 +3,7 @@
 # Every package with a src/ directory, in one place. The four phpmd targets and
 # the CI job all scan this set; tests/scripts/PhpmdGateWiringTest.php holds them
 # to it, so a package split out of core cannot sit outside the gate unnoticed.
-PHPMD_PATHS = packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/evaluation/src packages/sources/src packages/runtime/src packages/engine/src packages/events/src packages/runner/src packages/cli/src packages/laravel/src packages/protocol-http/src packages/protocol-rpc/src packages/protocol-soap/src
+PHPMD_PATHS = packages/core/src packages/contracts/src packages/document/src packages/engine/src packages/evaluation/src packages/expression/src packages/protocol-http/src packages/protocol-rpc/src packages/protocol-soap/src packages/runner/src packages/sources/src packages/cli/src
 
 # pdepend takes the same paths comma-joined, in one argument.
 empty :=

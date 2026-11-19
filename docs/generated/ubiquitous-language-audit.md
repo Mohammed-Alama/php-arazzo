@@ -15,39 +15,39 @@ Evans' first question: does the code speak one language?
 
 ### run vs execute vs invoke
 
-- **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
-- **Executor**: `OpenApiExecutorInterface`, `OperationExecutorPluginInterface`, `OperationExecutorRegistry`, `ProtocolExecutorRegistryInterface` + 4 more (8 types)
+- **Execute**: `ExecuteStepJob`, `StepExecutedEvent` (2 types)
+- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 9 more (13 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
-- **Run**: `CliRunResult`, `CliRunner`, `OperationRuntime`, `RunCommand` + 13 more (17 types)
+- **Run**: `CliRunResult`, `CliRunner`, `OperationRuntime`, `RunCommand` + 11 more (15 types)
 - **Runner**: `CliRunner`, `RunnerFacade`, `RunnerFacadeInterface`, `RunnerGraphBuilder` + 1 more (5 types)
 
 ### parse vs load vs decode
 
 - **Decoder**: `DecoderInterface`, `DecoderRegistry`, `NativeJsonDecoder`, `SymfonyYamlDecoder` (4 types)
 - **Loader**: `DocumentLoader`, `Loader`, `LoaderException`, `OpenApiDocumentLoader` + 1 more (5 types)
-- **Parser**: `AccessorParser`, `CachedParser`, `FieldParser`, `Parser` + 2 more (6 types)
+- **Parser**: `AccessorParser`, `CachedParser`, `FieldParser`, `Parser` + 3 more (7 types)
 
 ### document vs definition vs spec
 
-- **Definition**: `DatabaseDefinitionRegistry`, `DefinitionHydrationException`, `DefinitionRegistryInterface`, `InMemoryDefinitionRegistry` + 1 more (5 types)
-- **Document**: `ArazzoDocument`, `Document`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule` + 6 more (10 types)
+- **Definition**: `DefinitionHydrationException`, `DefinitionRegistryInterface`, `InMemoryDefinitionRegistry`, `WritableDefinitionRegistryInterface` (4 types)
+- **Document**: `ArazzoDocument`, `Document`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule` + 7 more (11 types)
 - **Spec**: `SpecVersion` (1 types)
 
 ### fetch vs resolve vs retrieve
 
-- **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SchemeSourceFetcher` + 1 more (5 types)
-- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `InputSchemaResolver`, `OpenApiOperationResolver` + 8 more (12 types)
+- **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
+- **Resolver**: `DefaultSourceResolver`, `InputSchemaResolver`, `OpenApiOperationResolver`, `OpenApiOperationResolverInterface` + 9 more (13 types)
 
 ### state vs status
 
-- **State**: `ExecutionState`, `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore` + 5 more (9 types)
+- **State**: `ExecutionState`, `FileStateStore`, `InMemoryStateStore`, `StateStoreInterface` + 4 more (8 types)
 - **Status**: `ExecutionStatus`, `StepStatus` (2 types)
 
 ### registry vs store vs repository
 
-- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 16 more (20 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DecoderRegistry`, `DefinitionRegistryInterface`, `ExecutionRegistryInterface` + 13 more (17 types)
 - **Repository**: `StoredWorkflowStateRepository`, `WorkflowStateRepositoryInterface` (2 types)
-- **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` + 1 more (5 types)
+- **Store**: `FileStateStore`, `InMemoryStateStore`, `StateStoreInterface`, `StoredWorkflowStateRepository` (4 types)
 
 ### workflow vs process vs flow
 
@@ -57,7 +57,7 @@ Evans' first question: does the code speak one language?
 
 ### render vs generate
 
-- **Generator**: `ArazzoGenerator`, `GeneratorBindings` (2 types)
+- **Generator**: `ArazzoGenerator` (1 types)
 - **Render**: `RenderCommand`, `Renderer` (2 types)
 
 ## Homonyms (same name, multiple homes)
@@ -65,9 +65,10 @@ Evans' first question: does the code speak one language?
 | Name | Locations | Packages |
 |---|---|---|
 | `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
+| `OpenApiExecutorInterface` | `Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface`<br/>`Runner\Execution\Interfaces\OpenApiExecutorInterface` | protocol-http, runner |
 | `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
 | `ParserInterface` | `Expression\Interfaces\ParserInterface`<br/>`Evaluation\Condition\ParserInterface` | expression, evaluation |
-| `StepResult` | `Runtime\State\Data\StepResult`<br/>`Runner\Execution\Data\StepResult` | runtime, runner |
+| `StepResult` | `Runtime\State\Data\StepResult`<br/>`Runner\Execution\Data\StepResult` | engine, runner |
 | `Token` | `Expression\Data\Token`<br/>`Evaluation\Condition\Token` | expression, evaluation |
 | `TokenKind` | `Expression\Enum\TokenKind`<br/>`Evaluation\Enum\TokenKind` | expression, evaluation |
 | `Transition` | `Engine\Data\Transition`<br/>`Runner\Execution\Data\Transition` | engine, runner |

@@ -18,18 +18,15 @@ Entry points where untrusted data (HTTP requests, queue payloads) first touches 
 
 | Entry point | Kind |
 |---|---|
-| `ArazzoApiController` | Http\Controllers |
-| `WebhookResumeController` | Http\Controllers |
-| `RunExecuteStepJob` | Queue\Jobs |
-| `RunResumeCorrelationJob` | Queue\Jobs |
+| — | — |
 
 ## Sinks
 
 | Category | Symbol | Sites |
 |---|---|---|
-| filesystem | `file_put_contents` | `RenderCommand` <small>cli</small>, `FileStateStore` <small>runtime</small> |
-| filesystem | `fopen / fwrite` | `FileLockStrategy` <small>runtime</small>, `OtelSetup` <small>runtime</small> |
-| filesystem | `unlink` | `FileStateStore` <small>runtime</small> |
+| filesystem | `file_put_contents` | `RenderCommand` <small>cli</small>, `FileStateStore` <small>engine</small> |
+| filesystem | `fopen / fwrite` | `FileLockStrategy` <small>engine</small>, `OtelSetup` <small>engine</small> |
+| filesystem | `unlink` | `FileStateStore` <small>engine</small> |
 
 ## Weak or risky primitives
 

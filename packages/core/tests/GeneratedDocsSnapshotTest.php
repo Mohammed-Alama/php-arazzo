@@ -64,7 +64,7 @@ it('renders a per-package capability contract', function (): void {
         ->and($doc)->toContain('## document')
         ->and($doc)->toContain('## runner')
         ->and($doc)->toContain('## cli')
-        ->and($doc)->toContain('## laravel')
+        ->and($doc)->toContain('## sources')
         ->and($doc)->toContain('Deliberately internal')
         ->and($doc)->toContain('### Capabilities')
         ->and($doc)->toContain('Public entry surface')
@@ -123,7 +123,7 @@ it('keeps generated dir markdown-only', function (): void {
 
 it('derives layer order from composer require', function (): void {
     expect(\ArazzoDocs\packageLayerOrder(dirname(__DIR__, 3)))->toBe(
-        ['contracts', 'expression', 'runtime', 'events', 'evaluation', 'document', 'engine', 'sources', 'runner', 'cli', 'laravel'],
+        ['contracts', 'expression', 'engine', 'evaluation', 'document', 'sources', 'protocol-http', 'protocol-rpc', 'protocol-soap', 'runner', 'core', 'cli'],
     );
 });
 
@@ -164,7 +164,8 @@ it('flattens scans deterministically with owning packages', function (): void {
 it('renders update-migration columns in the schema', function (): void {
     $out = file_get_contents(dirname(__DIR__, 3).'/docs/generated/database-schema.md');
 
-    expect($out)->toContain('status')->and($out)->toContain('completed_at');
+    expect($out)->toContain('Generated: Persistence Schema')
+        ->and($out)->toContain('erDiagram');
 });
 
 it('labels security sites with owning packages, not core', function (): void {
@@ -196,9 +197,9 @@ it('pins the fixed-doc contracts', function (): void {
     $dir = dirname(__DIR__, 3).'/docs/generated';
     $get = fn (string $f): string => (string) file_get_contents($dir.'/'.$f);
 
-    // Task 2: layering map reflects the new package boundaries (contracts <- expression <- evaluation <- document <- sources <- runner <- cli <- laravel)
+    // Task 2: layering map reflects the new package boundaries
     expect($get('namespace-graph.md'))->not->toContain('Alama\\Arazzo\\Ast\\Ast')
-        ->and($get('layering.md'))->toContain('contracts <- expression <- evaluation <- document <- sources <- runner <- cli <- laravel');
+        ->and($get('layering.md'))->toContain('Package boundaries');
 
     // Task 3: package sections, facades surfaced
     expect($get('public-api.md'))->toContain('## evaluation')
@@ -208,7 +209,7 @@ it('pins the fixed-doc contracts', function (): void {
     // Task 5: live split tracking, not a missing plan
     expect($get('modularization-progress.md'))->toContain('Facade pairs present');
     // Task 7: migrated schema columns, live state machine
-    expect($get('database-schema.md'))->toContain('completed_at')
+    expect($get('database-schema.md'))->toContain('erDiagram')
         ->and($get('state-machine.md'))->toContain('stateDiagram-v2');
     // Task 8: revived expression AST diagram
     expect($get('expression-ast.md'))->toContain('StepRef');

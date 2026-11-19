@@ -158,6 +158,54 @@ public contract between packages.
 - `XpathEvaluator` — _not found in scan_
 - `Evaluation\*` — whole namespace (declared target)
 
+## sources
+
+> **Provides:** Resolves, fetches and decodes Arazzo sources, and normalizes the OpenAPI/Swagger operations steps target.
+
+### Capabilities
+
+- Resolve source descriptions to decoded source documents (local file, HTTP, cached)
+- Normalize OpenAPI 3.0/3.1 and Swagger 2.0 operations to a vendor-free model
+- Detect the OpenAPI/Swagger version of a decoded source document
+- Hand callers a transport-bound operation handle for execution
+- Preflight validation of operation-targeted steps against resolved sources
+- Composition root wiring document, resolver, fetchers and cache behind one graph
+
+### Public entry surface
+
+- `Document` — _not found in scan_
+
+### Cross-boundary value types
+
+- `OpenApiOperationHandle` — present
+- `SourceRuntime` — present
+- `SourceFetchException` — present
+- `SourceParseException` — present
+- `SourceResolutionException` — present
+- `UnresolvableReferenceException` — present
+- `UnsupportedSourceVersionException` — present
+
+### Deliberately internal
+
+- `SourceResolver` — `@internal`: yes
+- `SourceFetcher` — `@internal`: yes
+- `SourceRegistry` — `@internal`: yes
+- `DefaultSourceResolver` — `@internal`: yes
+- `HttpFetcher` — `@internal`: yes
+- `LocalFetcher` — `@internal`: yes
+- `CachedFetcher` — `@internal`: yes
+- `OpenApiNormalizerInterface` — `@internal`: yes
+- `OpenApi30Normalizer` — `@internal`: yes
+- `OpenApi31Normalizer` — `@internal`: yes
+- `Swagger2Normalizer` — `@internal`: yes
+- `OpenApiVersionDetector` — `@internal`: yes
+- `OpenApiDocumentLoader` — `@internal`: yes
+- `OpenApiOperationResolver` — `@internal`: yes
+- `PreflightValidator` — `@internal`: yes
+- `SourceGraph` — `@internal`: no (target for the sweep)
+- `Normalizer\*` — whole namespace (declared target)
+- `Resolver\*` — whole namespace (declared target)
+
 ## document
 
 > **Provides:** Loads, parses and validates Arazzo documents, and holds the vendor-free model types steps resolve to.
@@ -209,54 +257,6 @@ public contract between packages.
 - `Validator\Data\*` — whole namespace (declared target)
 - `Validator\Interfaces\*` — whole namespace (declared target)
 
-## sources
-
-> **Provides:** Resolves, fetches and decodes Arazzo sources, and normalizes the OpenAPI/Swagger operations steps target.
-
-### Capabilities
-
-- Resolve source descriptions to decoded source documents (local file, HTTP, cached)
-- Normalize OpenAPI 3.0/3.1 and Swagger 2.0 operations to a vendor-free model
-- Detect the OpenAPI/Swagger version of a decoded source document
-- Hand callers a transport-bound operation handle for execution
-- Preflight validation of operation-targeted steps against resolved sources
-- Composition root wiring document, resolver, fetchers and cache behind one graph
-
-### Public entry surface
-
-- `Document` — _not found in scan_
-
-### Cross-boundary value types
-
-- `OpenApiOperationHandle` — present
-- `SourceRuntime` — present
-- `SourceFetchException` — present
-- `SourceParseException` — present
-- `SourceResolutionException` — present
-- `UnresolvableReferenceException` — present
-- `UnsupportedSourceVersionException` — present
-
-### Deliberately internal
-
-- `SourceResolver` — `@internal`: yes
-- `SourceFetcher` — `@internal`: yes
-- `SourceRegistry` — `@internal`: yes
-- `DefaultSourceResolver` — `@internal`: yes
-- `HttpFetcher` — `@internal`: yes
-- `LocalFetcher` — `@internal`: yes
-- `CachedFetcher` — `@internal`: yes
-- `OpenApiNormalizerInterface` — `@internal`: yes
-- `OpenApi30Normalizer` — `@internal`: yes
-- `OpenApi31Normalizer` — `@internal`: yes
-- `Swagger2Normalizer` — `@internal`: yes
-- `OpenApiVersionDetector` — `@internal`: yes
-- `OpenApiDocumentLoader` — `@internal`: yes
-- `OpenApiOperationResolver` — `@internal`: yes
-- `PreflightValidator` — `@internal`: yes
-- `SourceGraph` — `@internal`: no (target for the sweep)
-- `Normalizer\*` — whole namespace (declared target)
-- `Resolver\*` — whole namespace (declared target)
-
 ## runner
 
 > **Provides:** Executes Arazzo workflows: step dispatch, state transitions, async/queued execution, protocol executors and persistence registries.
@@ -290,7 +290,7 @@ _None — the entry surface exchanges plain arrays._
 - `PendingCorrelationRegistryInterface` — _not found in scan_
 - `InMemoryStateStore` — _not found in scan_
 - `FileStateStore` — _not found in scan_
-- `EventLedgerInterface` — _not found in scan_
+- `EventLedgerInterface` — `@internal`: yes
 - `HttpClientInterface` — _not found in scan_
 - `ProtocolExecutorRegistryInterface` — `@internal`: yes
 - `OpenApiExecutorInterface` — `@internal`: yes
@@ -345,51 +345,4 @@ _None — the entry surface exchanges plain arrays._
 - `CliRunResult` — `@internal`: yes
 - `NullEventLedger` — `@internal`: yes
 - `InProcessExecutionRegistry` — `@internal`: yes
-
-## laravel
-
-> **Provides:** The Laravel integration edge: wires every port to framework adapters and exposes the workflow engine to the container.
-
-### Capabilities
-
-- Service-container wiring for every contracts SPI port (queue, lock, AI client, HTTP, registries, state)
-- HTTP controllers for API + webhook resume
-- Persistence adapters (database registries, Redis state/locks)
-- Queued async execution jobs
-- Framework event dispatch
-
-### Public entry surface
-
-- `LaravelArazzoServiceProvider` (`class`)
-  - `public function register(): void`
-  - `public function configurePackage(Package $package): void`
-  - `public function packageRegistered(): void`
-  - `public function packageBooted(): void`
-
-### Cross-boundary value types
-
-- `ConfigValue` — present
-
-### Deliberately internal
-
-- `FacadeBindings` — `@internal`: yes
-- `GeneratorBindings` — `@internal`: yes
-- `ResolverBindings` — `@internal`: yes
-- `PersistenceBindings` — `@internal`: yes
-- `EventBindings` — `@internal`: yes
-- `HttpBindings` — `@internal`: yes
-- `ExecutionBindings` — `@internal`: yes
-- `DatabaseDefinitionRegistry` — `@internal`: yes
-- `DatabaseExecutionRegistry` — `@internal`: yes
-- `DatabaseEventLedger` — `@internal`: yes
-- `DatabasePendingCorrelationRegistry` — `@internal`: yes
-- `IlluminatePsrEventDispatcher` — `@internal`: yes
-- `Psr18HttpClient` — `@internal`: yes
-- `LaravelQueueDriver` — `@internal`: yes
-- `LaravelRedisLockManager` — `@internal`: yes
-- `RedisHotStateStore` — `@internal`: yes
-- `RunExecuteStepJob` — `@internal`: yes
-- `RunResumeCorrelationJob` — `@internal`: yes
-- `WebhookResumeController` — `@internal`: yes
-- `ArazzoApiController` — `@internal`: yes
 

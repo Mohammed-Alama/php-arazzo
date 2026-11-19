@@ -3338,11 +3338,11 @@
         },
         {
             "name": "php-arazzo/arazzo-core",
-            "version": "dev-main",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/core",
-                "reference": "aa9fa7113a7f9cbb81c196a1f51818ac2e22d0c0"
+                "reference": "08669527cf6c501f0b5789fdbd75d6ef63bf3820"
             },
             "require": {
                 "cebe/php-openapi": "^1.7",
@@ -3351,7 +3351,6 @@
                 "open-telemetry/exporter-otlp": "^1.0",
                 "open-telemetry/sdk": "^1.0",
                 "php": "^8.4",
-                "php-arazzo/arazzo-cli": "@dev",
                 "php-arazzo/arazzo-contracts": "@dev",
                 "php-arazzo/arazzo-document": "@dev",
                 "php-arazzo/arazzo-evaluation": "@dev",

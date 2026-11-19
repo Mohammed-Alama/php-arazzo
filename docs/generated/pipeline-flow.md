@@ -15,7 +15,6 @@ flowchart TD
         Alama_Arazzo_Runner_Async_AsyncExecutionGraphAssembler["AsyncExecutionGraphAssembler"]:::entry
         Alama_Arazzo_Runner_Async_CorrelationResumer["CorrelationResumer"]:::service
         Alama_Arazzo_Runner_Async_ExecuteStepJob["ExecuteStepJob"]:::service
-        Alama_Arazzo_Runner_Async_ResumeCorrelationJob["ResumeCorrelationJob"]:::service
         Alama_Arazzo_Runner_Async_StepExecutionWorker["StepExecutionWorker"]:::service
         Alama_Arazzo_Runner_Async_StepOutcomeHandler["StepOutcomeHandler"]:::service
         Alama_Arazzo_Runner_Async_SubWorkflowInvoker["SubWorkflowInvoker"]:::service
@@ -30,10 +29,6 @@ flowchart TD
         Alama_Arazzo_Runner_Execution_Data_StepResult["StepResult"]:::service
         Alama_Arazzo_Runner_Execution_Data_SubWorkflowResult["SubWorkflowResult"]:::service
     end
-    subgraph G_Queue_Jobs["Queue/Jobs"]
-        Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob["RunExecuteStepJob"]:::entry
-        Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob["RunResumeCorrelationJob"]:::entry
-    end
     subgraph G_Sync["Sync"]
         Alama_Arazzo_Runner_Sync_ExecutionGraphFactory["ExecutionGraphFactory"]:::entry
         Alama_Arazzo_Runner_Sync_StepExecutor["StepExecutor"]:::service
@@ -42,8 +37,6 @@ flowchart TD
         Alama_Arazzo_Runner_Sync_WorkflowEngine["WorkflowEngine"]:::service
         Alama_Arazzo_Runner_Sync_WorkflowExecutor["WorkflowExecutor"]:::service
     end
-    Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob --> Alama_Arazzo_Runner_Async_ExecuteStepJob
-    Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob --> Alama_Arazzo_Runner_Async_ResumeCorrelationJob
     Alama_Arazzo_Runner_Async_AsyncExecutionGraphAssembler --> Alama_Arazzo_Runner_Async_CorrelationResumer
     Alama_Arazzo_Runner_Async_AsyncExecutionGraphAssembler --> Alama_Arazzo_Runner_Async_StepExecutionWorker
     Alama_Arazzo_Runner_Async_AsyncExecutionGraphAssembler --> Alama_Arazzo_Runner_Async_StepOutcomeHandler
@@ -82,14 +75,11 @@ flowchart TD
 
 | Service | Package | Depends on | Used by | Dispatches |
 |---|---|---|---|---|
-| **RunExecuteStepJob** | laravel | `ExecuteStepJob` | — | — |
-| **RunResumeCorrelationJob** | laravel | `ResumeCorrelationJob` | — | — |
 | **AsyncExecutionGraphAssembler** | runner | `CorrelationResumer`, `StepExecutionWorker`, `StepOutcomeHandler`, `SubWorkflowInvoker`, `RunControlFlow`, `RunPersistence`, `OperationRuntime`, `StepExecutor`, `SubWorkflowStepExecutor`, `WorkflowEngine`, `WorkflowExecutor` | — | — |
-| **CorrelationResumer** | runner | `StepOutcomeHandler` | `AsyncExecutionGraphAssembler` | — |
-| **ExecuteStepJob** | runner | — | `RunExecuteStepJob`, `StepExecutionWorker`, `StepOutcomeHandler` | — |
-| **ResumeCorrelationJob** | runner | — | `RunResumeCorrelationJob` | — |
-| **StepExecutionWorker** | runner | `ExecuteStepJob`, `WorkflowEngine` | `AsyncExecutionGraphAssembler` | — |
-| **StepOutcomeHandler** | runner | `ExecuteStepJob`, `SubWorkflowInvoker`, `WorkflowEngine` | `AsyncExecutionGraphAssembler`, `CorrelationResumer` | — |
+| **CorrelationResumer** | runner | `StepOutcomeHandler` | `AsyncExecutionGraphAssembler` | `CorrelationResumedEvent` |
+| **ExecuteStepJob** | runner | — | `StepExecutionWorker`, `StepOutcomeHandler` | — |
+| **StepExecutionWorker** | runner | `ExecuteStepJob`, `WorkflowEngine` | `AsyncExecutionGraphAssembler` | `CorrelationPendingEvent`, `RunCompletedEvent`, `RunFailedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepStartedEvent` |
+| **StepOutcomeHandler** | runner | `ExecuteStepJob`, `SubWorkflowInvoker`, `WorkflowEngine` | `AsyncExecutionGraphAssembler`, `CorrelationResumer` | `CorrelationPendingEvent`, `RunCompletedEvent`, `RunFailedEvent`, `StepRetriedEvent` |
 | **SubWorkflowInvoker** | runner | `SubWorkflowResult`, `WorkflowExecutor` | `AsyncExecutionGraphAssembler`, `StepOutcomeHandler` | — |
 | **ExecutionResult** | runner | — | `WorkflowExecutor` | — |
 | **RunControlFlow** | runner | `WorkflowEngine` | `AsyncExecutionGraphAssembler` | — |
@@ -102,4 +92,4 @@ flowchart TD
 | **SubWorkflowStepExecutor** | runner | `WorkflowExecutor` | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory` | — |
 | **WorkflowDependencyResolver** | runner | — | `WorkflowExecutor` | — |
 | **WorkflowEngine** | runner | — | `AsyncExecutionGraphAssembler`, `StepExecutionWorker`, `StepOutcomeHandler`, `RunControlFlow`, `ExecutionGraphFactory`, `WorkflowExecutor` | — |
-| **WorkflowExecutor** | runner | `ExecutionResult`, `StepResult`, `StepExecutor`, `WorkflowDependencyResolver`, `WorkflowEngine` | `AsyncExecutionGraphAssembler`, `SubWorkflowInvoker`, `ExecutionGraphFactory`, `SubWorkflowStepExecutor` | — |
+| **WorkflowExecutor** | runner | `ExecutionResult`, `StepResult`, `StepExecutor`, `WorkflowDependencyResolver`, `WorkflowEngine` | `AsyncExecutionGraphAssembler`, `SubWorkflowInvoker`, `ExecutionGraphFactory`, `SubWorkflowStepExecutor` | `RunCompletedEvent`, `RunFailedEvent`, `RunStartedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepRetriedEvent`, `StepStartedEvent` |
