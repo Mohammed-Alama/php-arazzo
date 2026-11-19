@@ -1,5 +1,5 @@
 {
-    "name": "alama/arazzo-protocol-rpc",
+    "name": "php-arazzo/arazzo-protocol-rpc",
     "description": "Protocol-Buffer RPC vertical slice for alama/arazzo-core: gRPC, gRPC-Web, Twirp and Connect executors + RpcResponseTransfer. The .proto parser ships inside this package (DF11 vendored-codec exception); transport is contracts' HttpClientInterface (DF9). Zero framework.",
     "keywords": [
         "alama",
@@ -13,6 +13,7 @@
         "protocol"
     ],
     "license": "MIT",
+    "version": "1.0.0-alpha.1",
     "repositories": [
         {
             "type": "path",

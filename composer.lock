@@ -431,8 +431,8 @@
             }
         },
         {
-            "name": "alama/arazzo-protocol-rpc",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-protocol-rpc",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/protocol-rpc",
