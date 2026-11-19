@@ -7,8 +7,8 @@
     "content-hash": "18496be0177d826e5682089b419c9d6e",
     "packages": [
         {
-            "name": "alama/arazzo-cli",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-cli",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/cli",

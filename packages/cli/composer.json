@@ -1,7 +1,8 @@
 {
-    "name": "alama/arazzo-cli",
+    "name": "php-arazzo/arazzo-cli",
     "description": "Arazzo CLI and delivery adapters: console, AI generator, renderer.",
     "type": "library",
+    "version": "1.0.0-alpha.1",
     "license": "MIT",
     "require": {
         "php": "^8.4",
