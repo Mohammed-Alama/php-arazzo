@@ -127,7 +127,7 @@ final class ProtocolHttpServiceProvider extends ServiceProvider
                 requestFactory: $app->bound(RequestFactoryInterface::class)
                     ? $app->make(RequestFactoryInterface::class)
                     : null,
-                strictValidationDefault: ConfigValue::bool(config('arazzo.strict_schema_validation', false), false),
+                strictValidationDefault: ConfigValue::bool(config('arazzo.strict_schema_validation', true), true),
                 idempotencyEnabled: ConfigValue::bool(config('arazzo.idempotency.enabled', false), false),
                 idempotencyHeader: ConfigValue::string(config('arazzo.idempotency.header', 'Idempotency-Key'), 'Idempotency-Key'),
             );

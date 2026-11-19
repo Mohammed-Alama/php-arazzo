@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use Alama\Tools\IssueIntake\GitPermalinkResolver;
 use Alama\Tools\IssueIntake\PackageIndex;
 use Alama\Tools\IssueIntake\Schema;
 use Alama\Tools\IssueIntake\Validator;
@@ -16,7 +17,13 @@ use Alama\Tools\IssueIntake\Validator;
  * print, before any network call that mutates state.
  *
  * usage: file-issue.php --kind=<kind> --level=<level> --title=<title> \
- *            --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>]
+ *            --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--prompt=<section-id>]
+ *
+ * With `--prompt=<section-id>` the script prints the section prompt file
+ * (`.agents/skills/file-issue/prompts/write-<section-id>.md`, or the
+ * cross-cutting `prompt-preamble`, `readme`, `orchestrate-issue-conversion`
+ * and `review-issue-body` ids) to stdout and exits `0`. An unknown id exits
+ * `2` with the available ids. Nothing is validated or filed in this mode.
  *
  * `--sections` is a JSON object mapping a section id to markdown content
  * (`-` reads stdin). Section ids come from config/issues/schema.yaml; unknown
@@ -42,7 +49,7 @@ function fail(string $message, int $code = 2): void
 function usage(): void
 {
     fwrite(STDOUT, <<<'TXT'
-        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--package=<name>]
+        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--package=<name>] [--priority=<name>] [--prompt=<section-id>]
 
           --kind=<kind>        one of: bug, enhancement, chore
           --level=<label>      one of: level:package, level:epic, level:story, level:task
@@ -51,7 +58,11 @@ function usage(): void
           --parent=<n>         file as a sub-issue of <n> (checked against <n>'s level:* label)
           --edit=<n>           edit issue <n> instead of creating a new one
           --repo=<owner/name>  target repository (defaults to the current one)
-          --package=<name>     primary package (required for level:package; adds package:<name> label)
+          --package=<name>     primary package (required for non-package-epic levels; adds package:<name> label)
+          --priority=<name>    priority (required for all levels; adds priority:<name> label)
+          --prompt=<section-id> print prompts/write-<section-id>.md, or a cross-cutting
+          prompt (prompt-preamble, readme, orchestrate-issue-conversion,
+          review-issue-body), to stdout and exit 0
 
         The body is validated before `gh` is called; nothing is filed when it
         does not conform.
@@ -137,6 +148,44 @@ foreach (array_slice($argv, 1) as $argument) {
     $options[$matches[1]] = $matches[2];
 }
 
+$promptDir = dirname(__DIR__).'/prompts';
+$promptCrossCutting = [
+    'prompt-preamble' => 'prompt-preamble.md',
+    'readme' => 'README.md',
+    'orchestrate-issue-conversion' => 'orchestrate-issue-conversion.md',
+    'review-issue-body' => 'review-issue-body.md',
+];
+
+if (isset($options['prompt'])) {
+    $available = [];
+
+    foreach (glob($promptDir.'/write-*.md') ?: [] as $path) {
+        $available[] = str_replace(['write-', '.md'], '', basename($path));
+    }
+
+    $file = $promptDir.'/write-'.$options['prompt'].'.md';
+
+    if (!is_file($file) && array_key_exists($options['prompt'], $promptCrossCutting)) {
+        $file = $promptDir.'/'.$promptCrossCutting[$options['prompt']];
+    }
+
+    if (!is_file($file)) {
+        $available = array_merge($available, array_keys($promptCrossCutting));
+        sort($available);
+
+        fail('unknown prompt section "'.$options['prompt'].'"; available: '.implode(', ', $available), 2);
+    }
+
+    // A section prompt is printed with the shared preamble prepended so the
+    // citation, stop, tier and prohibition rules travel with it.
+    if ($file === $promptDir.'/write-'.$options['prompt'].'.md') {
+        readfile($promptDir.'/prompt-preamble.md');
+    }
+
+    readfile($file);
+    exit(0);
+}
+
 foreach (['level', 'title'] as $required) {
     if (($options[$required] ?? '') === '') {
         usage();
@@ -160,6 +209,7 @@ if (!in_array($level, array_keys($schema->levels()), true)) {
 
 $packageEpic = $schema->levelKindForbidden($level);
 $package = ($options['package'] ?? '') !== '' ? $options['package'] : null;
+$priority = ($options['priority'] ?? '') !== '' ? $options['priority'] : null;
 
 if ($packageEpic) {
     if (($options['kind'] ?? '') !== '') {
@@ -183,6 +233,16 @@ if ($packageEpic) {
     if (!in_array($kind, $schema->kinds(), true)) {
         fail("unknown kind \"{$kind}\"; expected one of: ".implode(', ', $schema->kinds()));
     }
+
+    if (($package ?? '') === '' || preg_match('/^[a-z0-9-]+$/', $package) !== 1) {
+        usage();
+        fail('--package=<name> is required (lowercase, digits, hyphens)');
+    }
+}
+
+if (($priority ?? '') === '' || preg_match('/^[a-z0-9-]+$/', $priority) !== 1) {
+    usage();
+    fail('--priority=<name> is required (lowercase, digits, hyphens)');
 }
 
 $parent = null;
@@ -244,30 +304,54 @@ if (!$packageEpic) {
     }
 
     // Render the sections the kind cares about, in schema (visual) order.
+    // core-metadata is scripted (D22): it is computed from the labels and the
+    // parent link, never taken from the supplied payload.
     $wanted = [...$schema->requiredIdsFor($kind), ...$schema->optionalFor($kind)];
     $blocks = [];
 
     foreach ($schema->sectionIds() as $id) {
+        if ($id === 'core-metadata') {
+            continue;
+        }
+
         if (!in_array($id, $wanted, true) || trim($content[$id] ?? '') === '') {
             continue;
         }
 
-        $blocks[] = '### '.$schema->section($id)['heading']."\n\n".trim($content[$id]);
+        // Schema headings carry `## ` directly and are emitted verbatim.
+        $blocks[] = $schema->section($id)['heading']."\n\n".trim($content[$id]);
     }
+
+    // Script core-metadata from the labels and parent link (D22).
+    $coreMetadata = [];
+
+    if ($package !== null) {
+        $coreMetadata[] = 'Package: '.$package;
+    }
+
+    if ($parent !== null) {
+        $coreMetadata[] = 'Parent: #'.$parent;
+    }
+
+    array_unshift($blocks, $schema->section('core-metadata')['heading']."\n\n".implode(' · ', $coreMetadata));
 
     $body = implode("\n\n", $blocks);
 } else {
-    $body = (new PackageIndex)->stub($package);
+    $body = (new PackageIndex())->stub($package);
 }
 
 $gh = getenv('FILE_ISSUE_GH_BIN') ?: 'gh';
 $parentLevel = $parent !== null ? resolveParentLevel($gh, $parent, $repo) : null;
 
-$labels = $packageEpic ? [$level, 'package:'.$package] : [$kind, $level];
+$labels = $packageEpic
+    ? [$level, 'package:'.$package, 'priority:'.$priority]
+    : [$kind, $level, 'package:'.$package, 'priority:'.$priority];
 
-$findings = (new Validator($schema))->validate([
+$root = dirname(__DIR__, 3);
+$findings = (new Validator($schema, new GitPermalinkResolver($root)))->validate([
     'body' => $body,
     'labels' => $labels,
+    'title' => $options['title'],
     'parent' => $parent,
     'parentLevel' => $parentLevel,
 ]);

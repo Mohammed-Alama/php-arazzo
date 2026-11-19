@@ -7,8 +7,10 @@ namespace Alama\Arazzo\Document\Validator;
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
+use Alama\Arazzo\Document\Validator\Rules\ActionOutputTargetExclusivityRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionRetryLimitsRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionReusableRefResolvesRule;
+use Alama\Arazzo\Document\Validator\Rules\ActionTargetExclusivityRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionTypeValidRule;
 use Alama\Arazzo\Document\Validator\Rules\AsyncApiFieldsRequire11Rule;
 use Alama\Arazzo\Document\Validator\Rules\ComponentsUniqueNamesRule;
@@ -42,13 +44,18 @@ use Alama\Arazzo\Document\Validator\Rules\StepDependsOnNoCycleRule;
 use Alama\Arazzo\Document\Validator\Rules\StepIdPatternRule;
 use Alama\Arazzo\Document\Validator\Rules\StepNestedWorkflowExistsRule;
 use Alama\Arazzo\Document\Validator\Rules\StepNestedWorkflowNoCycleRule;
+use Alama\Arazzo\Document\Validator\Rules\StepOperationIdResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationIdSourceScopedRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationPathSyntaxRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationTargetPresentRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOutputsUniqueRule;
+use Alama\Arazzo\Document\Validator\Rules\StepParameterDuplicateRule;
 use Alama\Arazzo\Document\Validator\Rules\StepParameterInValidRule;
+use Alama\Arazzo\Document\Validator\Rules\StepParameterRequiresInRule;
 use Alama\Arazzo\Document\Validator\Rules\StepParametersHaveNameRule;
 use Alama\Arazzo\Document\Validator\Rules\StepRequestBodyReplacementsTargetRule;
+use Alama\Arazzo\Document\Validator\Rules\StepRequestBodyWorkflowRule;
+use Alama\Arazzo\Document\Validator\Rules\StepSuccessActionParameterInRule;
 use Alama\Arazzo\Document\Validator\Rules\StepSuccessCriteriaConditionRule;
 use Alama\Arazzo\Document\Validator\Rules\StepTimeoutRequires11Rule;
 use Alama\Arazzo\Document\Validator\Rules\StepUniqueIdRule;
@@ -100,8 +107,10 @@ final readonly class RuleSet
         $selectorRegistry ??= $engine->selectorPlugins();
 
         return new self([
-            new OfficialSchemaRule(),
+            new OfficialSchemaRule($engine),
             new ActionGotoTargetResolvesRule(),
+            new ActionTargetExclusivityRule(),
+            new ActionOutputTargetExclusivityRule($engine),
             new ActionRetryLimitsRule(),
             new ActionReusableRefResolvesRule(),
             new ActionTypeValidRule(),
@@ -132,17 +141,25 @@ final readonly class RuleSet
             new StepIdPatternRule(),
             new StepNestedWorkflowExistsRule(),
             new StepNestedWorkflowNoCycleRule(),
+            new StepOperationIdResolvesRule(),
             new StepOperationIdSourceScopedRule(),
             new StepOperationPathSyntaxRule($engine),
             new StepOperationTargetPresentRule(),
             new WsdlStepRule($engine),
             new StepTimeoutRequires11Rule(),
             new StepOutputsUniqueRule(),
+            new StepParameterDuplicateRule(),
+            new StepParameterRequiresInRule(),
+            new StepSuccessActionParameterInRule(),
             new StepParameterInValidRule(),
+            new StepRequestBodyWorkflowRule(),
             new StepParametersHaveNameRule(),
             new StepRequestBodyReplacementsTargetRule(),
             new StepSuccessCriteriaConditionRule(),
-            new ReceiveStepSuccessCriteriaRule($strict),
+            // Arazzo 1.1 §5.8.5.3 says authors SHOULD define successCriteria
+            // for receive steps, but MAY omit them when the channel's single
+            // message type unambiguously signals success. Warn; do not reject.
+            new ReceiveStepSuccessCriteriaRule(false),
             new MessageRefRequiresReceiveRule($engine),
             new StepUniqueIdRule(),
             new SubWorkflowInvokeTargetResolvesRule(),

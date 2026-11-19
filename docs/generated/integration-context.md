@@ -46,6 +46,9 @@ flowchart LR
         A_Alama_Arazzo_Runner_Execution_SyncQueueDriver["SyncQueueDriver"]:::adapter
         A_Alama_Arazzo_Runner_Execution_SyncQueueDriver --- BRIDGE
         A_Alama_Arazzo_Runner_Execution_SyncQueueDriver --- queue
+        A_Alama_Arazzo_Cli_Console_Command_RunCommand["RunCommand"]:::adapter
+        A_Alama_Arazzo_Cli_Console_Command_RunCommand --- CORE
+        A_Alama_Arazzo_Cli_Console_Command_RunCommand --- net
         A_Alama_Arazzo_Cli_Generator_Clients_OpenAiClient["OpenAiClient"]:::adapter
         A_Alama_Arazzo_Cli_Generator_Clients_OpenAiClient --- CORE
         A_Alama_Arazzo_Cli_Generator_Clients_OpenAiClient --- openai
@@ -61,9 +64,6 @@ flowchart LR
         A_Alama_Arazzo_Sources_Resolver_Fetchers_HttpFetcher["HttpFetcher"]:::adapter
         A_Alama_Arazzo_Sources_Resolver_Fetchers_HttpFetcher --- CORE
         A_Alama_Arazzo_Sources_Resolver_Fetchers_HttpFetcher --- net
-        A_Alama_Arazzo_Sources_SourceGraph["SourceGraph"]:::adapter
-        A_Alama_Arazzo_Sources_SourceGraph --- CORE
-        A_Alama_Arazzo_Sources_SourceGraph --- net
     net["HTTP network"]:::system
     openai["OpenAI API"]:::system
     queue["Application queue backend"]:::system

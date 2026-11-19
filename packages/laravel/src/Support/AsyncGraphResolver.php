@@ -59,7 +59,7 @@ final class AsyncGraphResolver
             logger: $app->bound(LoggerInterface::class) ? $app->make(LoggerInterface::class) : null,
             idempotencyEnabled: ConfigValue::bool(config('arazzo.idempotency.enabled', false), false),
             idempotencyHeader: ConfigValue::string(config('arazzo.idempotency.header', 'Idempotency-Key'), 'Idempotency-Key'),
-            strictValidation: ConfigValue::bool(config('arazzo.strict_schema_validation', false), false),
+            strictValidation: ConfigValue::bool(config('arazzo.strict_schema_validation', true), true),
             retryCeiling: ConfigValue::int(config('arazzo.retry_ceiling', 10), 10),
             retryBackoffMultiplier: ConfigValue::float(config('arazzo.retry_backoff_multiplier', 1.0), 1.0),
             stateTtlSeconds: ConfigValue::int(config('arazzo.state_ttl', 86400), 86400),

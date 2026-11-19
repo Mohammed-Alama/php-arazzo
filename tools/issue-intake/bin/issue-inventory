@@ -1,0 +1,149 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Alama\Tools\IssueIntake\GitPermalinkResolver;
+use Alama\Tools\IssueIntake\IssueInventory;
+use Alama\Tools\IssueIntake\Schema;
+use Alama\Tools\IssueIntake\Validator;
+
+/**
+ * Inventory the issue backlog or a drafts directory.
+ *
+ * Reads `gh issue list --json number,title,body,labels` output from a file
+ * (or stdin with `-`) and prints one row per issue, or inventories a
+ * directory of `*.md` drafts with `--dir=<path>`.
+ *
+ * Output: TSV with a header row, or `--format=json`.
+ */
+
+$autoload = dirname(__DIR__, 3).'/vendor/autoload.php';
+
+if (!is_file($autoload)) {
+    fwrite(STDERR, "issue-inventory: cannot locate vendor/autoload.php\n");
+    exit(2);
+}
+
+require $autoload;
+
+$args = array_slice($argv, 1);
+$format = IssueInventory::FORMAT_TSV;
+$dir = null;
+$input = null;
+
+foreach ($args as $index => $arg) {
+    if ($arg === '--format=tsv') {
+        $format = IssueInventory::FORMAT_TSV;
+        unset($args[$index]);
+    } elseif ($arg === '--format=json') {
+        $format = IssueInventory::FORMAT_JSON;
+        unset($args[$index]);
+    } elseif (str_starts_with($arg, '--dir=')) {
+        $dir = substr($arg, 6);
+        unset($args[$index]);
+    } elseif ($arg === '--dir') {
+        $dir = $args[$index + 1] ?? null;
+        unset($args[$index], $args[$index + 1]);
+    } elseif ($arg === '--format') {
+        $format = $args[$index + 1] ?? IssueInventory::FORMAT_TSV;
+        unset($args[$index], $args[$index + 1]);
+    }
+}
+
+$args = array_values($args);
+$input = $args[0] ?? null;
+
+if ($dir !== null && $input !== null) {
+    fwrite(STDERR, "issue-inventory: use either a gh-json file or --dir, not both\n");
+    exit(2);
+}
+
+if ($dir === null && $input === null) {
+    fwrite(STDERR, "usage: issue-inventory <gh-json-file|-> [--format=tsv|json]\n");
+    fwrite(STDERR, "       issue-inventory --dir=<drafts-path> [--format=tsv|json]\n");
+    exit(2);
+}
+
+$root = dirname(__DIR__, 3);
+$schemaPath = getenv('ISSUE_INTAKE_SCHEMA') ?: $root.'/config/issues/schema.yaml';
+
+try {
+    $schema = Schema::fromFile($schemaPath);
+} catch (\Throwable $error) {
+    fwrite(STDERR, 'issue-inventory: '.$error->getMessage()."\n");
+    exit(2);
+}
+
+$validator = new Validator($schema, new GitPermalinkResolver($root));
+
+if ($dir !== null) {
+    if (!is_dir($dir)) {
+        fwrite(STDERR, "issue-inventory: not a directory: {$dir}\n");
+        exit(2);
+    }
+
+    $rows = IssueInventory::fromDraftDir($dir, $validator);
+} else {
+    if ($input === '-') {
+        $raw = stream_get_contents(STDIN);
+    } elseif (is_file($input)) {
+        $raw = file_get_contents($input);
+    } else {
+        fwrite(STDERR, "issue-inventory: not a file: {$input}\n");
+        exit(2);
+    }
+
+    $decoded = json_decode($raw === false ? '' : $raw, true);
+
+    if (!is_array($decoded)) {
+        fwrite(STDERR, "issue-inventory: expected a JSON array of issues\n");
+        exit(2);
+    }
+
+    $rows = IssueInventory::fromGhJson($decoded, $validator);
+}
+
+if ($format === IssueInventory::FORMAT_JSON) {
+    echo json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
+    exit(0);
+}
+
+$columns = [
+    'number', 'title', 'kind', 'level', 'dialect', 'missing', 'requirements',
+    'scenarios', 'tests', 'permalinks', 'permalink_shas_resolve', 'errors',
+    'warnings', 'ready',
+];
+
+$out = fopen('php://stdout', 'w');
+
+$tsv = static function (array $fields): string {
+    return implode("\t", array_map(
+        static fn (string $field): string => str_replace(["\t", "\n", "\r"], ' ', $field),
+        $fields,
+    ))."\n";
+};
+
+fwrite($out, $tsv($columns));
+
+foreach ($rows as $row) {
+    fwrite($out, $tsv([
+        (string) $row['number'],
+        $row['title'],
+        $row['kind'] ?? '',
+        $row['level'] ?? '',
+        $row['dialect'],
+        implode(' ', $row['missing']),
+        (string) $row['requirements'],
+        (string) $row['scenarios'],
+        (string) $row['tests'],
+        (string) $row['permalinks'],
+        (string) $row['permalink_shas_resolve'],
+        implode(' ', $row['errors']),
+        implode(' ', $row['warnings']),
+        $row['ready'] ? '1' : '0',
+    ]));
+}
+
+fclose($out);
+exit(0);

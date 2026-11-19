@@ -16,6 +16,33 @@ use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepDependsOnNoCycleRule;
 
+it('accepts a cross-document dependsOn without resolving it offline', function (): void {
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['$sourceDescriptions.other.remoteWorkflow.steps.remoteStep']), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.1.0', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toBeEmpty();
+});
+
+it('rejects a malformed cross-document dependsOn', function (): void {
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['$sourceDescriptions.other.remoteWorkflow']), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.1.0', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.dependson_unresolved_reference');
+});
+
 it('reports an error when a workflow step contains a dependsOn cycle', function (): void {
     $workflow = new Workflow('w1', null, null, null, [], [
         new Step('A', null, new StepTarget(), new StepFlow(dependsOn: ['B']), new StepIo()),
@@ -62,4 +89,77 @@ it('passes cleanly for valid step dependencies', function (): void {
     (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
 
     expect($ec->errors())->toBeEmpty();
+});
+
+it('accepts a cross-workflow dependsOn to a defined step', function (): void {
+    $w2 = new Workflow('w2', null, null, null, [], [
+        new Step('s2', null, new StepTarget(), new StepFlow(), new StepIo()),
+    ], [], [], [], []);
+
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['$workflows.w2.steps.s2']), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.0.1', new Info('T', null, null, '1.0'), [], [$workflow, $w2], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toBeEmpty();
+});
+
+it('rejects a cross-workflow dependsOn to an undefined workflow', function (): void {
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['$workflows.ghost.steps.x']), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.0.1', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.dependson_unresolved_reference')
+        ->and($ec->errors()[0]->message)->toContain('$workflows.ghost.steps.x')
+        ->and($ec->errors()[0]->path)->toBe('/workflows/0/steps/0/dependsOn');
+});
+
+it('rejects a cross-workflow dependsOn to an undefined step in a defined workflow', function (): void {
+    $w2 = new Workflow('w2', null, null, null, [], [
+        new Step('s2', null, new StepTarget(), new StepFlow(), new StepIo()),
+    ], [], [], [], []);
+
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['$workflows.w2.steps.missing']), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.0.1', new Info('T', null, null, '1.0'), [], [$workflow, $w2], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.dependson_unresolved_reference')
+        ->and($ec->errors()[0]->message)->toContain('$workflows.w2.steps.missing')
+        ->and($ec->errors()[0]->path)->toBe('/workflows/0/steps/0/dependsOn');
+});
+
+it('detects a cycle that spans workflow boundaries', function (): void {
+    $w2 = new Workflow('w2', null, null, null, [], [
+        new Step('b', null, new StepTarget(), new StepFlow(dependsOn: ['$workflows.w1.steps.a']), new StepIo()),
+    ], [], [], [], []);
+
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['$workflows.w2.steps.b']), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.0.1', new Info('T', null, null, '1.0'), [], [$workflow, $w2], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.dependson_no_cycle')
+        ->and($ec->errors()[0]->message)->toContain('w1.a -> w2.b -> w1.a')
+        ->and($ec->errors()[0]->path)->toBe('/workflows/0/steps/0/dependsOn');
 });

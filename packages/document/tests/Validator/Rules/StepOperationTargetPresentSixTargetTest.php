@@ -62,3 +62,34 @@ it('still flags steps with no target at all', function (): void {
 
     expect($ec->errors())->toHaveCount(1);
 });
+
+it('accepts an async target declared with action and channelPath', function (): void {
+    $document = Fx::doc(workflows: [Fx::wf('w', [
+        new Step('a', null, new StepTarget(action: 'send', channelPath: 'channels/orders'), new StepFlow(), new StepIo()),
+    ])]);
+    $ec = new ErrorCollector();
+    (new StepOperationTargetPresentRule())->check($document, SymbolTable::build($document), $ec);
+
+    expect($ec->errors())->toBeEmpty();
+});
+
+it('accepts an async target declared with action and operationId', function (): void {
+    $document = Fx::doc(workflows: [Fx::wf('w', [
+        new Step('a', null, new StepTarget(operationId: 'op', action: 'send'), new StepFlow(), new StepIo()),
+    ])]);
+    $ec = new ErrorCollector();
+    (new StepOperationTargetPresentRule())->check($document, SymbolTable::build($document), $ec);
+
+    expect($ec->errors())->toBeEmpty();
+});
+
+it('flags a workflow target combined with an async action', function (): void {
+    $document = Fx::doc(workflows: [Fx::wf('w', [
+        new Step('a', null, new StepTarget(workflowId: 'other', action: 'send'), new StepFlow(), new StepIo()),
+    ])]);
+    $ec = new ErrorCollector();
+    (new StepOperationTargetPresentRule())->check($document, SymbolTable::build($document), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.operation_target_present');
+});

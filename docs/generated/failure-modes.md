@@ -19,6 +19,7 @@ Regenerated before every commit.
 | **ConditionSyntaxException** | `AccessorParser` <small>evaluation:Condition</small>, `ConditionEvaluator` <small>evaluation:Condition</small>, `Lexer` <small>evaluation:Condition</small>, `Parser` <small>evaluation:Condition</small> |
 | **DecodeException** | `NativeJsonDecoder` <small>document:Parser</small>, `SymfonyYamlDecoder` <small>document:Parser</small> |
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>laravel:Persistence</small> |
+| **ExecutionError** | `WorkflowEngine` <small>runner:Sync</small> |
 | **ExecutionException** | `AsyncExecutionGraphAssembler` <small>runner:Async</small>, `StepExecutionWorker` <small>runner:Async</small>, `RunnerGraphBuilder` <small>(runner root)</small>, `ExecutionGraphFactory` <small>runner:Sync</small>, `StepExecutor` <small>runner:Sync</small> |
 | **ExpressionSyntaxException** | `EmbeddedExpressionSplitter` <small>expression:Internal</small>, `Interpolator` <small>(expression root)</small>, `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>runner:Sync</small> |
@@ -53,18 +54,23 @@ Regenerated before every commit.
 | `ExpressionSyntaxException` | `EmbeddedExpressionSplitter` |  |
 | `ExpressionSyntaxException` | `Parser` |  |
 | `JsonException` | `NativeJsonDecoder` |  |
+| `LoaderException` | `RunCommand` |  |
 | `LoaderException` | `ValidateCommand` |  |
 | `ParseException` | `SymfonyYamlDecoder` |  |
+| `ParserException` | `RunCommand` |  |
 | `ParserException` | `ValidateCommand` |  |
 | `ParserException` | `DatabaseDefinitionRegistry` |  |
+| `SchemaValidationException` | `RunCommand` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
 | `SelectorEvaluationException` | `SelectorEvaluator` |  |
+| `Throwable` | `ValidateCommand` |  |
 | `Throwable` | `CriteriaEvaluator` |  |
 | `Throwable` | `DatabaseEventLedger` |  |
 | `Throwable` | `StepExecutionWorker` |  |
 | `Throwable` | `StepExecutor` |  |
 | `Throwable` | `WorkflowExecutor` |  |
 | `Throwable` | `DefaultSourceResolver` |  |
+| `Throwable` | `SourceLoader` |  |
 | `Throwable` | `PreflightValidator` |  |
 
 ## Safety interlocks
@@ -84,4 +90,6 @@ Regenerated before every commit.
 | prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
 | prop stateTtlSeconds | `UnifiedStepCarrier` | `86400` |
 | prop stateTtlSeconds | `StoredWorkflowStateRepository` | `86400` |
+| const HTTP_CONNECT_TIMEOUT | `DefaultSourceResolver` | `2.0` |
+| const HTTP_REQUEST_TIMEOUT | `DefaultSourceResolver` | `5.0` |
 | prop ttlSeconds | `CachedFetcher` | `3600` |

@@ -16,6 +16,7 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 - AsyncAPI `receive` step default success: a receive step with no `successCriteria` passes only when a message arrived (`CorrelationResumer` records `messageReceived => true` on the step record); no record or a non-`true` marker fails the step. `EvaluationEngine::evaluateSuccessCriteria()` delegates to `CriteriaEvaluator` so both the receive default and the existing operation 2xx default apply at runtime. New validator rule `step.receive_missing_success_criteria` reports empty-criteria receive steps (error when strict, warning otherwise; no-op on 1.0 documents).
 
 ### Changed
+- **BREAKING**: response-schema validation is now on by default. `StepExecutor` validates every HTTP response against its OpenAPI response schema unless the step opts out with `x-strict-validation: false`. The same default is mirrored by the async seams, the protocol-http executors/registrar, the Laravel `arazzo.strict_schema_validation` config and the `arazzo run` CLI. Workflows whose APIs return payloads that do not match their declared schemas will now fail (category `schema`) where they previously passed silently; set `ARAZZO_STRICT_SCHEMA_VALIDATION=false` (Laravel) or `strictValidationDefault: false` (standalone wiring) to restore the old behaviour globally.
 - **BREAKING**: single control-flow path - legacy `Engine` dispatcher deleted; `WorkflowEngine` is the only decision point and `StepOutcomeHandler` is now a thin adapter over it. `StepExecutionWorker` requires `WorkflowEngine` + `QueueDriverInterface`. Custom subclasses of these classes must be updated.
 - **BREAKING**: `WorkflowExecutor` requires a `WorkflowEngine` as its second constructor argument.
 - Transport-level HTTP failures are now converted into retryable synthetic-500 step outcomes (category `transport`) so `onFailure` retry actions apply uniformly in both adapters.
@@ -23,6 +24,7 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 - Expression engine: `${...}` runtime-expression spelling is now accepted everywhere (previously a syntax error); condition parsing normalizes both spellings to canonical `{$...}` form; bare `$expr` parameter/payload values resolve instead of being emitted literally.
 
 ### Fixed
+- `arazzo run` now executes through the real HTTP execution graph. The command resolves one PSR-18 client and PSR-17 request factory, shares them between source resolution and `DefaultOpenApiExecutor`, and uses the real `StepOutputExtractor`/`ResponseSchemaValidator` instead of test-support fakes. Outbound requests, step outputs, downstream `$steps.<id>.outputs` references, response-schema failures and exit codes now reflect the actual run.
 - Duplicated `transition()` invocation in the synchronous loop (double retry accounting).
 - Queue runs silently stalling on unknown goto/invoke target workflows (now ledger `execution.workflow_missing` + `RunFailed`).
 - Missing terminal `RunCompleted`/`RunFailed` events on the queued adapter.

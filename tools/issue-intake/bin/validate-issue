@@ -4,13 +4,14 @@
 declare(strict_types=1);
 
 use Alama\Tools\IssueIntake\Finding;
+use Alama\Tools\IssueIntake\GitPermalinkResolver;
 use Alama\Tools\IssueIntake\Schema;
 use Alama\Tools\IssueIntake\Validator;
 
 /**
  * The one engine, exposed to the shell (spec D12).
  *
- * Reads a JSON object from stdin — {body, labels, parent, parentLevel} — and
+ * Reads a JSON object from stdin — {body, labels, title?, parent, parentLevel} — and
  * prints {"conforming": bool, "findings": [...]} to stdout, with the human
  * messages on stderr. Exit 0 = conforms, 1 = findings, 2 = usage/internal error.
  *
@@ -32,11 +33,12 @@ $decoded = json_decode($raw === false ? '' : $raw, true);
 
 if (!is_array($decoded)) {
     fwrite(STDERR, "usage: validate-issue < issue.json\n");
-    fwrite(STDERR, "  expects {\"body\": string, \"labels\": string[], \"parent\": int|null, \"parentLevel\": string|null}\n");
+    fwrite(STDERR, "  expects {\"body\": string, \"labels\": string[], \"title?\": string, \"parent\": int|null, \"parentLevel\": string|null}\n");
     exit(2);
 }
 
-$schemaPath = getenv('ISSUE_INTAKE_SCHEMA') ?: dirname(__DIR__, 3).'/config/issues/schema.yaml';
+$root = dirname(__DIR__, 3);
+$schemaPath = getenv('ISSUE_INTAKE_SCHEMA') ?: $root.'/config/issues/schema.yaml';
 
 try {
     $schema = Schema::fromFile($schemaPath);
@@ -45,19 +47,29 @@ try {
     exit(2);
 }
 
-$validator = new Validator($schema);
+$validator = new Validator($schema, new GitPermalinkResolver($root));
 $input = [
     'body' => is_string($decoded['body'] ?? null) ? $decoded['body'] : '',
     'labels' => is_array($decoded['labels'] ?? null) ? $decoded['labels'] : [],
+    'title' => is_string($decoded['title'] ?? null) ? $decoded['title'] : '',
     'parent' => is_int($decoded['parent'] ?? null) ? $decoded['parent'] : null,
     'parentLevel' => is_string($decoded['parentLevel'] ?? null) ? $decoded['parentLevel'] : null,
 ];
 
-$findings = $validator->validate($input);
+$findings = $validator->report($input);
 $classified = $validator->classify($input);
+$readiness = $validator->readiness($input);
 
 foreach ($findings as $finding) {
     fwrite(STDERR, "[{$finding->code}] {$finding->message}\n");
+}
+
+$hasError = false;
+foreach ($findings as $finding) {
+    if ($finding->severity === 'error') {
+        $hasError = true;
+        break;
+    }
 }
 
 echo json_encode([
@@ -66,11 +78,14 @@ echo json_encode([
         static fn (Finding $finding): array => [
             'code' => $finding->code,
             'message' => $finding->message,
+            'severity' => $finding->severity,
         ],
         $findings,
     ),
     'kind' => $classified['kind'],
     'level' => $classified['level'],
+    'ready' => $readiness['ready'],
+    'blockers' => $readiness['blockers'],
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
 
-exit($findings === [] ? 0 : 1);
+exit($hasError ? 1 : 0);

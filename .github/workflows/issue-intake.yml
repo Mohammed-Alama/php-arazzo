@@ -10,6 +10,9 @@ on:
     types:
       - opened
       - edited
+      - labeled
+  schedule:
+    - cron: '17 4 * * *'
   workflow_dispatch:
     inputs:
       issue_number:
@@ -68,4 +71,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number || inputs.issue_number }}
           EVENT_NAME: ${{ github.event_name }}
           EVENT_ACTION: ${{ github.event.action }}
+          EVENT_LABEL: ${{ github.event.label.name }}
+          EVENT_ACTOR: ${{ github.actor }}
+          INTAKE_CUTOFF: ${{ vars.INTAKE_CUTOFF }}
         run: bash .github/scripts/issue-intake-gate.sh

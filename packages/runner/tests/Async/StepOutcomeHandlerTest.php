@@ -40,6 +40,7 @@ use Alama\Arazzo\Runner\Async\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Async\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
+use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionError;
 use Alama\Arazzo\Runner\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
 use Alama\Arazzo\Runner\Sync\WorkflowEngine;
@@ -465,8 +466,8 @@ it('goto to a workflowId-only target hands off to Engine::evaluate for the targe
     expect($job->context->getStepStatus('A'))->toBe(StepStatus::Failed);
 });
 
-it('goto with both workflowId and stepId jumps directly to that step in the target workflow', function (): void {
-    [$handler, $queue] = makeStepOutcomeHandler();
+it('goto with both workflowId and stepId throws ExecutionError', function (): void {
+    [$handler] = makeStepOutcomeHandler();
 
     $goto = new FailureGotoAction('goto-wf2-mid', 'mid', 'wf_2', []);
     $stepA = stepOutcomeStep('A', onFailure: [$goto]);
@@ -477,12 +478,8 @@ it('goto with both workflowId and stepId jumps directly to that step in the targ
     $document = stepOutcomeDocument([$workflow1, $workflow2]);
     $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
 
-    $handler->handle($document, $workflow1, $stepA, $context, 'exec_1', false);
-
-    $job = $queue->dispatched[0]['job'];
-    expect($job->step->stepId)->toBe('mid');
-    expect($job->context->getWorkflowId())->toBe('wf_2');
-    expect($job->context->getStepStatus('A'))->toBe(StepStatus::Failed);
+    expect(fn () => $handler->handle($document, $workflow1, $stepA, $context, 'exec_1', false))
+        ->toThrow(ExecutionError::class);
 });
 
 it('goto to an unknown workflowId throws GotoTargetNotFoundException', function (): void {

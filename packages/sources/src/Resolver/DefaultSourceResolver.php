@@ -23,10 +23,32 @@ use Throwable;
  */
 final readonly class DefaultSourceResolver implements SourceResolver
 {
+    /**
+     * Remote sources are advisory during validation (R5), so an unreachable
+     * host must not stall the process until the caller's own timeout fires.
+     */
+    private const HTTP_CONNECT_TIMEOUT = 2.0;
+
+    private const HTTP_REQUEST_TIMEOUT = 5.0;
+
     public function __construct(
         /** @var array<string, SourceFetcher> */
         private array $fetchers,
     ) {}
+
+    /**
+     * The Guzzle client every default source fetch goes through.
+     *
+     * The explicit timeouts keep a dead remote source bounded to a few
+     * seconds before the loader skips it; Guzzle's defaults wait forever.
+     */
+    public static function defaultHttpClient(): Client
+    {
+        return new Client([
+            'connect_timeout' => self::HTTP_CONNECT_TIMEOUT,
+            'timeout' => self::HTTP_REQUEST_TIMEOUT,
+        ]);
+    }
 
     /**
      * Create a resolver with the standard fetchers (http, https, file).
@@ -34,7 +56,7 @@ final readonly class DefaultSourceResolver implements SourceResolver
      */
     public static function withDefaults(): self
     {
-        $client = new Client();
+        $client = self::defaultHttpClient();
         $factory = new HttpFactory();
 
         return new self([

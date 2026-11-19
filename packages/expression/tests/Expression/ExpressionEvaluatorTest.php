@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\ExpressionDependencyProvider;
@@ -212,6 +213,17 @@ it('evaluates workflow inputs and outputs references', function () {
 
     expect($evaluator->evaluate(new Expression('{$workflows.login.outputs.token}'), new EvaluationContext($context)))->toBe('jwt-123');
     expect($evaluator->evaluate(new Expression('{$workflows.login.inputs.user}'), new EvaluationContext($context)))->toBe('amy');
+});
+
+it('resolves workflow references from the canonical execution state context', function () {
+    $state = ExecutionState::start('exec_s', 'def', 'wf')
+        ->withWorkflowData('base', ['inputs' => ['q' => 2], 'outputs' => ['x' => 'from-base']]);
+
+    $input = new EvaluationContext($state->toContext());
+    $evaluator = evaluator();
+
+    expect($evaluator->evaluate(new Expression('{$workflows.base.outputs.x}'), $input))->toBe('from-base')
+        ->and($evaluator->evaluate(new Expression('{$workflows.base.inputs.q}'), $input))->toBe(2);
 });
 
 it('returns null for unknown workflow references', function () {

@@ -11,6 +11,7 @@ on:
       - 'composer.json'
       - 'composer.lock'
       - 'packages/*/composer.json'
+      - 'docs/conformance/'
       - 'phpstan.neon.dist'
       - '**/phpstan.neon.dist'
       - '**/phpstan-baseline.neon'
@@ -26,6 +27,7 @@ on:
       - 'composer.json'
       - 'composer.lock'
       - 'packages/*/composer.json'
+      - 'docs/conformance/'
       - 'phpstan.neon.dist'
       - '**/phpstan.neon.dist'
       - '**/phpstan-baseline.neon'
@@ -227,3 +229,41 @@ jobs:
           cd ../..
       - name: Execute tests
         run: composer run test
+      - name: Check conformance manifest drift
+        run: php scripts/check-conformance-manifest.php
+
+  conformance:
+    name: Conformance regression gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+      - name: Cache composer downloads and vendor
+        id: composer-cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            .cache/composer
+            vendor
+          key: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
+          restore-keys: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: |
+          composer install --no-progress --prefer-dist --no-interaction
+      - name: Setup Python and pyyaml
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install pyyaml
+        run: pip install pyyaml --quiet
+      - name: Score against the conformance suite
+        run: php scripts/conformance-score.php --output conformance/score.json --binary vendor/bin/arazzo --sha 6e93591
+      - name: Check conformance regression gate
+        run: php scripts/conformance-gate.php --score conformance/score.json --baseline conformance/baseline.json

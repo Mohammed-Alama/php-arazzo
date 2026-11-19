@@ -1,0 +1,181 @@
+{
+    "corpus": {
+        "title": "OAI Arazzo examples",
+        "sourceUrl": "https://github.com/OAI/Arazzo-Specification/tree/main/examples",
+        "snapshotDir": "packages/core/tests/Conformance/corpus/oai/",
+        "documentCount": 6
+    },
+    "statusVocabulary": [
+        "supported",
+        "partial",
+        "unsupported",
+        "not-applicable"
+    ],
+    "capabilities": [
+        {
+            "id": "parse-and-validate",
+            "name": "Parse + structural validation",
+            "description": "Every corpus document parses and passes Tier 1 validation.",
+            "status": "supported",
+            "evidence": [
+                {
+                    "document": "ExtendedParametersExample",
+                    "result": "pass",
+                    "ok": true
+                },
+                {
+                    "document": "FAPI-PAR",
+                    "result": "pass",
+                    "ok": true
+                },
+                {
+                    "document": "LoginAndRetrievePets",
+                    "result": "pass",
+                    "ok": true
+                },
+                {
+                    "document": "bnpl-arazzo",
+                    "result": "pass",
+                    "ok": true
+                },
+                {
+                    "document": "oauth",
+                    "result": "pass",
+                    "ok": true
+                },
+                {
+                    "document": "pet-coupons",
+                    "result": "expected-fail (prose override)",
+                    "ok": true
+                }
+            ]
+        },
+        {
+            "id": "execute-sync",
+            "name": "Synchronous execution",
+            "description": "Documents executed through the sync adapter against the mock transport.",
+            "status": "supported",
+            "evidence": [
+                {
+                    "document": "bnpl-arazzo",
+                    "result": "succeeded",
+                    "ok": true
+                }
+            ]
+        },
+        {
+            "id": "execute-queued",
+            "name": "Queued (sub-workflow) execution",
+            "description": "Documents containing sub-workflow steps, executed through the queued adapter.",
+            "status": "supported",
+            "evidence": [
+                {
+                    "document": "oauth",
+                    "result": "succeeded",
+                    "ok": true
+                },
+                {
+                    "document": "pet-coupons",
+                    "result": "succeeded",
+                    "ok": true
+                }
+            ]
+        },
+        {
+            "id": "source-resolution",
+            "name": "OpenAPI source resolution",
+            "description": "Every declared sourceDescription resolves to a vendored local companion.",
+            "status": "partial",
+            "evidence": [
+                {
+                    "document": "ExtendedParametersExample",
+                    "result": "missing-local-companion",
+                    "ok": false
+                },
+                {
+                    "document": "FAPI-PAR",
+                    "result": "resolved",
+                    "ok": true
+                },
+                {
+                    "document": "LoginAndRetrievePets",
+                    "result": "resolved",
+                    "ok": true
+                },
+                {
+                    "document": "bnpl-arazzo",
+                    "result": "resolved",
+                    "ok": true
+                },
+                {
+                    "document": "oauth",
+                    "result": "resolved",
+                    "ok": true
+                },
+                {
+                    "document": "pet-coupons",
+                    "result": "resolved",
+                    "ok": true
+                }
+            ]
+        }
+    ],
+    "documents": [
+        {
+            "name": "bnpl-arazzo",
+            "version": "1.0.0",
+            "parseValidate": "pass",
+            "adapter": "sync",
+            "execute": "succeeded",
+            "notes": []
+        },
+        {
+            "name": "ExtendedParametersExample",
+            "version": "1.0.0",
+            "parseValidate": "pass",
+            "adapter": "—",
+            "execute": "skipped",
+            "notes": [
+                "companion `animals.yaml` is not shipped upstream"
+            ]
+        },
+        {
+            "name": "FAPI-PAR",
+            "version": "1.0.0",
+            "parseValidate": "pass",
+            "adapter": "—",
+            "execute": "n/a (upstream defect)",
+            "notes": [
+                "arazzo references operationId \"PAR\" but companion OpenAPI declares \"Par\" (case mismatch)"
+            ]
+        },
+        {
+            "name": "LoginAndRetrievePets",
+            "version": "1.0.0",
+            "parseValidate": "pass",
+            "adapter": "—",
+            "execute": "n/a (upstream defect)",
+            "notes": [
+                "operationPath `#/paths/~1pet~1findByStatus` omits the HTTP-method segment required to reach an Operation Object"
+            ]
+        },
+        {
+            "name": "oauth",
+            "version": "1.0.0",
+            "parseValidate": "pass",
+            "adapter": "queued (sub-workflow)",
+            "execute": "succeeded",
+            "notes": []
+        },
+        {
+            "name": "pet-coupons",
+            "version": "1.0.0",
+            "parseValidate": "expected-fail (prose override)",
+            "adapter": "queued (sub-workflow)",
+            "execute": "succeeded",
+            "notes": [
+                "Sets a Reusable Object value to the integers 1 and 10; Arazzo 1.0.1 §4.6.10.1 types value as a string."
+            ]
+        }
+    ]
+}

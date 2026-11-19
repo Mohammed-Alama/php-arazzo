@@ -5,25 +5,23 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Cli\Console\Command;
 
 use Alama\Arazzo\Cli\Console\DocumentLoader;
-use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
-use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
+use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
-use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
+use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\RunnerFacade;
-use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
-use Alama\Arazzo\Tests\Support\FakePsr18Client;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -54,7 +52,15 @@ final class RunCommand extends Command
     {
         /** @var string $file */
         $file = $input->getArgument('file');
-        $document = DocumentLoader::load($file);
+
+        try {
+            $document = DocumentLoader::load($file);
+        } catch (LoaderException|ParserException $e) {
+            $output->writeln('<error>PARSE ERROR</error> '.$e->getMessage());
+
+            return Command::FAILURE;
+        }
+
         /** @var string|null $workflowId */
         $workflowId = $input->getOption('workflow');
         $workflow = $this->findWorkflow($document, $workflowId);
@@ -72,54 +78,48 @@ final class RunCommand extends Command
             return Command::FAILURE;
         }
 
-        $registry = $this->resolveRegistry();
+        // One transport for the whole execution graph: the source resolver and
+        // the operation executor must share it, or a document fetched through
+        // one client is executed against another.
+        $client = $this->httpClient ?? new Client();
+        $factory = $this->httpFactory ?? new HttpFactory();
+        $registry = $this->registry ?? SourceGraph::createRegistry($client, $factory);
+
         $expressionEngine = new ExpressionEngine();
         $engine = new EvaluationEngine(expression: $expressionEngine);
         $runtime = SourceGraph::runtime(registry: $registry, engine: $expressionEngine);
 
-        $fakeClient = new FakePsr18Client();
-        $fakeFactory = new HttpFactory();
-
-        $openApiExecutor = new class($fakeClient, $fakeFactory) implements OpenApiExecutorInterface
-        {
-            public function __construct(
-                private ClientInterface $client,
-                private RequestFactoryInterface $factory,
-            ) {}
-
-            public function execute(OpenApiOperationHandle $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null): ResponseInterface
-            {
-                $request = $this->factory->createRequest('POST', 'http://test');
-
-                return $this->client->sendRequest($request);
+        // Preflight input-schema validation before any side effect.
+        $preflightResult = $runtime->document->preflightInputs($document, (string) $workflow->workflowId, $inputs);
+        if (!$preflightResult->isValid()) {
+            foreach ($preflightResult->errors as $error) {
+                $output->writeln('<error>'.$error->message.'</error>');
             }
-        };
 
-        $outputExtractor = new class() implements OutputExtractorInterface
-        {
-            public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
-            {
-                return [];
-            }
-        };
+            return Command::FAILURE;
+        }
 
-        $schemaValidator = new class() implements ResponseValidatorInterface
-        {
-            public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-        };
+        // Use the validated, default-populated input map (defaults applied).
+        $inputs = $preflightResult->inputs;
 
         $runner = new RunnerFacade(
             $runtime->document,
             $runtime->operations,
             $engine,
             inspector: null,
-            openApiExecutor: $openApiExecutor,
-            outputExtractor: $outputExtractor,
-            schemaValidator: $schemaValidator,
+            openApiExecutor: new DefaultOpenApiExecutor($client, $factory),
+            outputExtractor: new StepOutputExtractor($runtime->operations, $engine, $expressionEngine),
+            schemaValidator: new ResponseSchemaValidator($runtime->operations),
         );
 
         /** @var array<string, mixed> $inputs */
-        $result = $runner->execute($document, (string) $workflow->workflowId, $inputs);
+        try {
+            $result = $runner->execute($document, (string) $workflow->workflowId, $inputs);
+        } catch (SchemaValidationException $exception) {
+            $this->renderSchemaViolation($output, $exception);
+
+            return Command::FAILURE;
+        }
 
         $this->renderOutput($output, $result);
 
@@ -157,17 +157,13 @@ final class RunCommand extends Command
         return $decoded;
     }
 
-    private function resolveRegistry(): ?SourceRegistry
+    private function renderSchemaViolation(OutputInterface $output, SchemaValidationException $exception): void
     {
-        if ($this->registry !== null) {
-            return $this->registry;
-        }
+        $output->writeln('<error>'.$exception->getMessage().'</error>');
 
-        if ($this->httpClient !== null || $this->httpFactory !== null) {
-            return SourceGraph::createRegistry($this->httpClient, $this->httpFactory);
+        foreach ($exception->violations as $violation) {
+            $output->writeln(sprintf('  <error>%s</error>: %s', $violation['path'], $violation['message']));
         }
-
-        return null;
     }
 
     /** @param array{workflowId: string, status: string, steps: array<string, array{success: bool, stepId: string, error?: string|null}>, outputs: array<string, mixed>} $result */

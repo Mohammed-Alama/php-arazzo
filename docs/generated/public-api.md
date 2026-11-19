@@ -202,7 +202,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Contracts\State`
 
 #### `ExecutionState` class
-- `public function __construct(public string $executionId, public string $definitionId, public string $workflowId, public ?string $currentStepId = null, public array $inputs = [], public array $stepAttempts = [], public array $stepResults = [], public array $dependencies = [], public array $outputs = [], public array $errors = [], public int $stepsSpent = 0, public int $maxSteps = 1000, public array $workflowCallStack = [], public int $maxWorkflowDepth = 32, public array $components = [], public string $status = 'running')`
+- `public function __construct(public string $executionId, public string $definitionId, public string $workflowId, public ?string $currentStepId = null, public array $inputs = [], public array $stepAttempts = [], public array $stepResults = [], public array $dependencies = [], public array $outputs = [], public array $errors = [], public int $stepsSpent = 0, public int $maxSteps = 1000, public array $workflowCallStack = [], public int $maxWorkflowDepth = 32, public array $components = [], public string $status = 'running', public array $workflows = [])`
 - `public function attemptFor(string $stepId): int`
 - `public function enterWorkflow(string $workflowId): self`
 - `public function jsonSerialize(): array`
@@ -220,6 +220,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function withStepAttempt(string $stepId): self`
 - `public function withStepResult(string $stepId, array $result): self`
 - `public function withWorkflow(string $workflowId): self`
+- `public function withWorkflowData(string $workflowId, array $data): self`
 - `public static function fromArray(array $values): self`
 - `public static function fromContext(WorkflowContext $context, ?int $maxSteps = null, ?int $maxWorkflowDepth = null): self`
 
@@ -443,10 +444,10 @@ this file on a commit is a public API change — review it deliberately.
 - `public function __construct(public string $code, public string $message, public string $path, public ?int $line = null, public Severity $severity = Severity::Error)`
 
 #### `SymbolTable` class
-- `public function __construct(public array $workflows, public array $sourceDescriptions, public array $components)`
+- `public function __construct(public array $workflows, public array $sourceDescriptions, public array $components, public array $resolvedOperations = [])`
 
 #### `ValidationResult` class
-- `public function __construct(public ArazzoDocument $document, public array $errors, public array $warnings)`
+- `public function __construct(public ArazzoDocument $document, public array $errors, public array $warnings, public array $inputs = [])`
 - `public function isValid(): bool`
 
 #### `Warning` class
@@ -511,10 +512,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Cli\Console\Command`
 
 #### `RunCommand` class
-- `public function __construct(private ClientInterface $client, private RequestFactoryInterface $factory)`
 - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $httpFactory = null, private readonly ?SourceRegistry $registry = null)`
-- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array`
-- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void`
 
 ## laravel
 

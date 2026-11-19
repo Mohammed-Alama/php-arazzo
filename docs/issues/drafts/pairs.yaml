@@ -1,0 +1,308 @@
+# docs/issues/drafts/pairs.yaml — story → task pairing manifest
+#
+# Phase 2 of the issue-format-v2 conversion runbook. PARTITION RULE:
+# every draft 01–62 appears exactly once, either as a unit's `story`, as one
+# of the unit's `tasks`, or under `superseded` naming the unit that replaces
+# it. Validate with:
+#   php tools/issue-intake/bin/issue-inventory --dir=docs/issues/drafts  (no)
+#   see the partition check in the SDD report for this task
+#
+# Observed structure of the draft set:
+#   * 01–11, 21–26, 28, 34–36 are standalone stories.
+#   * 27, 29, 30, 31, 32, 33, 37 are core stories with a CLI task
+#     (38, 39, 40, 41, 42, 43, 44 respectively).
+#   * 45–53 are core stories with a CLI task (54–62 respectively).
+#   * 12–20 are the older combined drafts that the 45–53 / 54–62 split
+#     replaced. Each one explicitly references its replacement core draft
+#     (12→45, 13→46, 14→47, 15→48, 16→49, 17→50, 18→51, 19→52, 20→53).
+#     They are recorded as superseded, never filed.
+#
+# `parent` is the epic a story files under (a task's parent is always its
+# story). Draft 31/41 suggested #85, which is `level:story`, not an epic, so
+# they are re-parented to #137 (Runner execution semantics).
+
+version: 1
+
+superseded:
+  12-machine-readable-run-report: [45-run-report-contract, 54-cli-run-report]
+  13-workflow-test-runner: [46-test-runner-engine, 55-cli-test-runner]
+  14-execution-traces: [47-execution-trace-artifact, 56-cli-trace-export]
+  15-deterministic-replay: [48-deterministic-replay-engine, 57-cli-replay]
+  16-dry-run: [49-dry-run-execution-mode, 58-cli-dry-run]
+  17-parallel-dag-execution: [50-parallel-dag-scheduler, 59-cli-parallel]
+  18-single-step-execution: [51-single-step-execution, 60-cli-single-step]
+  19-input-validation-and-defaults: [52-input-validation-defaults, 61-cli-input-validation]
+  20-outbound-http-hardening: [53-http-execution-policy, 62-cli-http-policy]
+
+units:
+  # ── Standalone stories ────────────────────────────────────────────────
+  - story: 01-action-parameters-must-not-use-in
+    kind: kind:bugfix
+    parent: 118
+    filed: 324
+    tasks: []
+
+  - story: 02-self-uri-validation-correctness
+    kind: kind:bugfix
+    parent: 118
+    filed: 325
+    tasks: []
+
+  - story: 03-map-key-pattern-conformance
+    kind: kind:bugfix
+    parent: 118
+    filed: 326
+    tasks: []
+
+  - story: 04-duplicate-parameters-and-actions
+    kind: kind:bugfix
+    parent: 118
+    filed: 327
+    tasks: []
+
+  - story: 05-reusable-parameter-refs-resolve
+    kind: kind:bugfix
+    parent: 118
+    filed: 328
+    tasks: []
+
+  - story: 06-source-description-type-optional
+    kind: kind:bugfix
+    parent: 23
+    filed: 329
+    tasks: []
+
+  - story: 07-self-identity-and-base-uri-resolution
+    kind: kind:feature
+    parent: 137
+    filed: 330
+    tasks: []
+
+  - story: 08-source-integrity-validation
+    kind: kind:feature
+    parent: 23
+    filed: 331
+    tasks: []
+
+  - story: 09-source-fetcher-hardening
+    kind: kind:feature
+    parent: 23
+    filed: 332
+    tasks: []
+
+  - story: 10-request-schema-validation
+    kind: kind:feature
+    parent: 25
+    filed: 333
+    tasks: []
+
+  - story: 11-run-command-real-execution
+    kind: kind:bugfix
+    parent: 137
+    filed: 335
+    tasks: []
+
+  - story: 21-outbound-rate-limiting
+    kind: kind:feature
+    parent: 24
+    filed: 336
+    tasks: []
+
+  - story: 22-secret-redaction
+    kind: kind:feature
+    parent: 137
+    filed: 337
+    tasks: []
+
+  - story: 23-rfc9535-jsonpath
+    kind: kind:feature
+    parent: 139
+    filed: 338
+    tasks: []
+
+  - story: 24-yaml-alias-bounds
+    kind: kind:feature
+    parent: 118
+    filed: 339
+    tasks: []
+
+  - story: 25-conformance-capability-manifest
+    kind: kind:chore
+    parent: 90
+    filed: 340
+    tasks: []
+
+  - story: 26-execute-workflow-level-dependson
+    kind: kind:bugfix
+    parent: 137
+    filed: 341
+    tasks: []
+
+  - story: 28-reject-duplicate-requestbody-replacement-targets
+    kind: kind:bugfix
+    parent: 118
+    filed: 342
+    tasks: []
+
+  - story: 34-validate-workflow-action-targets
+    kind: kind:bugfix
+    parent: 118
+    filed: 343
+    tasks: []
+
+  - story: 35-walk-action-criteria-parameters
+    kind: kind:bugfix
+    parent: 118
+    filed: 344
+    tasks: []
+
+  - story: 36-validate-openapi-operation-exists
+    kind: kind:bugfix
+    parent: 118
+    filed: 345
+    tasks: []
+
+  # ── Core story + CLI task (document/validation wave) ──────────────────
+  - story: 27-configurable-validator-policy
+    kind: kind:bugfix
+    parent: 118
+    filed: 346
+    tasks:
+      - task: 38-cli-validator-policy-flags
+        kind: kind:feature
+        filed: 347
+
+  - story: 29-source-url-override
+    kind: kind:feature
+    parent: 24
+    filed: 348
+    tasks:
+      - task: 39-cli-server-override
+        kind: kind:feature
+        filed: 349
+
+  - story: 30-multi-workflow-selection
+    kind: kind:feature
+    parent: 137
+    filed: 350
+    tasks:
+      - task: 40-cli-multi-workflow
+        kind: kind:feature
+        filed: 351
+
+  - story: 31-input-ergonomics
+    kind: kind:feature
+    parent: 137 # draft said #85, which is level:story; see header note
+    tasks:
+      - task: 41-cli-input-ergonomics
+        kind: kind:feature
+        filed: 353
+
+  - story: 32-per-domain-mtls
+    kind: kind:feature
+    parent: 24
+    filed: 354
+    tasks:
+      - task: 42-cli-mtls
+        kind: kind:feature
+        filed: 355
+
+  - story: 33-har-export
+    kind: kind:feature
+    parent: 24
+    filed: 356
+    tasks:
+      - task: 43-cli-har-export
+        kind: kind:feature
+        filed: 357
+
+  - story: 37-themed-html-rendering
+    kind: kind:feature
+    parent: 89
+    filed: 358
+    tasks:
+      - task: 44-cli-html-rendering
+        kind: kind:feature
+        filed: 359
+
+  # ── Core story + CLI task (runner semantics wave) ─────────────────────
+  - story: 45-run-report-contract
+    kind: kind:feature
+    parent: 137
+    filed: 360
+    tasks:
+      - task: 54-cli-run-report
+        kind: kind:feature
+        filed: 361
+
+  - story: 46-test-runner-engine
+    kind: kind:feature
+    parent: 26
+    filed: 362
+    tasks:
+      - task: 55-cli-test-runner
+        kind: kind:feature
+        filed: 363
+
+  - story: 47-execution-trace-artifact
+    kind: kind:feature
+    parent: 137
+    filed: 364
+    tasks:
+      - task: 56-cli-trace-export
+        kind: kind:feature
+        filed: 365
+
+  - story: 48-deterministic-replay-engine
+    kind: kind:feature
+    parent: 137
+    filed: 322
+    tasks:
+      - task: 57-cli-replay
+        kind: kind:feature
+        filed: 323
+
+  - story: 49-dry-run-execution-mode
+    kind: kind:feature
+    parent: 137
+    filed: 366
+    tasks:
+      - task: 58-cli-dry-run
+        kind: kind:feature
+        filed: 367
+
+  - story: 50-parallel-dag-scheduler
+    kind: kind:feature
+    parent: 137
+    filed: 368
+    tasks:
+      - task: 59-cli-parallel
+        kind: kind:feature
+        filed: 369
+
+  - story: 51-single-step-execution
+    kind: kind:feature
+    parent: 137
+    filed: 370
+    tasks:
+      - task: 60-cli-single-step
+        kind: kind:feature
+        filed: 371
+
+  - story: 52-input-validation-defaults
+    kind: kind:bugfix
+    parent: 118
+    filed: 372
+    tasks:
+      - task: 61-cli-input-validation
+        kind: kind:bugfix
+        filed: 373
+
+  - story: 53-http-execution-policy
+    kind: kind:feature
+    parent: 24
+    filed: 374
+    tasks:
+      - task: 62-cli-http-policy
+        kind: kind:feature
+        filed: 375

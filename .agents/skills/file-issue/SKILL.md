@@ -16,11 +16,14 @@ bodies are the root cause of missing-field issues: the `gh` CLI bypasses the
 web issue form entirely.
 
 The structure itself lives in `config/issues/schema.yaml` — the single source of
-truth for every section, kind and level. It is not restated here.
+truth for every section, kind and level. It is not restated here. The per-section
+instructions the writer follows live in
+`.agents/skills/file-issue/prompts/`; this skill points at them, it does not
+duplicate their prose.
 
 ## When to use
 
-- You are about to open a `bug`, `enhancement`/feature, or `chore` issue.
+- You are about to open a `kind:bugfix`, `kind:feature`, or `kind:chore` issue.
 - You are rewriting an existing issue so it conforms (use `--edit`).
 - You have an investigation report from `arazzo-detective` and want to turn its
   Source-Grounding and Epistemic-Matrix blocks into a real issue.
@@ -29,10 +32,10 @@ truth for every section, kind and level. It is not restated here.
 
 ```bash
 php .agents/skills/file-issue/scripts/file-issue.php \
-    --kind=bug \
+    --kind=kind:bugfix \
     --level=level:story \
     --parent=123 \
-    --title="[Bug] Expression \$steps.x.outputs.body#/id resolves empty" \
+    --title="fix(core): Expression $steps.x.outputs.body#/id resolves empty" \
     --sections=sections.json
 ```
 
@@ -42,12 +45,12 @@ php .agents/skills/file-issue/scripts/file-issue.php \
 php .agents/skills/file-issue/scripts/file-issue.php \
     --level=level:package \
     --package=runner \
-    --title="[Package] runner"
+    --title="chore(runner): runner"
 ```
 
 | Argument | Required | Meaning |
 | --- | --- | --- |
-| `--kind=` | yes, unless `--level=level:package` | `bug`, `enhancement`, or `chore`. Becomes the kind label. |
+| `--kind=` | yes, unless `--level=level:package` | `kind:bugfix`, `kind:feature`, `kind:chore`, or `kind:release`. Becomes the kind label. |
 | `--level=` | yes | `level:package`, `level:epic`, `level:story`, or `level:task`. Becomes the level label. |
 | `--title=` | yes | The issue title. |
 | `--sections=` | yes, unless `--level=level:package` | Path to a JSON object mapping section id → markdown (`-` reads stdin). |
@@ -55,6 +58,7 @@ php .agents/skills/file-issue/scripts/file-issue.php \
 | `--parent=` | for story/task | Issue number to file under. Its `level:*` label is checked. |
 | `--edit=` | no | Edit issue `#n` instead of creating a new one. |
 | `--repo=` | no | `owner/name`; defaults to the current repository. |
+| `--prompt=` | no | Print a prompt file to stdout and exit `0` — see "The `--prompt` flag" below. Nothing is validated or filed in this mode. |
 
 ## The `--sections` payload
 
@@ -64,23 +68,77 @@ keys are ignored — the validator names any required section you left out.
 
 ```json
 {
-  "core-metadata": "packages/evaluation; Arazzo 1.0.1; PHP 8.4.",
   "problem-statement": "`$steps.x.outputs.body#/id` resolves to empty when the body is a JSON string.",
   "dependency-matrix": "Depends on packages/expression; consumed by packages/runner.",
   "artifacts": "Minimal Arazzo document + the failing command (see below).",
   "runtime-state": "workflowId=wf, stepId=fetch, expression on line 3.",
   "acceptance-criteria": "- [ ] the expression resolves to `42` for the fixture",
-  "source-grounding": "- `packages/evaluation/src/JsonPath.php:88-92` — permalink pinned to `abc1234`, snippet in <details>.",
+  "source-grounding": "- the resolver returns null for string bodies.\nhttps://github.com/Mohammed-Alama/php-arazzo/blob/abc1234/packages/evaluation/src/JsonPath.php#L88-L92",
   "impact-profile": "Correctness of every output expression; medium blast radius.",
   "epistemic-matrix": "| Claim | Tier | Evidence |\n| --- | --- | --- |\n| … | T1 | Pest result |"
 }
 ```
 
-Required section ids per kind (visual order):
+`core-metadata` is not supplied in the payload: it is scripted from the issue labels and the parent link (D22). Any supplied value is ignored — the gate computes it instead.
 
-- **bug** — core-metadata, problem-statement, dependency-matrix, artifacts, runtime-state, acceptance-criteria, source-grounding, impact-profile, epistemic-matrix
-- **enhancement** — core-metadata, problem-statement, feature-scope, acceptance-criteria, impact-profile, epistemic-matrix (source-grounding is optional but recommended)
-- **chore** — core-metadata, problem-statement, affected-surface, acceptance-criteria, source-grounding, impact-profile
+## Required section ids per kind
+
+In schema (`config/issues/schema.yaml`) visual order:
+
+- **kind:bugfix** — core-metadata, problem-statement, dependency-matrix, artifacts, runtime-state, acceptance-criteria, source-grounding, impact-profile, epistemic-matrix
+- **kind:feature** — core-metadata, problem-statement, feature-scope, acceptance-criteria, source-grounding, impact-profile, epistemic-matrix
+- **kind:chore** — core-metadata, problem-statement, affected-surface, acceptance-criteria, source-grounding, impact-profile
+- **kind:release** — core-metadata, problem-statement, affected-surface, acceptance-criteria, source-grounding, impact-profile, epistemic-matrix
+
+## Writing the sections
+
+| Section | Prompt | Gate codes the section owns |
+| --- | --- | --- |
+| `core-metadata` | none — scripted | `parent-mismatch` (read from labels and the sub-issue link; D22, no agent writes this section) |
+| `problem-statement` | `prompts/write-problem-statement.md` | `missing-requirement`, `problem-statement-too-long` |
+| `feature-scope` | `prompts/write-feature-scope.md` | `non-goals-missing` |
+| `dependency-matrix` | `prompts/write-dependency-matrix.md` | — |
+| `affected-surface` | `prompts/write-affected-surface.md` | `rollback-missing` |
+| `artifacts` | `prompts/write-artifacts.md` | `artifact-block-missing` |
+| `runtime-state` | `prompts/write-runtime-state.md` | — |
+| `acceptance-criteria` | `prompts/write-acceptance-criteria.md` | `scenario-shape`, `scenario-no-test`, `blocked-by-unknown-decision`, `requirement-uncovered`, `quality-coverage-missing`, `vague-then`, `checklist-unverifiable` |
+| `source-grounding` | `prompts/write-source-grounding.md` | `permalink-invalid`, `permalink-not-bare`, `permalink-unverifiable`, `permalink-range-invalid`, `source-grounding-empty` |
+| `impact-profile` | `prompts/write-impact-profile.md` | `bc-line-missing` |
+| `epistemic-matrix` | `prompts/write-epistemic-matrix.md` | `tier-invalid` |
+
+The full rule text for each section lives in its prompt; this table names the
+prompt and the gate codes it owns so filing and editing follow the same path as
+migration. `PromptContractTest` asserts that every required section has a
+prompt (except `core-metadata`), that every prompt is listed in
+`prompts/README.md` and reachable through `--prompt`, and that every code a
+section owns is named in that section's prompt.
+
+## The `--prompt` flag
+
+```bash
+php .agents/skills/file-issue/scripts/file-issue.php --prompt=acceptance-criteria
+```
+
+Prints `.agents/skills/file-issue/prompts/write-acceptance-criteria.md` to
+stdout and exits `0`. Cross-cutting ids work the same way:
+`prompt-preamble`, `readme`, `orchestrate-issue-conversion`,
+`review-issue-body`. Any unknown id exits `2` with the list of available ids.
+Use this to read a section's instruction before writing that section; nothing
+is validated or filed in `--prompt` mode.
+
+## Conversion order (spec §7.7)
+
+The orchestrator prompt (`prompts/orchestrate-issue-conversion.md`) fixes the
+order sections are written in, because later prompts cite ids the earlier ones
+define:
+
+problem-statement → feature-scope/dependency-matrix →
+artifacts/runtime-state → acceptance-criteria → source-grounding →
+impact-profile → epistemic-matrix
+
+The reviewer prompt (`prompts/review-issue-body.md`) is a separate adversarial
+pass: it reads only the assembled body and lists the lines a maintainer would
+reject. Neither prompt is restated here — read them through `--prompt`.
 
 ## Levels and parents
 
@@ -100,7 +158,7 @@ first, then the child.
 ## What it does, in order
 
 1. Loads `config/issues/schema.yaml`.
-2. Reads the sections payload and renders `### <heading>` blocks in schema
+2. Reads the sections payload and renders `## <heading>` blocks in schema
    order — the same shape a web-filed form produces.
 3. Resolves the parent's level (one `gh issue view <n> --json labels`) when
    `--parent` is given.
@@ -117,34 +175,32 @@ unknown kind/level, unreadable sections file, or a parent lookup that failed.
 
 §7 must carry a **permanent link** — a blob URL pinned to a commit, not a bare
 `file:line` that rots the moment the file moves:
-`https://github.com/<owner>/<repo>/blob/<sha>/<path>#L<start>-L<end>`. Fold the
-snippet into a `<details>` block so the permalink stays visible while the code
-stays collapsed:
 
-````markdown
-- `packages/evaluation/src/JsonPath.php:88-92` — the resolver returns null for string bodies.
+`https://github.com/<owner>/<repo>/blob/<sha>/<path>#L<start>-L<end>`
 
-<details><summary><a href="https://github.com/Mohammed-Alama/php-arazzo/blob/abc1234/packages/evaluation/src/JsonPath.php#L88-L92"><code>JsonPath.php:88-92</code></a> @ <code>abc1234</code></summary>
+The URL goes on its own bare line under its claim — never `[label](url)`,
+never inside `<details>`, never an HTML `<a href>`, and never with text after
+the URL on the same line. Follow the section with `Verified: YYYY-MM-DD`,
+written only after the pinned lines at that SHA have been read in the current
+session:
 
-```php
-…the lines…
+```markdown
+- the resolver returns null for string bodies.
+https://github.com/Mohammed-Alama/php-arazzo/blob/abc1234/packages/evaluation/src/JsonPath.php#L88-L92
+
+Verified: 2026-11-15
 ```
-
-</details>
-
-- Commands: `vendor/bin/pest --filter=JsonPath` → 1 failure.
-````
 
 `code-permalink` builds this from a `path:start-end` shorthand, resolving the
 repo slug and commit SHA from git:
 
 ```bash
-php tools/issue-intake/bin/code-permalink packages/evaluation/src/JsonPath.php:88-92 --fold
+php tools/issue-intake/bin/code-permalink packages/evaluation/src/JsonPath.php:88-92
 ```
 
-Without `--fold` it prints just the permalink. It warns on stderr when the file
-has uncommitted changes or the commit is not on a remote — a link to the working
-copy, or to an unpushed SHA, is not permanent.
+Without further flags it prints just the permalink. It warns on stderr when the
+file has uncommitted changes or the commit is not on a remote — a link to the
+working copy, or to an unpushed SHA, is not permanent.
 
 ## Notes
 

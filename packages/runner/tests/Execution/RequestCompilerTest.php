@@ -129,6 +129,57 @@ it('resolves payload replacements into the body through the callback it hands th
     expect($result['payload']->body)->toBe(['/amount' => '100']);
 });
 
+it('resolves runtime expressions in payload body values before replacements', function (): void {
+    $engine = \Mockery::mock(EvaluationEngineInterface::class);
+    $engine->shouldReceive('resolveValue')->andReturnUsing(
+        static fn (string $value): mixed => match ($value) {
+            '$inputs.name' => 'Rex',
+            '$inputs.tag' => 'friendly',
+            default => $value,
+        },
+    );
+    $engine->shouldReceive('replacePayload')
+        ->once()
+        ->with(
+            \Mockery::type(Step::class),
+            [
+                'name' => 'Rex',
+                'status' => 'available',
+                'tags' => ['friendly', 'fixed'],
+                'count' => 2,
+                'active' => true,
+                'note' => null,
+            ],
+            \Mockery::type(Closure::class),
+            \Mockery::type(WorkflowContext::class),
+        )
+        ->andReturnUsing(static fn (Step $step, array $body): array => $body);
+
+    $step = requestCompilerStep([], new RequestBody(
+        contentType: 'application/json',
+        payload: [
+            'name' => '$inputs.name',
+            'status' => 'available',
+            'tags' => ['$inputs.tag', 'fixed'],
+            'count' => 2,
+            'active' => true,
+            'note' => null,
+        ],
+        replacements: [],
+    ));
+
+    $result = requestCompilerFor($engine)->compile($step, requestCompilerDocument(), new WorkflowContext('def-1'));
+
+    expect($result['payload']->body)->toBe([
+        'name' => 'Rex',
+        'status' => 'available',
+        'tags' => ['friendly', 'fixed'],
+        'count' => 2,
+        'active' => true,
+        'note' => null,
+    ]);
+});
+
 // `$bodyData === [] ? null : $bodyData` collapses an empty replacement result
 // to a null body. A document with `requestBody.payload: {}` and no replacements
 // reaches it for real: the engine is handed [] and hands [] straight back.

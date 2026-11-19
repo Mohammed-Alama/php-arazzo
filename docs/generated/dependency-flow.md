@@ -16,10 +16,11 @@ sankey-beta
 
 cli-Console,cli-Renderer,1
 cli-Console,contracts-Dependency,1
-cli-Console,contracts-Interfaces,7
-cli-Console,contracts-Spec,12
+cli-Console,contracts-Exceptions,1
+cli-Console,contracts-Interfaces,5
+cli-Console,contracts-Spec,9
 cli-Console,contracts-State,1
-cli-Console,document-Parser,6
+cli-Console,document-Parser,8
 cli-Console,document-Validator,2
 cli-Console,evaluation-root,2
 cli-Console,events-Interfaces,2
@@ -29,9 +30,8 @@ cli-Console,runner-Execution,1
 cli-Console,runner-root,5
 cli-Console,runtime-State,6
 cli-Console,runtime-Telemetry,1
-cli-Console,sources-Normalizer,1
 cli-Console,sources-Resolver,1
-cli-Console,sources-root,1
+cli-Console,sources-root,2
 cli-Generator,contracts-Interfaces,2
 cli-Renderer,contracts-Spec,8
 contracts-Dependency,contracts-Spec,6
@@ -43,12 +43,12 @@ contracts-State,contracts-Spec,3
 document-Parser,contracts-Spec,38
 document-Parser,contracts-Support,2
 document-Validator,contracts-Dependency,1
-document-Validator,contracts-Spec,108
+document-Validator,contracts-Spec,134
 document-Validator,contracts-Support,2
-document-Validator,expression-Data,1
-document-Validator,expression-Enum,10
+document-Validator,expression-Data,2
+document-Validator,expression-Enum,11
 document-Validator,expression-Exceptions,2
-document-Validator,expression-Interfaces,13
+document-Validator,expression-Interfaces,15
 document-root,contracts-Spec,13
 document-root,document-Parser,4
 document-root,document-Validator,4
@@ -210,7 +210,7 @@ runner-Async,runtime-Telemetry,1
 runner-Execution,contracts-Interfaces,2
 runner-Execution,contracts-Spec,2
 runner-Execution,contracts-State,1
-runner-Execution,contracts-Support,3
+runner-Execution,contracts-Support,4
 runner-Execution,document-root,2
 runner-Execution,events-Interfaces,1
 runner-Execution,runtime-State,4
@@ -220,7 +220,7 @@ runner-Interfaces,contracts-Spec,2
 runner-Sync,contracts-Dependency,1
 runner-Sync,contracts-Exceptions,2
 runner-Sync,contracts-Interfaces,7
-runner-Sync,contracts-Spec,24
+runner-Sync,contracts-Spec,25
 runner-Sync,contracts-State,5
 runner-Sync,contracts-Support,2
 runner-Sync,document-Validator,2
@@ -230,7 +230,7 @@ runner-Sync,engine-Execution,4
 runner-Sync,evaluation-root,4
 runner-Sync,events-root,7
 runner-Sync,expression-Data,2
-runner-Sync,runner-Execution,9
+runner-Sync,runner-Execution,10
 runner-Sync,runtime-Policy,1
 runner-Sync,runtime-State,1
 runner-Sync,sources-Normalizer,2

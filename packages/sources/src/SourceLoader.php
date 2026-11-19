@@ -68,17 +68,20 @@ final class SourceLoader
         foreach ($document->sourceDescriptions as $source) {
             $normalizer = $this->normalizers->get($source->type);
             if ($normalizer === null) {
-                error_log('No normalizer for source type: '.$source->type->value);
-
                 continue;
             }
-            $resolved = $this->sources->resolve($source, $basePath);
-            error_log('Resolved source: '.$source->name.', content keys: '.implode(', ', array_keys($resolved->content)));
-            $rawContent = json_encode($resolved->content, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES);
-            /** @var array<string, ResolvedOperation> $normalized */
-            $normalized = $normalizer->normalize($source, $rawContent, $document);
-            error_log('Normalized index keys: '.implode(', ', array_keys($normalized)));
-            $index += $normalized;
+
+            try {
+                $resolved = $this->sources->resolve($source, $basePath);
+                $rawContent = json_encode($resolved->content, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES);
+                /** @var array<string, ResolvedOperation> $normalized */
+                $normalized = $normalizer->normalize($source, $rawContent, $document);
+                $index += $normalized;
+            } catch (\Throwable $e) {
+                // Unreachable or unparseable source (R5): skip it, never fail
+                // validation solely due to source resolution.
+                continue;
+            }
         }
 
         return $index;

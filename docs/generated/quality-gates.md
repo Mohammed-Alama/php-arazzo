@@ -20,7 +20,7 @@ byte-deterministic per measurement.
 | Static Analysis · core | **PASS** | errors: **0** | `composer run analyse-contracts && composer run analyse-expression && composer run analyse-evaluation && composer run analyse-document && composer run analyse-sources && composer run analyse-runtime && composer run analyse-engine && composer run analyse-events && composer run analyse-runner && composer run analyse-cli` |
 | Static Analysis · laravel | **PASS** | errors: **0** | `composer run analyse-laravel` |
 | Baseline Policy · correctness | **PASS** | violations: **0** | `php scripts/check-baselines.php --json` |
-| Tests · core | **PASS** | skipped: **3** · passed: **264** · assertions: **1300** | `vendor/bin/pest packages/core/tests --no-coverage` |
-| Tests · laravel | **PASS** | passed: **161** · assertions: **392** | `vendor/bin/pest packages/laravel/tests --no-coverage` |
+| Tests · core | **PASS** | skipped: **3** · passed: **284** · assertions: **1545** | `vendor/bin/pest packages/core/tests --no-coverage` |
+| Tests · laravel | **PASS** | passed: **165** · assertions: **397** | `vendor/bin/pest packages/laravel/tests --no-coverage` |
 
 **7/7 gates passing.**

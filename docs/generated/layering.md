@@ -103,6 +103,7 @@ flowchart TB
     end
     M_cli_Console --> M_cli_Renderer
     M_cli_Console --> M_contracts_Dependency
+    M_cli_Console --> M_contracts_Exceptions
     M_cli_Console --> M_contracts_Interfaces
     M_cli_Console --> M_contracts_Spec
     M_cli_Console --> M_contracts_State
@@ -116,7 +117,6 @@ flowchart TB
     M_cli_Console --> M_runner__
     M_cli_Console --> M_runtime_State
     M_cli_Console --> M_runtime_Telemetry
-    M_cli_Console --> M_sources_Normalizer
     M_cli_Console --> M_sources_Resolver
     M_cli_Console --> M_sources__
     M_cli_Generator --> M_contracts_Interfaces
@@ -392,16 +392,16 @@ flowchart TB
 
 | From package | To package | Refs |
 |---|---|---:|
-| `cli` | `contracts` | 31 |
-| `cli` | `document` | 8 |
+| `cli` | `contracts` | 27 |
+| `cli` | `document` | 10 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `events` | 2 |
 | `cli` | `expression` | 2 |
 | `cli` | `runner` | 7 |
 | `cli` | `runtime` | 7 |
 | `cli` | `sources` | 3 |
-| `document` | `contracts` | 164 |
-| `document` | `expression` | 27 |
+| `document` | `contracts` | 190 |
+| `document` | `expression` | 31 |
 | `document` | `sources` | 3 |
 | `engine` | `contracts` | 28 |
 | `engine` | `document` | 1 |
@@ -419,7 +419,7 @@ flowchart TB
 | `laravel` | `runner` | 24 |
 | `laravel` | `runtime` | 10 |
 | `laravel` | `sources` | 29 |
-| `runner` | `contracts` | 124 |
+| `runner` | `contracts` | 126 |
 | `runner` | `document` | 10 |
 | `runner` | `engine` | 14 |
 | `runner` | `evaluation` | 11 |

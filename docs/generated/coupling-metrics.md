@@ -11,22 +11,22 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 12 | 921 | 0 | 18 | 1.00 |  |
+| `cli:Console` | 12 | 931 | 0 | 18 | 1.00 |  |
 | `cli:Generator` | 2 | 139 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
-| `contracts:Exceptions` | 1 | 30 | 4 | 0 | 0.00 |  |
+| `contracts:Exceptions` | 1 | 30 | 5 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 19 | 348 | 24 | 3 | 0.11 |  |
 | `contracts:Spec` | 49 | 1158 | 37 | 1 | 0.03 |  |
-| `contracts:State` | 2 | 790 | 13 | 1 | 0.07 |  |
+| `contracts:State` | 3 | 907 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1441 | 7 | 2 | 0.22 |  |
-| `document:Validator` | 71 | 3850 | 6 | 7 | 0.54 |  |
+| `document:Validator` | 80 | 5052 | 6 | 7 | 0.54 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
 | `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
-| `engine:Execution` | 8 | 992 | 2 | 4 | 0.67 |  |
+| `engine:Execution` | 8 | 1023 | 2 | 4 | 0.67 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 17 | 1006 | 1 | 8 | 0.89 |  |
 | `evaluation:Data` | 2 | 84 | 3 | 2 | 0.40 |  |
@@ -60,34 +60,34 @@ targets. Regenerated before every commit.
 | `laravel:Support` | 4 | 268 | 4 | 5 | 0.56 |  |
 | `(laravel root)` | 4 | 589 | 0 | 9 | 1.00 |  |
 | `runner:Async` | 7 | 1339 | 4 | 19 | 0.83 | ⚠ unstable hub |
-| `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
+| `runner:Execution` | 16 | 367 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
-| `runner:Sync` | 5 | 870 | 4 | 18 | 0.82 | ⚠ unstable hub |
+| `runner:Sync` | 6 | 1040 | 4 | 18 | 0.82 | ⚠ unstable hub |
 | `(runner root)` | 9 | 522 | 7 | 15 | 0.68 |  |
 | `runtime:Infrastructure` | 3 | 159 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
-| `runtime:State` | 12 | 1024 | 9 | 3 | 0.25 |  |
+| `runtime:State` | 12 | 1044 | 9 | 3 | 0.25 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `sources:Normalizer` | 11 | 1271 | 9 | 5 | 0.36 |  |
-| `sources:Resolver` | 13 | 477 | 8 | 3 | 0.27 |  |
-| `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
-| `(sources root)` | 3 | 333 | 2 | 10 | 0.83 |  |
+| `sources:Normalizer` | 11 | 1271 | 8 | 5 | 0.38 |  |
+| `sources:Resolver` | 13 | 499 | 8 | 3 | 0.27 |  |
+| `sources:Validator` | 1 | 324 | 3 | 4 | 0.57 |  |
+| `(sources root)` | 3 | 335 | 2 | 10 | 0.83 |  |
 
-Total cross-module edges: **1120**
+Total cross-module edges: **1151**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `document:Validator` → `contracts:Spec` | 108 |
+| `document:Validator` → `contracts:Spec` | 134 |
 | `document:Parser` → `contracts:Spec` | 38 |
 | `(evaluation root)` → `contracts:Spec` | 28 |
-| `runner:Sync` → `contracts:Spec` | 24 |
+| `runner:Sync` → `contracts:Spec` | 25 |
 | `runner:Async` → `contracts:Spec` | 23 |
 | `contracts:Interfaces` → `contracts:Spec` | 22 |
 | `(expression root)` → `expression:Ast` | 20 |
+| `document:Validator` → `expression:Interfaces` | 15 |
 | `(runner root)` → `contracts:Interfaces` | 14 |
 | `(document root)` → `contracts:Spec` | 13 |
-| `document:Validator` → `expression:Interfaces` | 13 |
 | `engine:Execution` → `contracts:Spec` | 13 |
 | `sources:Normalizer` → `contracts:Spec` | 13 |

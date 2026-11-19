@@ -214,6 +214,7 @@ it('executes the request and returns a resolved outcome with statusCode/outputs/
         new HttpStepExecutorMockEngine(),
         $outputExtractor,
         Mockery::mock(ResponseValidatorInterface::class),
+        strictValidationDefault: false,
     );
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
@@ -243,6 +244,7 @@ it('stores the response on the context before calling extractOutputs, fixing the
         new HttpStepExecutorMockEngine(),
         $outputExtractor,
         Mockery::mock(ResponseValidatorInterface::class),
+        strictValidationDefault: false,
     );
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
@@ -293,5 +295,45 @@ it('validates response schema and fails fast on failure', function (): void {
         $this->fail('Expected exception');
     } catch (SchemaValidationException $e) {
         expect($e->stepId)->toBe('sync-step');
+    }
+});
+
+it('validates response schema by default when the step does not opt out', function (): void {
+    $validator = Mockery::mock(ResponseValidatorInterface::class);
+    $validator->shouldReceive('validateResponseSchema')->once()->andThrow(
+        new SchemaValidationException('default-step', [['path' => '/', 'message' => 'bad schema']]),
+    );
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
+    $outputExtractor->shouldReceive('extractOutputs')->never();
+
+    $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
+    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) {
+        if ($interceptor) {
+            $interceptor(new Request('GET', '/'));
+        }
+
+        return new Response(200, [], '{"bad": true}');
+    });
+
+    $executor = new HttpStepExecutor(
+        $openApiExecutor,
+        createMockDocumentResolver(),
+        new EvaluationEngine(expression: new ExpressionEngine()),
+        $outputExtractor,
+        $validator,
+    );
+    $step = StepFactory::http(
+        stepId: 'default-step',
+        description: null,
+        flow: new StepFlow(),
+        io: new StepIo(),
+        operationId: 'op',
+    );
+
+    try {
+        $executor->execute($step, new WorkflowContext('wf_1'), httpStepExecutorDocument(), 'exec_1');
+        $this->fail('Expected exception');
+    } catch (SchemaValidationException $e) {
+        expect($e->stepId)->toBe('default-step');
     }
 });

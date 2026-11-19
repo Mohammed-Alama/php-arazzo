@@ -59,14 +59,14 @@ pie showData
 
 ```mermaid
 pie showData
-    title Document — 78 test files
-    "Module-scoped": 75
+    title Document — 85 test files
+    "Module-scoped": 82
     "Root": 3
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 75 | 96% |
+| Module-scoped | 82 | 96% |
 | Root | 3 | 4% |
 
 ## Sources package
@@ -127,15 +127,15 @@ pie showData
 
 ```mermaid
 pie showData
-    title Runner — 46 test files
-    "Module-scoped": 38
+    title Runner — 49 test files
+    "Module-scoped": 41
     "Root": 8
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 38 | 83% |
-| Root | 8 | 17% |
+| Module-scoped | 41 | 84% |
+| Root | 8 | 16% |
 
 ## Cli package
 
@@ -155,11 +155,11 @@ pie showData
 
 ```mermaid
 pie showData
-    title Core (integration) — 38 test files
+    title Core (integration) — 40 test files
     "Module-scoped": 23
     "Feature": 5
+    "Conformance": 4
     "Unit": 4
-    "Conformance": 2
     "Root": 2
     "Architecture": 1
     "Property": 1
@@ -167,20 +167,20 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 23 | 61% |
-| Feature | 5 | 13% |
-| Unit | 4 | 11% |
-| Conformance | 2 | 5% |
+| Module-scoped | 23 | 57% |
+| Feature | 5 | 12% |
+| Conformance | 4 | 10% |
+| Unit | 4 | 10% |
 | Root | 2 | 5% |
-| Architecture | 1 | 3% |
-| Property | 1 | 3% |
+| Architecture | 1 | 2% |
+| Property | 1 | 2% |
 
 ## Laravel package
 
 ```mermaid
 pie showData
-    title Laravel — 34 test files
-    "Module-scoped": 24
+    title Laravel — 35 test files
+    "Module-scoped": 25
     "Root": 6
     "Feature": 2
     "Architecture": 1
@@ -189,8 +189,8 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 24 | 71% |
-| Root | 6 | 18% |
+| Module-scoped | 25 | 71% |
+| Root | 6 | 17% |
 | Feature | 2 | 6% |
 | Architecture | 1 | 3% |
 | Unit | 1 | 3% |

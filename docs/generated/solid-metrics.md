@@ -33,7 +33,7 @@ quadrantChart
     contracts/State: [0.071, 0]
     contracts/Support: [0, 0.2]
     document/Parser: [0.222, 0.167]
-    document/Validator: [0.538, 0.014]
+    document/Validator: [0.538, 0.013]
     document/_: [0.462, 0.333]
     engine/Data: [0.75, 0]
     engine/Enum: [0, 0]
@@ -71,7 +71,7 @@ quadrantChart
     laravel/Support: [0.556, 0]
     laravel/_: [1, 0]
     runner/Async: [0.826, 0]
-    runner/Execution: [0.643, 0.067]
+    runner/Execution: [0.643, 0.063]
     runner/Interfaces: [1, 1]
     runner/Sync: [0.818, 0]
     runner/_: [0.682, 0.222]
@@ -79,7 +79,7 @@ quadrantChart
     runtime/Policy: [0.75, 0]
     runtime/State: [0.25, 0.333]
     runtime/Telemetry: [0, 0]
-    sources/Normalizer: [0.357, 0.182]
+    sources/Normalizer: [0.385, 0.182]
     sources/Resolver: [0.273, 0.231]
     sources/Validator: [0.571, 0]
     sources/_: [0.833, 0]
@@ -92,14 +92,16 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `document:Parser` | 931 |
-| `ExecutionContext` | `runtime:State` | 496 |
+| `ExecutionContext` | `runtime:State` | 516 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |
 | `Parser` | `expression:_` | 466 |
 | `StepOutcomeHandler` | `runner:Async` | 454 |
+| `ExecutionState` | `contracts:State` | 436 |
 | `StepExecutionWorker` | `runner:Async` | 414 |
-| `ExecutionState` | `contracts:State` | 410 |
-| `WorkflowContext` | `contracts:State` | 382 |
-| `PreflightValidator` | `sources:Validator` | 303 |
+| `WorkflowContext` | `contracts:State` | 404 |
+| `PreflightValidator` | `sources:Validator` | 325 |
+| `WorkflowEngine` | `runner:Sync` | 310 |
+| `WorkflowExecutor` | `runner:Sync` | 310 |
 | `SchemaValidator` | `engine:Execution` | 302 |
 
 ## Fat interfaces (ISP)

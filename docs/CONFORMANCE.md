@@ -1,6 +1,6 @@
 # Conformance Matrix
 
-> Generated on 2026-09-26 by `php scripts/generate-conformance-matrix.php`.
+> Generated on 2026-11-19 by `php scripts/generate-conformance-matrix.php`.
 > Corpus: official [OAI Arazzo examples](https://github.com/OAI/Arazzo-Specification/tree/main/examples)
 > (vendored snapshot under `packages/core/tests/Conformance/corpus/oai/`).
 >
@@ -15,7 +15,7 @@
 | `FAPI-PAR` | 1.0.0 | pass | — | n/a (upstream defect) | arazzo references operationId &quot;PAR&quot; but companion OpenAPI declares &quot;Par&quot; (case mismatch) |
 | `LoginAndRetrievePets` | 1.0.0 | pass | — | n/a (upstream defect) | operationPath `#/paths/~1pet~1findByStatus` omits the HTTP-method segment required to reach an Operation Object |
 | `oauth` | 1.0.0 | pass | queued (sub-workflow) | succeeded |  |
-| `pet-coupons` | 1.0.0 | pass | queued (sub-workflow) | succeeded |  |
+| `pet-coupons` | 1.0.0 | expected-fail (prose override) | queued (sub-workflow) | succeeded | Sets a Reusable Object value to the integers 1 and 10; Arazzo 1.0.1 §4.6.10.1 types value as a string. |
 
 ## Capability gaps surfaced by this harness
 

@@ -103,8 +103,77 @@ it('skips validation if configured off globally and locally', function (): void 
         return new Response(200, [], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(expression: new ExpressionEngine()), $outputExtractor, $validator);
+    $executor = new StepExecutor(
+        $openApiExecutor,
+        createMockDocumentResolver(),
+        new EvaluationEngine(expression: new ExpressionEngine()),
+        $outputExtractor,
+        $validator,
+        strictValidationDefault: false,
+    );
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
+
+    $result = $executor->execute($step, new WorkflowContext('test-def'), createTestDocument());
+    expect($result[1])->toBeTrue();
+});
+
+it('validates response schema by default when the step does not opt out', function (): void {
+    $validator = Mockery::mock(ResponseValidatorInterface::class);
+    $validator->shouldReceive('validateResponseSchema')->once()->andThrow(
+        new SchemaValidationException('default-strict-step', [['path' => '/', 'message' => 'bad schema']]),
+    );
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
+    $outputExtractor->shouldReceive('extractOutputs')->never();
+
+    $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
+    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) {
+        if ($interceptor) {
+            $interceptor(new Request('GET', '/'));
+        }
+
+        return new Response(200, ['Content-Type' => 'application/json'], '{"bad": true}');
+    });
+
+    $executor = new StepExecutor(
+        $openApiExecutor,
+        createMockDocumentResolver(),
+        new EvaluationEngine(expression: new ExpressionEngine()),
+        $outputExtractor,
+        $validator,
+    );
+    $step = StepFactory::http('default-strict-step', null, new StepFlow(), new StepIo(), 'op');
+
+    try {
+        $executor->execute($step, new WorkflowContext('test-def'), createTestDocument());
+        $this->fail('Expected SchemaValidationException');
+    } catch (SchemaValidationException $e) {
+        expect($e->stepId)->toBe('default-strict-step');
+    }
+});
+
+it('keeps the per-step opt-out ahead of the strict default', function (): void {
+    $validator = Mockery::mock(ResponseValidatorInterface::class);
+    $validator->shouldReceive('validateResponseSchema')->never();
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
+    $outputExtractor->shouldReceive('extractOutputs')->once()->andReturn([]);
+
+    $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
+    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) {
+        if ($interceptor) {
+            $interceptor(new Request('GET', '/'));
+        }
+
+        return new Response(200, [], '{"bad": true}');
+    });
+
+    $executor = new StepExecutor(
+        $openApiExecutor,
+        createMockDocumentResolver(),
+        new EvaluationEngine(expression: new ExpressionEngine()),
+        $outputExtractor,
+        $validator,
+    );
+    $step = StepFactory::http('opt-out-step', null, new StepFlow(strictValidation: false), new StepIo(), 'op');
 
     $result = $executor->execute($step, new WorkflowContext('test-def'), createTestDocument());
     expect($result[1])->toBeTrue();

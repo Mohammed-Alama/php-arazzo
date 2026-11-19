@@ -36,13 +36,11 @@ function stubGh(): array
 }
 
 /** @param list<string> $ids */
-function sectionsFile(array $ids): string
+function sectionsFile(array $ids, ?int $parent = null): string
 {
-    $sections = [];
-
-    foreach ($ids as $id) {
-        $sections[$id] = "filled {$id}";
-    }
+    $schema = arazzoSchema();
+    $all = conformingSections($schema, 'kind:bugfix', $parent);
+    $sections = array_intersect_key($all, array_flip($ids));
 
     $path = tempnam(sys_get_temp_dir(), 'sections-');
     file_put_contents($path, (string) json_encode($sections));
@@ -68,7 +66,7 @@ it('files a conforming issue and relays the kind and level labels to gh', functi
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=kind:bugfix', '--level=level:epic', '--parent=1', '--title=[Bugfix] x', '--sections='.sectionsFile(bugfixSectionIds()),
+        '--kind=kind:bugfix', '--level=level:epic', '--parent=1', '--title=fix(core): x', '--sections='.sectionsFile(bugfixSectionIds(), 1), '--package=core', '--priority=normal',
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:package"}]']);
 
     expect($process->getExitCode())->toBe(0)
@@ -80,7 +78,7 @@ it('refuses an incomplete issue before gh is called', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=kind:bugfix', '--level=level:epic', '--parent=1', '--title=x', '--sections='.sectionsFile(['core-metadata']),
+        '--kind=kind:bugfix', '--level=level:epic', '--parent=1', '--title=fix(core): x', '--sections='.sectionsFile(['core-metadata']), '--package=core', '--priority=normal',
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:package"}]']);
 
     expect($process->getExitCode())->toBe(1)
@@ -91,7 +89,7 @@ it('files a story under an epic', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=kind:bugfix', '--level=level:story', '--parent=25', '--title=x', '--sections='.sectionsFile(bugfixSectionIds()),
+        '--kind=kind:bugfix', '--level=level:story', '--parent=25', '--title=fix(core): x', '--sections='.sectionsFile(bugfixSectionIds(), 25), '--package=core', '--priority=normal',
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:epic"}]']);
 
     expect($process->getExitCode())->toBe(0)
@@ -102,7 +100,7 @@ it('refuses a story under a parent that has no level label', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=kind:bugfix', '--level=level:story', '--parent=99', '--title=x', '--sections='.sectionsFile(bugfixSectionIds()),
+        '--kind=kind:bugfix', '--level=level:story', '--parent=99', '--title=fix(core): x', '--sections='.sectionsFile(bugfixSectionIds(), 99), '--package=core', '--priority=normal',
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"kind:chore"}]']);
 
     expect($process->getExitCode())->toBe(1)
@@ -114,7 +112,7 @@ it('refuses a package-epic that has a parent', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--level=level:package', '--package=core', '--parent=25', '--title=x',
+        '--level=level:package', '--package=core', '--priority=normal', '--parent=25', '--title=x',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(1)
@@ -126,7 +124,7 @@ it('edits an existing issue instead of creating one with --edit', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--level=level:package', '--package=core', '--edit=42', '--title=x',
+        '--level=level:package', '--package=core', '--priority=normal', '--edit=42', '--title=x',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(0)
@@ -139,12 +137,12 @@ it('does not pass --parent on edit (issue is already linked)', function () {
 
     $process = runFileIssue([
         '--kind=kind:bugfix', '--level=level:story', '--parent=137',
-        '--edit=170', '--title=x',
+        '--edit=170', '--title=fix(core): x',
         '--sections='.sectionsFile([
             'core-metadata', 'problem-statement', 'dependency-matrix', 'artifacts',
             'runtime-state', 'acceptance-criteria', 'source-grounding', 'impact-profile',
             'epistemic-matrix',
-        ]),
+        ], 137), '--package=core', '--priority=normal',
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:epic"},{"name":"kind:feature"}]']);
 
     expect($process->getExitCode())->toBe(0)
@@ -156,7 +154,7 @@ it('exits 2 for an unknown kind', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=banana', '--level=level:package', '--package=core', '--title=x', '--sections='.sectionsFile(bugfixSectionIds()),
+        '--kind=banana', '--level=level:package', '--package=core', '--priority=normal', '--title=x', '--sections='.sectionsFile(bugfixSectionIds()),
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(2);
@@ -166,7 +164,7 @@ it('files a package-epic from the level and package alone', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue(
-        ['--level=level:package', '--package=runner', '--title=[Package] runner'],
+        ['--level=level:package', '--package=runner', '--priority=normal', '--title=[Package] runner'],
         $gh,
         $log,
     );
@@ -192,11 +190,33 @@ it('refuses a --kind on a package-epic', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue(
-        ['--kind=kind:chore', '--level=level:package', '--package=runner', '--title=x'],
+        ['--kind=kind:chore', '--level=level:package', '--package=runner', '--priority=normal', '--title=x'],
         $gh,
         $log,
     );
 
     expect($process->getExitCode())->toBe(2)
         ->and($process->getErrorOutput())->toContain('kind');
+});
+
+it('scripts core-metadata from the parent link and ignores any supplied core-metadata', function () {
+    [$gh, $log] = stubGh();
+
+    $schema = arazzoSchema();
+    $all = conformingSections($schema, 'kind:bugfix', 1);
+
+    // Deliberately wrong parent in the supplied payload core-metadata — it must
+    // be ignored and computed from --parent instead (D22).
+    $all['core-metadata'] = 'Package: core · Parent: #999 · Arazzo 1.0.1 · PHP 8.4.';
+    $path = tempnam(sys_get_temp_dir(), 'sections-');
+    file_put_contents($path, json_encode($all));
+
+    $process = runFileIssue([
+        '--kind=kind:bugfix', '--level=level:story', '--parent=1', '--title=fix(core): x',
+        '--sections='.$path, '--package=core', '--priority=normal',
+    ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:epic"}]']);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and($process->getErrorOutput())->not->toContain('parent-mismatch')
+        ->and(file_get_contents($log))->toContain('issue create');
 });

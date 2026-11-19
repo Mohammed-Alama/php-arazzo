@@ -141,7 +141,8 @@ gate() {
         --argjson labels "$2" \
         --argjson parent "$parent_json" \
         --argjson parentLevel "$parent_level_json" \
-        '{body: $body, labels: $labels, parent: $parent, parentLevel: $parentLevel}')
+        --arg title "${5:-}" \
+        '{body: $body, labels: $labels, parent: $parent, parentLevel: $parentLevel, title: $title}')
 
     printf '%s' "$payload" | php "$VALIDATOR" > "$TMP_RESULT"
 
@@ -200,7 +201,7 @@ case "${1:-}" in
 esac
 
 if [ "$action" = create ] || [ "$action" = edit ]; then
-    body='' body_file='' body_supplied=0 labels_in='' parent='' issue_number=''
+    body='' body_file='' body_supplied=0 labels_in='' parent='' issue_number='' title=''
     skip=0 pending='' index=0
 
     for arg in "$@"; do
@@ -216,6 +217,7 @@ if [ "$action" = create ] || [ "$action" = edit ]; then
                 label)  labels_in="$labels_in
 $arg" ;;
                 parent) parent=$arg ;;
+                title)  title=$arg ;;
             esac
             pending=''
             continue
@@ -228,7 +230,11 @@ $arg" ;;
             -F)           skip=1; pending=file ;;
             --label|--add-label|-l) skip=1; pending=label ;;
             --parent)     skip=1; pending=parent ;;
-            -t|--title|--milestone|-m|--assignee|-a|--add-assignee|--remove-assignee|--project|-p|--add-project|--remove-project|--repo|-R|--template|-T|--type)
+            --title)      skip=1; pending=title ;;
+            -t)           skip=1; pending=title ;;
+            --title=*)    title=${arg#--title=} ;;
+            -t*)          title=${arg#-t} ;;
+            --milestone|-m|--assignee|-a|--add-assignee|--remove-assignee|--project|-p|--add-project|--remove-project|--repo|-R|--template|-T|--type)
                 skip=1; pending='' ;;
             --body=*)      body=${arg#--body=}; body_supplied=1 ;;
             --body-file=*) body_file=${arg#--body-file=}; body_supplied=1 ;;
@@ -283,7 +289,7 @@ $labels_in"
                 parent_level=''
                 [ -n "$parent" ] && parent_level=$(level_label_of "$parent")
 
-                if ! gate "$body" "$labels_json" "$parent" "$parent_level"; then
+                if ! gate "$body" "$labels_json" "$parent" "$parent_level" "$title"; then
                     rm -f "$TMP_RESULT" "$TMP_BODY"
                     exit 1
                 fi
@@ -457,7 +463,7 @@ $api_labels"
 
         # Automation-owned issues are out of scope; let them through (A4).
         if ! labels_include_ecosystem "$labels_json"; then
-            if ! gate "$api_body" "$labels_json" '' ''; then
+            if ! gate "$api_body" "$labels_json" '' '' ''; then
                 rm -f "$TMP_RESULT"
                 exit 1
             fi

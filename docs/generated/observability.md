@@ -22,10 +22,12 @@ _No catalog found (LedgerAppendingListener not found)._
 
 | Class | Level(s) | Calls |
 |---|---|---:|
-| `OfficialSchemaRule` <small>core</small> | `error` | 2 |
+| `OfficialSchemaRule` <small>core</small> | `error` | 4 |
 | `ActionGotoTargetResolvesRule` <small>core</small> | `error` | 2 |
+| `ActionOutputTargetExclusivityRule` <small>core</small> | `error` | 2 |
 | `ActionRetryLimitsRule` <small>core</small> | `error` | 2 |
 | `ActionReusableRefResolvesRule` <small>core</small> | `error` | 2 |
+| `ActionTargetExclusivityRule` <small>core</small> | `error` | 1 |
 | `AsyncApiFieldsRequire11Rule` <small>core</small> | `error` | 1 |
 | `DocUnknownFieldRule` <small>core</small> | `error` · `warning` | 2 |
 | `DocumentArazzoVersionRule` <small>core</small> | `error` | 1 |
@@ -56,12 +58,17 @@ _No catalog found (LedgerAppendingListener not found)._
 | `StepIdPatternRule` <small>core</small> | `error` | 1 |
 | `StepNestedWorkflowExistsRule` <small>core</small> | `error` | 1 |
 | `StepNestedWorkflowNoCycleRule` <small>core</small> | `error` | 1 |
+| `StepOperationIdResolvesRule` <small>core</small> | `error` | 2 |
 | `StepOperationIdSourceScopedRule` <small>core</small> | `error` | 1 |
 | `StepOperationPathSyntaxRule` <small>core</small> | `error` | 4 |
 | `StepOperationTargetPresentRule` <small>core</small> | `error` | 1 |
-| `StepParameterInValidRule` <small>core</small> | `error` | 2 |
+| `StepParameterDuplicateRule` <small>core</small> | `error` | 1 |
+| `StepParameterInValidRule` <small>core</small> | `error` | 1 |
+| `StepParameterRequiresInRule` <small>core</small> | `error` | 1 |
 | `StepParametersHaveNameRule` <small>core</small> | `error` | 1 |
 | `StepRequestBodyReplacementsTargetRule` <small>core</small> | `error` | 1 |
+| `StepRequestBodyWorkflowRule` <small>core</small> | `error` | 1 |
+| `StepSuccessActionParameterInRule` <small>core</small> | `error` | 1 |
 | `StepSuccessCriteriaConditionRule` <small>core</small> | `error` | 3 |
 | `StepTimeoutRequires11Rule` <small>core</small> | `error` | 2 |
 | `StepUniqueIdRule` <small>core</small> | `error` | 1 |
@@ -76,7 +83,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `WorkflowDependencyCycleWalker` <small>core</small> | `error` | 1 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 
-88 logging calls total. PSR-14 events are dispatched independently (see events.md).
+98 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 

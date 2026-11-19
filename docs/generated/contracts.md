@@ -114,10 +114,14 @@ flowchart LR
     C_document_document_Validator_OfficialSchemaRule -.->|implements| I_Rule
     C_document_document_Validator_ActionGotoTargetResolvesRule["ActionGotoTargetResolvesRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ActionGotoTargetResolvesRule -.->|implements| I_Rule
+    C_document_document_Validator_ActionOutputTargetExclusivityRule["ActionOutputTargetExclusivityRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ActionOutputTargetExclusivityRule -.->|implements| I_Rule
     C_document_document_Validator_ActionRetryLimitsRule["ActionRetryLimitsRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ActionRetryLimitsRule -.->|implements| I_Rule
     C_document_document_Validator_ActionReusableRefResolvesRule["ActionReusableRefResolvesRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ActionReusableRefResolvesRule -.->|implements| I_Rule
+    C_document_document_Validator_ActionTargetExclusivityRule["ActionTargetExclusivityRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ActionTargetExclusivityRule -.->|implements| I_Rule
     C_document_document_Validator_ActionTypeValidRule["ActionTypeValidRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ActionTypeValidRule -.->|implements| I_Rule
     C_document_document_Validator_AsyncApiFieldsRequire11Rule["AsyncApiFieldsRequire11Rule<br/><small>document:Validator</small>"]:::implCore
@@ -184,6 +188,8 @@ flowchart LR
     C_document_document_Validator_StepNestedWorkflowExistsRule -.->|implements| I_Rule
     C_document_document_Validator_StepNestedWorkflowNoCycleRule["StepNestedWorkflowNoCycleRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepNestedWorkflowNoCycleRule -.->|implements| I_Rule
+    C_document_document_Validator_StepOperationIdResolvesRule["StepOperationIdResolvesRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepOperationIdResolvesRule -.->|implements| I_Rule
     C_document_document_Validator_StepOperationIdSourceScopedRule["StepOperationIdSourceScopedRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepOperationIdSourceScopedRule -.->|implements| I_Rule
     C_document_document_Validator_StepOperationPathSyntaxRule["StepOperationPathSyntaxRule<br/><small>document:Validator</small>"]:::implCore
@@ -192,12 +198,20 @@ flowchart LR
     C_document_document_Validator_StepOperationTargetPresentRule -.->|implements| I_Rule
     C_document_document_Validator_StepOutputsUniqueRule["StepOutputsUniqueRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepOutputsUniqueRule -.->|implements| I_Rule
+    C_document_document_Validator_StepParameterDuplicateRule["StepParameterDuplicateRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepParameterDuplicateRule -.->|implements| I_Rule
     C_document_document_Validator_StepParameterInValidRule["StepParameterInValidRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepParameterInValidRule -.->|implements| I_Rule
+    C_document_document_Validator_StepParameterRequiresInRule["StepParameterRequiresInRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepParameterRequiresInRule -.->|implements| I_Rule
     C_document_document_Validator_StepParametersHaveNameRule["StepParametersHaveNameRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepParametersHaveNameRule -.->|implements| I_Rule
     C_document_document_Validator_StepRequestBodyReplacementsTargetRule["StepRequestBodyReplacementsTargetRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepRequestBodyReplacementsTargetRule -.->|implements| I_Rule
+    C_document_document_Validator_StepRequestBodyWorkflowRule["StepRequestBodyWorkflowRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepRequestBodyWorkflowRule -.->|implements| I_Rule
+    C_document_document_Validator_StepSuccessActionParameterInRule["StepSuccessActionParameterInRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepSuccessActionParameterInRule -.->|implements| I_Rule
     C_document_document_Validator_StepSuccessCriteriaConditionRule["StepSuccessCriteriaConditionRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_StepSuccessCriteriaConditionRule -.->|implements| I_Rule
     C_document_document_Validator_StepTimeoutRequires11Rule["StepTimeoutRequires11Rule<br/><small>document:Validator</small>"]:::implCore
@@ -292,14 +306,13 @@ flowchart LR
     C_cli_cli_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
     C_laravel_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
-    C_cli_cli_Console_RunCommand["RunCommand<br/><small>cli:Console</small>"]:::implCore
-    C_cli_cli_Console_RunCommand -.->|implements| I_OpenApiExecutorInterface
     C_cli_cli_Generator_OpenAiClient["OpenAiClient<br/><small>cli:Generator</small>"]:::implCore
     C_cli_cli_Generator_OpenAiClient -.->|implements| I_AiClientInterface
     C_laravel_laravel_Http_Psr18HttpClient["Psr18HttpClient<br/><small>laravel:Http</small>"]:::implLaravel
     C_laravel_laravel_Http_Psr18HttpClient -.->|implements| I_HttpClientInterface
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
+    N_OpenApiExecutorInterface["no implementation found"]:::orphan --> I_OpenApiExecutorInterface
     N_OperationResolverInterface["no implementation found"]:::orphan --> I_OperationResolverInterface
     N_OutputExtractorInterface["no implementation found"]:::orphan --> I_OutputExtractorInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface

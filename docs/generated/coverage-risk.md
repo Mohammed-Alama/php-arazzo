@@ -61,7 +61,7 @@ quadrantChart
     laravel/Persistence: [0.833, 1]
     laravel/Queue: [0.75, 1]
     laravel/State: [0.667, 1]
-    laravel/Support: [0.556, 0.5]
+    laravel/Support: [0.556, 0.75]
     runner/Async: [0.826, 1]
     runner/Execution: [0.643, 1]
     runner/Interfaces: [1, 0]
@@ -70,7 +70,7 @@ quadrantChart
     runtime/Policy: [0.75, 1]
     runtime/State: [0.25, 1]
     runtime/Telemetry: [0, 1]
-    sources/Normalizer: [0.357, 1]
+    sources/Normalizer: [0.385, 1]
     sources/Resolver: [0.273, 1]
     sources/Validator: [0.571, 1]
 ```
@@ -83,16 +83,16 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.11 | 41 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 235 | 49 | 100% |
-| `contracts/State` | 0.07 | 70 | 2 | 100% |
-| `contracts/Support` | 0.00 | 12 | 5 | 100% |
-| `document/Parser` | 0.22 | 41 | 12 | 100% |
-| `document/Validator` | 0.54 | 82 | 71 | 100% |
+| `contracts/Spec` | 0.03 | 248 | 49 | 100% |
+| `contracts/State` | 0.07 | 71 | 3 | 100% |
+| `contracts/Support` | 0.00 | 13 | 5 | 100% |
+| `document/Parser` | 0.22 | 42 | 12 | 100% |
+| `document/Validator` | 0.54 | 91 | 80 | 100% |
 | `engine/Data` | 0.75 | 2 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
 | `engine/Execution` | 0.67 | 12 | 8 | 100% |
-| `evaluation/Condition` | 0.89 | 52 | 17 | 100% |
+| `evaluation/Condition` | 0.89 | 53 | 17 | 100% |
 | `evaluation/Data` | 0.40 | 11 | 2 | 100% |
 | `evaluation/Enum` | 0.00 | 6 | 5 | 100% |
 | `evaluation/Events` | 0.33 | 1 | 1 | 100% |
@@ -118,16 +118,16 @@ quadrantChart
 | `laravel/Persistence` | 0.83 | 6 | 4 | 100% |
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.67 | 3 | 1 | 100% |
-| `laravel/Support` | 0.56 | 2 | 4 | 50% |
+| `laravel/Support` | 0.56 | 3 | 4 | 75% |
 | `runner/Async` | 0.83 | 21 | 7 | 100% |
-| `runner/Execution` | 0.64 | 30 | 15 | 100% |
+| `runner/Execution` | 0.64 | 31 | 16 | 100% |
 | `runner/Interfaces` | 1.00 | 0 | 1 | 0% |
-| `runner/Sync` | 0.82 | 32 | 5 | 100% |
+| `runner/Sync` | 0.82 | 36 | 6 | 100% |
 | `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
 | `runtime/State` | 0.25 | 27 | 12 | 100% |
 | `runtime/Telemetry` | 0.00 | 2 | 2 | 100% |
-| `sources/Normalizer` | 0.36 | 19 | 11 | 100% |
+| `sources/Normalizer` | 0.39 | 20 | 11 | 100% |
 | `sources/Resolver` | 0.27 | 24 | 13 | 100% |
 | `sources/Validator` | 0.57 | 5 | 1 | 100% |
 

@@ -21,7 +21,7 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 46 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 25 | 0 | _unclassified_ ⚠ |
-| `Psr` | 36 | 26 | allowed |
+| `Psr` | 35 | 26 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 10 | 0 | **forbidden** ⚠ |
@@ -30,8 +30,8 @@ when a boundary consciously moves.
 
 | Package | Module | Vendor | References |
 |---|---|---|---:|
-| cli | `cli:Console` | `GuzzleHttp` | 1 |
-| cli | `cli:Console` | `Psr` | 5 |
+| cli | `cli:Console` | `GuzzleHttp` | 2 |
+| cli | `cli:Console` | `Psr` | 4 |
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
 | contracts | `contracts:Interfaces` | `Psr` | 2 |
@@ -52,7 +52,7 @@ when a boundary consciously moves.
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
 | sources | `sources:Resolver` | `Psr` | 4 |
 | sources | `sources:Validator` | `JsonSchema` | 3 |
-| sources | `sources:_` | `GuzzleHttp` | 2 |
+| sources | `sources:_` | `GuzzleHttp` | 1 |
 | sources | `sources:_` | `Psr` | 2 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
@@ -74,7 +74,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Spatie` | 2 |
 
 **12 library boundary violation(s):**
-- `cli:Console` imports `GuzzleHttp\*` (1 refs)
+- `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (4 refs)
@@ -85,7 +85,7 @@ when a boundary consciously moves.
 - `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
-- `sources:_` imports `GuzzleHttp\*` (2 refs)
+- `sources:_` imports `GuzzleHttp\*` (1 refs)
 
 ## Core aggregator emptiness
 
@@ -110,8 +110,8 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 
 | From package | Target | In package | Refs | Example site |
 |---|---|---|---:|---|
-| `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
-| `document` | `ExpressionReference` | `expression` | 1 | `ExpressionUnresolvedStepRefRule` |
+| `document` | `ExpressionReference` | `expression` | 2 | `ExpressionUnresolvedStepRefRule` |
+| `document` | `ImplicitDependencies` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
 | `evaluation` | `EvaluationContext` | `expression` | 5 | `ConditionEvaluator` |
 | `evaluation` | `Parser` | `expression` | 1 | `AccessorParser` |

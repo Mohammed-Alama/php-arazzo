@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "packages/cli",
-                "reference": "a2e80cfc7ff71116d63dc8a26b2d4c66bb3d0140"
+                "reference": "3be930a30daa498ba193699f7ab8099f89cc7b6f"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -39,6 +39,9 @@
                 "pestphp/pest": "^5.0",
                 "pestphp/pest-plugin-arch": "^5.0"
             },
+            "bin": [
+                "bin/arazzo"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {

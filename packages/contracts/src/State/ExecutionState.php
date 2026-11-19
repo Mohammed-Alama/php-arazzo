@@ -24,6 +24,7 @@ final readonly class ExecutionState implements JsonSerializable
      * @param  list<mixed>  $errors
      * @param  list<string>  $workflowCallStack
      * @param  array<string, mixed>  $components
+     * @param  array<string, array{inputs: array<string, mixed>, outputs: array<string, mixed>}>  $workflows
      */
     public function __construct(
         public string $executionId,
@@ -42,6 +43,7 @@ final readonly class ExecutionState implements JsonSerializable
         public int $maxWorkflowDepth = 32,
         public array $components = [],
         public string $status = 'running',
+        public array $workflows = [],
     ) {}
 
     /**
@@ -98,6 +100,8 @@ final readonly class ExecutionState implements JsonSerializable
         /** @var array<string, mixed> $components */
         $components = self::arrayField($values, 'components');
 
+        $workflows = WorkflowDataMap::from($values['workflows'] ?? null);
+
         return new self(
             self::stringField($values, 'executionId'),
             self::stringField($values, 'definitionId'),
@@ -115,6 +119,7 @@ final readonly class ExecutionState implements JsonSerializable
             self::intField($values, 'maxWorkflowDepth', 32),
             $components,
             self::stringField($values, 'status', 'running'),
+            $workflows,
         );
     }
 
@@ -181,7 +186,22 @@ final readonly class ExecutionState implements JsonSerializable
             'maxWorkflowDepth' => $this->maxWorkflowDepth,
             'components' => $this->components,
             'status' => $this->status,
+            'workflows' => $this->workflows,
         ];
+    }
+
+    /**
+     * Records inputs/outputs for a workflow without disturbing any other state.
+     *
+     * @param  array{inputs?: array<string, mixed>, outputs?: array<string, mixed>}  $data
+     */
+    public function withWorkflowData(string $workflowId, array $data): self
+    {
+        $workflows = $this->workflows;
+        $existing = is_array($workflows[$workflowId] ?? null) ? $workflows[$workflowId] : [];
+        $workflows[$workflowId] = WorkflowDataMap::merged($data, $existing);
+
+        return $this->copy(workflows: $workflows);
     }
 
     public function attemptFor(string $stepId): int
@@ -191,7 +211,7 @@ final readonly class ExecutionState implements JsonSerializable
 
     public function withCurrentStep(?string $stepId): self
     {
-        return new self($this->executionId, $this->definitionId, $this->workflowId, $stepId, $this->inputs, $this->stepAttempts, $this->stepResults, $this->dependencies, $this->outputs, $this->errors, $this->stepsSpent, $this->maxSteps, $this->workflowCallStack, $this->maxWorkflowDepth, $this->components, $this->status);
+        return new self($this->executionId, $this->definitionId, $this->workflowId, $stepId, $this->inputs, $this->stepAttempts, $this->stepResults, $this->dependencies, $this->outputs, $this->errors, $this->stepsSpent, $this->maxSteps, $this->workflowCallStack, $this->maxWorkflowDepth, $this->components, $this->status, $this->workflows);
     }
 
     public function withStatus(string $status): self
@@ -208,6 +228,7 @@ final readonly class ExecutionState implements JsonSerializable
      * @param  list<mixed>  $errors
      * @param  list<string>  $workflowCallStack
      * @param  array<string, mixed>  $components
+     * @param  array<string, array{inputs: array<string, mixed>, outputs: array<string, mixed>}>|null  $workflows
      */
     private function copy(
         ?string $executionId = null, ?string $definitionId = null, ?string $workflowId = null,
@@ -215,13 +236,14 @@ final readonly class ExecutionState implements JsonSerializable
         ?array $stepResults = null, ?array $dependencies = null, ?array $outputs = null,
         ?array $errors = null, ?int $stepsSpent = null, ?int $maxSteps = null,
         ?array $workflowCallStack = null, ?int $maxWorkflowDepth = null, ?array $components = null,
-        ?string $status = null,
+        ?string $status = null, ?array $workflows = null,
     ): self {
         return new self($executionId ?? $this->executionId, $definitionId ?? $this->definitionId, $workflowId ?? $this->workflowId,
             $currentStepId === null ? $this->currentStepId : $currentStepId, $inputs ?? $this->inputs, $stepAttempts ?? $this->stepAttempts,
             $stepResults ?? $this->stepResults, $dependencies ?? $this->dependencies, $outputs ?? $this->outputs, $errors ?? $this->errors,
             $stepsSpent ?? $this->stepsSpent, $maxSteps ?? $this->maxSteps, $workflowCallStack ?? $this->workflowCallStack,
-            $maxWorkflowDepth ?? $this->maxWorkflowDepth, $components ?? $this->components, $status ?? $this->status);
+            $maxWorkflowDepth ?? $this->maxWorkflowDepth, $components ?? $this->components, $status ?? $this->status,
+            $workflows ?? $this->workflows);
     }
 
     public function withWorkflow(string $workflowId): self
@@ -255,6 +277,7 @@ final readonly class ExecutionState implements JsonSerializable
             $this->executionId,
             stepsSpent: $this->stepsSpent,
             workflowCallStack: $this->workflowCallStack,
+            workflows: $this->workflows,
         );
     }
 
@@ -280,6 +303,7 @@ final readonly class ExecutionState implements JsonSerializable
             $context->getWorkflowCallStack() ?: [(string) $context->getWorkflowId()],
             $maxWorkflowDepth ?? 32,
             $context->getComponents(),
+            workflows: $context->getWorkflows(),
         );
 
         foreach ($context->getSteps() as $stepId => $result) {
@@ -379,6 +403,7 @@ final readonly class ExecutionState implements JsonSerializable
             maxWorkflowDepth: $this->maxWorkflowDepth,
             components: $this->components,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 
@@ -404,6 +429,7 @@ final readonly class ExecutionState implements JsonSerializable
             maxWorkflowDepth: $this->maxWorkflowDepth,
             components: $this->components,
             status: $this->status,
+            workflows: $this->workflows,
         );
     }
 }
