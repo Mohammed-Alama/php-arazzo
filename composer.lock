@@ -334,8 +334,8 @@
             }
         },
         {
-            "name": "alama/arazzo-expression",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-expression",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/expression",
