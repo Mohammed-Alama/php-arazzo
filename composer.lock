@@ -635,8 +635,8 @@
             }
         },
         {
-            "name": "alama/arazzo-sources",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-sources",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/sources",
