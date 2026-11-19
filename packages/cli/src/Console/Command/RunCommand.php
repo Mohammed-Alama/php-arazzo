@@ -15,7 +15,7 @@ use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
-use Alama\Arazzo\Runner\RunnerFacade;
+use Alama\Arazzo\Runner\RunnerFacadeInterface;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Client;
@@ -102,6 +102,7 @@ final class RunCommand extends Command
         // Use the validated, default-populated input map (defaults applied).
         $inputs = $preflightResult->inputs;
 
+        /** @var RunnerFacadeInterface $runner */
         $runner = new RunnerFacade(
             $runtime->document,
             $runtime->operations,
