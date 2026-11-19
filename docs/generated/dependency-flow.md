@@ -20,7 +20,7 @@ cli-Console,contracts-Exceptions,1
 cli-Console,contracts-Interfaces,5
 cli-Console,contracts-Spec,9
 cli-Console,contracts-State,1
-cli-Console,document-Parser,6
+cli-Console,document-Parser,8
 cli-Console,document-Validator,2
 cli-Console,evaluation-root,2
 cli-Console,events-Interfaces,2

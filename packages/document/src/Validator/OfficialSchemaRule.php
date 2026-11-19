@@ -62,6 +62,8 @@ final class OfficialSchemaRule implements Rule
         }
 
         if ($validator->isValid()) {
+            self::applyProseOverrides($raw, $errors, $doc->arazzo);
+
             return;
         }
 
@@ -118,6 +120,293 @@ final class OfficialSchemaRule implements Rule
         $resolved = $storage->getSchema($schemaId);
 
         return is_object($resolved) ? $resolved : null;
+    }
+
+    /**
+     * Apply prose-level overrides after schema validation passes.
+     *
+     * Inspects rawRoot for prose-level overrides based on the Arazzo version:
+     *
+     * 1. R1 (1.0): successCriteria/failureCriteria/criteria where `type` is not
+     *    a string enum [simple|regex|jsonpath|xpath] per the Criterion Object spec
+     *
+     * 2. R2 (1.0): payload-replacement-object `value` that is an array -
+     *    1.0 schema says `value` must be string only; prose confirms this direction
+     *
+     * 3. R3 (1.0): parameter-object `value` with selector-object branch -
+     *    1.0 parameter `value` has no `selector-object` branch per prose
+     *
+     * 4. R4 (1.1): step `oneOf` requires `operationId` or `operationPath` -
+     *    1.1 schema already enforces this; no additional override needed
+     *
+     * 5. R5 (all versions): reusable-parameter `value` typing contested between
+     *    schema and prose - documented as unscored case (no code change)
+     *
+     * @param  array<array-key, mixed>  $raw  Raw document root (typically from $doc->rawRoot)
+     */
+    private static function applyProseOverrides(array $raw, ErrorCollector $errors, string $arazzo): void
+    {
+        $minor = match (true) {
+            str_starts_with($arazzo, '1.0') => '1.0',
+            str_starts_with($arazzo, '1.2') => '1.2',
+            default => '1.1',
+        };
+
+        $criteriaPaths = self::findCriteriaWithNonStringType($raw, $minor);
+        $replacementPaths = self::payloadArrayValues($raw, $minor);
+        $parameterPaths = self::findParameterSelectorValues($raw, $minor);
+
+        foreach ($criteriaPaths as $path => $message) {
+            $errors->error(
+                'schema.invalid',
+                $message,
+                $path,
+            );
+        }
+
+        foreach ($replacementPaths as $path => $message) {
+            $errors->error(
+                'schema.invalid',
+                $message,
+                $path,
+            );
+        }
+
+        foreach ($parameterPaths as $path => $message) {
+            $errors->error(
+                'schema.invalid',
+                $message,
+                $path,
+            );
+        }
+    }
+
+    /**
+     * Find successCriteria/failureCriteria/criteria where `type` is not a string.
+     *
+     * For 1.0, the Criterion Object spec says `type` must be a string enum
+     * of "simple|regex|jsonpath|xpath".  Objects or other non-string values
+     * are invalid per prose even when the JSON Schema anyOf permits them.
+     *
+     * @param  array<array-key, mixed>  $raw  Raw document root (typically from $doc->rawRoot)
+     * @param  string  $minor  Document minor version (e.g. "1.0", "1.1", "1.2")
+     * @return array<array-key, string> pointer => error message
+     */
+    private static function findCriteriaWithNonStringType(
+        array $raw,
+        string $minor,
+    ): array {
+        $results = [];
+
+        $steps = self::getStepsFromRaw($raw, $minor);
+        foreach ($steps as $stepPath => $step) {
+            self::checkSuccessCriteria($step, $stepPath, $results);
+            self::checkOnFailureCriteria($step, $stepPath, $results);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Check successCriteria for non-string type.
+     *
+     * @param  array{successCriteria?: array, onFailure?: array}  $step
+     */
+    private static function checkSuccessCriteria(
+        array $step,
+        string $stepPath,
+        array &$results,
+    ): void {
+        if (!isset($step['successCriteria']) || !is_array($step['successCriteria'])) {
+            return;
+        }
+        foreach ($step['successCriteria'] as $idx => $criterion) {
+            if (!isset($criterion['type']) || is_string($criterion['type'])) {
+                continue;
+            }
+            $selfPath = $stepPath.'/successCriteria/'.$idx;
+            $typedType = $criterion['type'];
+            $results[$selfPath] = sprintf(
+                '[%s] Criterion `type` MUST be a string enum [simple|regex|jsonpath|xpath], got %s',
+                $selfPath,
+                (string) $typedType,
+            );
+        }
+    }
+
+    /**
+     * Check onFailure criteria for non-string type.
+     *
+     * @param  array{onFailure?: array}  $step
+     */
+    private static function checkOnFailureCriteria(
+        array $step,
+        string $stepPath,
+        array &$results,
+    ): void {
+        if (!isset($step['onFailure']) || !is_array($step['onFailure'])) {
+            return;
+        }
+        foreach ($step['onFailure'] as $ofIdx => $ofStep) {
+            if (!isset($ofStep['criteria']) || !is_array($ofStep['criteria'])) {
+                continue;
+            }
+            foreach ($ofStep['criteria'] as $critIdx => $criterion) {
+                if (!isset($criterion['type']) || is_string($criterion['type'])) {
+                    continue;
+                }
+                $selfPath = $stepPath.'/onFailure/'.$ofIdx.'/criteria/'.$critIdx;
+                $typedType = $criterion['type'];
+                $results[$selfPath] = sprintf(
+                    '[%s] Criterion `type` MUST be a string enum [simple|regex|jsonpath|xpath], got %s',
+                    $selfPath,
+                    (string) $typedType,
+                );
+            }
+        }
+    }
+
+    /**
+     * Find payload-replacement-object values that are arrays (R2).
+     *
+     * 1.0 `payload-replacement-object` `value` is `string` only per schema.
+     * Prose confirms this direction - arrays in `value` are invalid.
+     *
+     * @return array pointer => error message
+     */
+    private static function payloadArrayValues(
+        array $raw,
+        string $minor,
+    ): array {
+        $results = [];
+
+        $workflows = $raw['workflows'] ?? [];
+        foreach ($workflows as $wIdx => $workflow) {
+            $steps = $workflow['steps'] ?? [];
+            foreach ($steps as $sIdx => $step) {
+                $requestBody = $step['requestBody'] ?? null;
+                if (!$requestBody instanceof \stdClass) {
+                    continue;
+                }
+                $replacements = $requestBody->replacements ?? [];
+                if (!is_array($replacements)) {
+                    continue;
+                }
+                foreach ($replacements as $rIdx => $replacement) {
+                    if (!isset($replacement->value) || !is_array($replacement->value)) {
+                        continue;
+                    }
+                    $selfPath = sprintf(
+                        '/workflows/%d/steps/%d/requestBody/replacements/%d/value',
+                        $wIdx,
+                        $sIdx,
+                        $rIdx,
+                    );
+                    $results[$selfPath] = sprintf(
+                        '[%s] PayloadReplacement `value` MUST be a string, got array',
+                        $selfPath,
+                    );
+                }
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Find parameter-object values with selector-object branch (R3).
+     *
+     * 1.0 `parameter-object` `value` has no `selector-object` branch per prose.
+     * The schema accepts `object` or `array` for `value`, but prose restricts
+     * `value` to simple types (string, boolean, number, null) without selector
+     * sub-structures for 1.0 documents.
+     *
+     * @param  array<array-key, mixed>  $raw  Raw document root (typically from $doc->rawRoot)
+     * @param  string  $minor  Document minor version (e.g. "1.0", "1.1", "1.2")
+     * @return array<array-key, string> pointer => error message
+     */
+    private static function findParameterSelectorValues(
+        array $raw,
+        string $minor,
+    ): array {
+        $results = [];
+
+        $workflows = $raw['workflows'] ?? [];
+        foreach ($workflows as $wIdx => $workflow) {
+            $steps = $workflow['steps'] ?? [];
+            foreach ($steps as $sIdx => $step) {
+                $parameters = $step->parameters ?? [];
+                if (!is_array($parameters)) {
+                    continue;
+                }
+                foreach ($parameters as $pIdx => $param) {
+                    if (!isset($param->value)) {
+                        continue;
+                    }
+                    $value = $param->value;
+                    // Check for selector-object structure: an object with $ref or
+                    // a structure that looks like a selector
+                    if (is_object($value) && property_exists($value, '$ref')) {
+                        $selfPath = sprintf(
+                            '/workflows/%d/steps/%d/parameters/%d/value',
+                            $wIdx,
+                            $sIdx,
+                            $pIdx,
+                        );
+                        $results[$selfPath] = sprintf(
+                            '[%s] Parameter `value` MUST not contain selector-object branch in 1.0',
+                            $selfPath,
+                        );
+                    }
+                    // Also check for array value with object elements that have $ref
+                    if (is_array($value)) {
+                        foreach ($value as $vIdx => $v) {
+                            if (is_object($v) && property_exists($v, '$ref')) {
+                                $selfPath = sprintf(
+                                    '/workflows/%d/steps/%d/parameters/%d/value/%d',
+                                    $wIdx,
+                                    $sIdx,
+                                    $pIdx,
+                                    $vIdx,
+                                );
+                                $results[$selfPath] = sprintf(
+                                    '[%s] Parameter `value` array element MUST not contain selector-object branch in 1.0',
+                                    $selfPath,
+                                );
+                                break; // Only flag first occurrence per parameter
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Extract step objects from raw document, returning step path => step data.
+     *
+     * @return array<string, array{stepId?: string, successCriteria?: array, onFailure?: array}>
+     */
+    private static function getStepsFromRaw(array $raw, string $minor): array
+    {
+        $results = [];
+
+        $workflows = $raw['workflows'] ?? [];
+        foreach ($workflows as $wIdx => $workflow) {
+            $steps = $workflow['steps'] ?? [];
+            foreach ($steps as $sIdx => $step) {
+                $stepPath = sprintf(
+                    '/workflows/%d/steps/%d',
+                    $wIdx,
+                    $sIdx,
+                );
+                $results[$stepPath] = $step;
+            }
+        }
+
+        return $results;
     }
 
     private static function reportErrors(JsonSchemaValidator $validator, ErrorCollector $errors): void

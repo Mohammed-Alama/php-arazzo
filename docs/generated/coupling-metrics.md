@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 12 | 907 | 0 | 18 | 1.00 |  |
+| `cli:Console` | 12 | 917 | 0 | 18 | 1.00 |  |
 | `cli:Generator` | 2 | 139 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
@@ -21,7 +21,7 @@ targets. Regenerated before every commit.
 | `contracts:State` | 3 | 907 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1441 | 7 | 2 | 0.22 |  |
-| `document:Validator` | 72 | 4233 | 6 | 7 | 0.54 |  |
+| `document:Validator` | 72 | 4522 | 6 | 7 | 0.54 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
@@ -73,7 +73,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 324 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 333 | 2 | 10 | 0.83 |  |
 
-Total cross-module edges: **1127**
+Total cross-module edges: **1129**
 
 ## Most entangled module pairs
 

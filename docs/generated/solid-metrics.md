@@ -95,6 +95,7 @@ Concrete types over 300 LOC:
 | `ExecutionContext` | `runtime:State` | 516 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |
 | `Parser` | `expression:_` | 466 |
+| `OfficialSchemaRule` | `document:Validator` | 464 |
 | `StepOutcomeHandler` | `runner:Async` | 454 |
 | `ExecutionState` | `contracts:State` | 436 |
 | `StepExecutionWorker` | `runner:Async` | 414 |
