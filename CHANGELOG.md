@@ -7,6 +7,14 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Fixed
+
+## [1.0.0-alpha.1] - 2026-11-19
+
+### Added
 - **Execution preflight** (`PreflightValidator` + `PreflightFailureException`): resolves source descriptions, operation references, OpenAPI versions, reusable action components, and selector XPath versions with zero side effects before a run starts. Wired into both the synchronous executor and queue worker (fresh runs only); non-locally-registered sources downgrade to warnings so remote-fetched sources keep working. Laravel SP binds it automatically.
 - **Shared step budget across nested invocations and queue jobs**: `ExecutionState`/`WorkflowContext` carry `stepsSpent` + workflow call stack; sub-workflow children inherit the parent pool (never reset), worker state payloads persist both fields across job boundaries; `ExecutionResult`/`SubWorkflowResult` expose final consumption.
 - **Failure categories**: `StepFailed`/`RunFailed` events gain `category` (`criteria`, `schema`, `transport`, `authoring`, `execution`).
