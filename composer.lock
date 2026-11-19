@@ -254,8 +254,8 @@
             }
         },
         {
-            "name": "alama/arazzo-evaluation",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-evaluation",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/evaluation",
