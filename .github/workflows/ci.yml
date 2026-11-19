@@ -59,6 +59,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Check PHP code style
         uses: aglipanci/laravel-pint-action@2.6
         with:
@@ -71,6 +73,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -105,6 +109,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -164,6 +170,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -199,6 +207,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -230,6 +240,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
