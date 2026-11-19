@@ -218,8 +218,8 @@
             }
         },
         {
-            "name": "alama/arazzo-engine",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-engine",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/engine",

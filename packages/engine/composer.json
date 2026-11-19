@@ -1,7 +1,8 @@
 {
-    "name": "alama/arazzo-engine",
+    "name": "php-arazzo/arazzo-engine",
     "description": "Arazzo workflow engine - step state machine and workflow transition logic",
     "type": "library",
+    "version": "1.0.0-alpha.1",
     "license": "MIT",
     "require": {
         "php": "^8.4",
