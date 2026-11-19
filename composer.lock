@@ -591,8 +591,8 @@
             }
         },
         {
-            "name": "alama/arazzo-runtime",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-runtime",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/runtime",

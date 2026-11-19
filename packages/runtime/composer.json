@@ -1,8 +1,9 @@
 {
-    "name": "alama/arazzo-runtime",
+    "name": "php-arazzo/arazzo-runtime",
     "description": "Runtime support services for alama/arazzo-core: retry policy, telemetry, lock strategies, state stores.",
     "keywords": ["alama", "arazzo", "runtime", "telemetry", "state"],
     "license": "MIT",
+    "version": "1.0.0-alpha.1",
     "repositories": [
         {"type": "path", "url": "../contracts"}
     ],
