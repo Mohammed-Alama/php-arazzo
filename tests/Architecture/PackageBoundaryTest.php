@@ -8,8 +8,8 @@ declare(strict_types=1);
  * then detects cycles via DFS.
  */
 it('has no circular package dependencies', function (): void {
-    $repo = __DIR__ . '/../..';
-    $packagesDir = $repo . '/packages';
+    $repo = __DIR__.'/../..';
+    $packagesDir = $repo.'/packages';
     $graph = [];
 
     foreach (glob("{$packagesDir}/*", GLOB_ONLYDIR) as $dir) {
@@ -25,7 +25,7 @@ it('has no circular package dependencies', function (): void {
         $require = array_keys($manifest['require'] ?? []);
         $deps = array_filter(
             $require,
-            fn (string $dep): bool => str_starts_with($dep, 'php-arazzo/arazzo-') && $dep !== $name
+            fn (string $dep): bool => str_starts_with($dep, 'php-arazzo/arazzo-') && $dep !== $name,
         );
         $graph[$name] = array_values($deps);
     }
@@ -35,12 +35,14 @@ it('has no circular package dependencies', function (): void {
     $stack = [];
     $cycle = null;
 
-    function dfs(string $node, array &$graph, array &$visited, array &$stack, ?string &$cycle): void {
+    function dfs(string $node, array &$graph, array &$visited, array &$stack, ?string &$cycle): void
+    {
         if ($cycle !== null) {
             return;
         }
         if (in_array($node, $stack, true)) {
-            $cycle = implode(' → ', array_slice($stack, array_search($node, $stack, true))) . ' → ' . $node;
+            $cycle = implode(' → ', array_slice($stack, array_search($node, $stack, true))).' → '.$node;
+
             return;
         }
         if (isset($visited[$node])) {
