@@ -1,157 +1,72 @@
 {
     "name": "alama/php-arazzo",
-    "description": "Monorepo hosting alama/arazzo-core + alama/laravel-arazzo. Not published.",
+    "description": "Monorepo hosting alama/arazzo-core + alama/laravel-arazzo.",
     "license": "MIT",
     "type": "project",
     "repositories": [
         {
             "type": "path",
-            "url": "packages/cli",
-            "options": {
-                "versions": {
-                    "alama/arazzo-cli": "dev-main"
-                }
-            }
+            "url": "packages/cli"
         },
         {
             "type": "path",
-            "url": "packages/contracts",
-            "options": {
-                "versions": {
-                    "alama/arazzo-contracts": "dev-main"
-                }
-            }
+            "url": "packages/contracts"
         },
         {
             "type": "path",
-            "url": "packages/core",
-            "options": {
-                "versions": {
-                    "alama/arazzo-core": "dev-main"
-                }
-            }
+            "url": "packages/core"
         },
         {
             "type": "path",
-            "url": "packages/document",
-            "options": {
-                "versions": {
-                    "alama/arazzo-document": "dev-main"
-                }
-            }
+            "url": "packages/document"
         },
         {
             "type": "path",
-            "url": "packages/expression",
-            "options": {
-                "versions": {
-                    "alama/arazzo-expression": "dev-main"
-                }
-            }
+            "url": "packages/expression"
         },
         {
             "type": "path",
-            "url": "packages/evaluation",
-            "options": {
-                "versions": {
-                    "alama/arazzo-evaluation": "dev-main"
-                }
-            }
+            "url": "packages/evaluation"
         },
         {
             "type": "path",
-            "url": "packages/laravel"
+            "url": "packages/engine"
         },
         {
             "type": "path",
-            "url": "packages/runtime",
-            "options": {
-                "versions": {
-                    "alama/arazzo-runtime": "dev-main"
-                }
-            }
+            "url": "packages/runner"
         },
         {
             "type": "path",
-            "url": "packages/engine",
-            "options": {
-                "versions": {
-                    "alama/arazzo-engine": "dev-main"
-                }
-            }
+            "url": "packages/sources"
         },
         {
             "type": "path",
-            "url": "packages/events",
-            "options": {
-                "versions": {
-                    "alama/arazzo-events": "dev-main"
-                }
-            }
+            "url": "packages/protocol-http"
         },
         {
             "type": "path",
-            "url": "packages/runner",
-            "options": {
-                "versions": {
-                    "alama/arazzo-runner": "dev-main"
-                }
-            }
+            "url": "packages/protocol-soap"
         },
         {
             "type": "path",
-            "url": "packages/sources",
-            "options": {
-                "versions": {
-                    "alama/arazzo-sources": "dev-main"
-                }
-            }
-        },
-        {
-            "type": "path",
-            "url": "packages/protocol-http",
-            "options": {
-                "versions": {
-                    "alama/arazzo-protocol-http": "dev-main"
-                }
-            }
-        },
-        {
-            "type": "path",
-            "url": "packages/protocol-soap",
-            "options": {
-                "versions": {
-                    "alama/arazzo-protocol-soap": "dev-main"
-                }
-            }
-        },
-        {
-            "type": "path",
-            "url": "packages/protocol-rpc",
-            "options": {
-                "versions": {
-                    "alama/arazzo-protocol-rpc": "dev-main"
-                }
-            }
+            "url": "packages/protocol-rpc"
         }
     ],
     "require": {
         "php": "^8.4",
-        "alama/arazzo-cli": "@dev",
-        "alama/arazzo-core": "@dev",
-        "alama/arazzo-contracts": "@dev",
-        "alama/arazzo-document": "@dev",
-        "alama/arazzo-expression": "@dev",
-        "alama/arazzo-evaluation": "@dev",
-        "alama/arazzo-runner": "@dev",
-        "alama/arazzo-runtime": "@dev",
-        "alama/arazzo-engine": "@dev",
-        "alama/arazzo-events": "@dev",
-        "alama/arazzo-sources": "@dev",
-        "alama/arazzo-protocol-http": "@dev",
-        "alama/arazzo-protocol-soap": "@dev",
-        "alama/arazzo-protocol-rpc": "@dev",
-        "alama/laravel-arazzo": "@dev",
+        "php-arazzo/arazzo-cli": "@dev",
+        "php-arazzo/arazzo-core": "@dev",
+        "php-arazzo/arazzo-contracts": "@dev",
+        "php-arazzo/arazzo-document": "@dev",
+        "php-arazzo/arazzo-expression": "@dev",
+        "php-arazzo/arazzo-evaluation": "@dev",
+        "php-arazzo/arazzo-engine": "@dev",
+        "php-arazzo/arazzo-runner": "@dev",
+        "php-arazzo/arazzo-sources": "@dev",
+        "php-arazzo/arazzo-protocol-http": "@dev",
+        "php-arazzo/arazzo-protocol-soap": "@dev",
+        "php-arazzo/arazzo-protocol-rpc": "@dev",
         "ext-dom": "*",
         "ext-libxml": "*"
     },
@@ -173,15 +88,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Alama\\Arazzo\\Laravel\\": "packages/laravel/src/",
             "Alama\\Arazzo\\Document\\": "packages/document/src/",
             "Alama\\Arazzo\\Expression\\": "packages/expression/src/",
             "Alama\\Arazzo\\Contracts\\": "packages/contracts/src/",
             "Alama\\Arazzo\\Cli\\": "packages/cli/src/",
             "Alama\\Arazzo\\Runner\\": "packages/runner/src/",
-            "Alama\\Arazzo\\Runtime\\": "packages/runtime/src/",
             "Alama\\Arazzo\\Engine\\": "packages/engine/src/",
-            "Alama\\Arazzo\\Events\\": "packages/events/src/",
             "Alama\\Arazzo\\Sources\\": "packages/sources/src/",
             "Alama\\Arazzo\\Protocol\\Http\\": "packages/protocol-http/src/",
             "Alama\\Arazzo\\Protocol\\Soap\\": "packages/protocol-soap/src/",
@@ -195,12 +107,9 @@
             "Alama\\Arazzo\\Tests\\Document\\": "packages/document/tests/",
             "Alama\\Arazzo\\Tests\\Expression\\": "packages/expression/tests/",
             "Alama\\Arazzo\\Tests\\Evaluation\\": "packages/evaluation/tests/",
-            "Alama\\Arazzo\\Tests\\Runtime\\": "packages/runtime/tests/",
             "Alama\\Arazzo\\Tests\\Runner\\": "packages/runner/tests/",
-            "Alama\\Arazzo\\Laravel\\Tests\\": "packages/laravel/tests/",
             "Alama\\Arazzo\\Tests\\Sources\\": "packages/sources/tests/",
             "Alama\\Arazzo\\Tests\\Engine\\": "packages/engine/tests/",
-            "Alama\\Arazzo\\Tests\\Events\\": "packages/events/tests/",
             "Alama\\Arazzo\\Tests\\Protocol\\Http\\": "packages/protocol-http/tests",
             "Alama\\Arazzo\\Tests\\Protocol\\Soap\\": "packages/protocol-soap/tests",
             "Alama\\Arazzo\\Tests\\Protocol\\Rpc\\": "packages/protocol-rpc/tests",
@@ -215,12 +124,9 @@
             "@analyse-evaluation",
             "@analyse-document",
             "@analyse-sources",
-            "@analyse-runtime",
             "@analyse-runner",
             "@analyse-cli",
-            "@analyse-laravel",
             "@analyse-engine",
-            "@analyse-events",
             "@analyse-http",
             "@analyse-soap",
             "@analyse-rpc"
@@ -229,13 +135,10 @@
         "analyse-expression": "vendor/bin/phpstan analyse -c packages/expression/phpstan.neon.dist --memory-limit=1G",
         "analyse-document": "vendor/bin/phpstan analyse -c packages/document/phpstan.neon.dist --memory-limit=1G",
         "analyse-sources": "vendor/bin/phpstan analyse -c packages/sources/phpstan.neon.dist --memory-limit=1G",
-        "analyse-runtime": "vendor/bin/phpstan analyse -c packages/runtime/phpstan.neon.dist --memory-limit=1G",
         "analyse-runner": "vendor/bin/phpstan analyse -c packages/runner/phpstan.neon.dist --memory-limit=1G",
         "analyse-cli": "vendor/bin/phpstan analyse -c packages/cli/phpstan.neon.dist --memory-limit=1G",
-        "analyse-laravel": "vendor/bin/phpstan analyse -c packages/laravel/phpstan.neon.dist --memory-limit=1G",
         "analyse-core": "vendor/bin/phpstan analyse -c packages/core/phpstan.neon.dist --memory-limit=1G",
         "analyse-evaluation": "vendor/bin/phpstan analyse -c packages/evaluation/phpstan.neon.dist --memory-limit=1G",
-        "analyse-events": "vendor/bin/phpstan analyse -c packages/events/phpstan.neon.dist --memory-limit=1G",
         "analyse-engine": "vendor/bin/phpstan analyse -c packages/engine/phpstan.neon.dist --memory-limit=1G",
         "analyse-http": "vendor/bin/phpstan analyse -c packages/protocol-http/phpstan.neon.dist --memory-limit=1G",
         "analyse-soap": "vendor/bin/phpstan analyse -c packages/protocol-soap/phpstan.neon.dist --memory-limit=1G",
@@ -245,13 +148,9 @@
         "test-document": "vendor/bin/pest packages/document/tests",
         "test-sources": "vendor/bin/pest packages/sources/tests",
         "test-expression": "vendor/bin/pest packages/expression/tests",
-        "test-runtime": "vendor/bin/pest packages/runtime/tests",
         "test-runner": "vendor/bin/pest packages/runner/tests",
         "test-cli": "vendor/bin/pest packages/cli/tests",
-        "test-laravel": "vendor/bin/pest packages/laravel/tests",
-        "test-evaluation": "vendor/bin/pest packages/evaluation/tests",
         "test-engine": "vendor/bin/pest packages/engine/tests",
-        "test-events": "vendor/bin/pest packages/events/tests",
         "test-http": "vendor/bin/pest packages/protocol-http/tests",
         "test-soap": "vendor/bin/pest packages/protocol-soap/tests",
         "test-rpc": "vendor/bin/pest packages/protocol-rpc/tests",
@@ -269,13 +168,10 @@
             "@test-evaluation",
             "@test-document",
             "@test-sources",
-            "@test-runtime",
-            "@test-events",
-            "@test-engine",
             "@test-runner",
             "@test-cli",
             "@test-core",
-            "@test-laravel",
+            "@test-engine",
             "@test-http",
             "@test-soap",
             "@test-rpc",

@@ -4,772 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "18496be0177d826e5682089b419c9d6e",
+    "content-hash": "158708ffb4598332b70523fe85c96e38",
     "packages": [
-        {
-            "name": "php-arazzo/arazzo-cli",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/cli",
-                "reference": "3be930a30daa498ba193699f7ab8099f89cc7b6f"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-document": "@dev",
-                "alama/arazzo-evaluation": "@dev",
-                "alama/arazzo-events": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "alama/arazzo-protocol-http": "@dev",
-                "alama/arazzo-runner": "@dev",
-                "alama/arazzo-runtime": "@dev",
-                "alama/arazzo-sources": "@dev",
-                "guzzlehttp/guzzle": "^7.9",
-                "open-telemetry/api": "^1.0",
-                "open-telemetry/exporter-otlp": "^1.0",
-                "open-telemetry/sdk": "^1.0",
-                "php": "^8.4",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.0||^2.0",
-                "symfony/console": "^7.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.6",
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0"
-            },
-            "bin": [
-                "bin/arazzo"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Cli\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Arazzo CLI and delivery adapters: console, AI generator, renderer.",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-contracts",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/contracts",
-                "reference": "60fa85cc1429da851b0ce3dd6f745f591b4da336"
-            },
-            "require": {
-                "php": "^8.4",
-                "psr/event-dispatcher": "^1.0"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "mockery/mockery": "^1.6",
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0",
-                "phpstan/phpstan": "^2.0",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Contracts\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Arazzo domain model, shared contracts and state DTOs.",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "alama/arazzo-core",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "packages/core",
-                "reference": "517f8e15e4f12a48736415a8ee927cc55bc264a4"
-            },
-            "require": {
-                "alama/arazzo-cli": "@dev",
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-document": "@dev",
-                "alama/arazzo-evaluation": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "alama/arazzo-runner": "@dev",
-                "alama/arazzo-sources": "@dev",
-                "cebe/php-openapi": "^1.7",
-                "guzzlehttp/guzzle": "^7.9",
-                "open-telemetry/api": "^1.0",
-                "open-telemetry/exporter-otlp": "^1.0",
-                "open-telemetry/sdk": "^1.0",
-                "php": "^8.4",
-                "psr/container": "^2.0",
-                "psr/event-dispatcher": "^1.0",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.0||^2.0",
-                "psr/log": "^3.0",
-                "psr/simple-cache": "^3.0",
-                "softcreatr/jsonpath": "^0.10.0",
-                "symfony/console": "^7.0",
-                "symfony/yaml": "^7.0"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "mockery/mockery": "^1.6",
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0",
-                "phpstan/phpstan": "^2.0",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\": "src/",
-                    "Arazzo\\PHPStan\\Rules\\": "phpstan/rules/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Framework-agnostic Arazzo 1.0.0/1.1.0 workflow engine core: parser, validator, executor, expression resolver.",
-            "keywords": [
-                "alama",
-                "arazzo",
-                "openapi",
-                "parser",
-                "validator",
-                "workflow"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-document",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/document",
-                "reference": "ce0150ec7450266fdd75db63a9f5376027305fcd"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "justinrainbow/json-schema": "^6.0",
-                "php": "^8.4",
-                "symfony/yaml": "^7.0"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "mockery/mockery": "^1.6",
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0",
-                "phpstan/phpstan": "^2.0",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Document\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Arazzo document parsing, validation and vendor-free model types.",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-engine",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/engine",
-                "reference": "a86ed70f960317e29048518f33cfbfa7609964f8"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-runtime": "@dev",
-                "php": "^8.4"
-            },
-            "require-dev": {
-                "pestphp/pest": "^5.0",
-                "phpstan/phpstan": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Engine\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\Engine\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Arazzo workflow engine - step state machine and workflow transition logic",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-evaluation",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/evaluation",
-                "reference": "b6a4390a328f4a15f8c0cf0a93f0fa39fa175011"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "php": "^8.4",
-                "psr/event-dispatcher": "^1.0",
-                "psr/log": "^3.0"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "mockery/mockery": "^1.6",
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0",
-                "phpstan/phpstan": "^2.0",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Evaluation\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Arazzo expression evaluation engine: criteria, selectors, interpolation, payload replacement.",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-events",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/events",
-                "reference": "bd92c25b2267dfe6586abef854bd3ce0a442e884"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "php": "^8.4"
-            },
-            "require-dev": {
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0",
-                "phpstan/phpstan": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Events\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\Events\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Arazzo event DTOs and listener interfaces",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-expression",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/expression",
-                "reference": "6bb07db8a9fbb2c0309a78bb7156b926648cfb57"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "php": "^8.4",
-                "psr/event-dispatcher": "^1.0",
-                "psr/log": "^3.0",
-                "softcreatr/jsonpath": "^0.10.0"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "mockery/mockery": "^1.6",
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0",
-                "phpstan/phpstan": "^2.0",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Expression\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Arazzo expression engine and criteria evaluation.",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-protocol-http",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/protocol-http",
-                "reference": "c2dfa2f5cd46003bc8f3e8dfe0006ace7e00526c"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-engine": "@dev",
-                "alama/arazzo-evaluation": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "alama/arazzo-sources": "@dev",
-                "cebe/php-openapi": "^1.7",
-                "guzzlehttp/guzzle": "^7.8||^8.0",
-                "php": "^8.4",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.1",
-                "psr/http-message": "^2.0",
-                "psr/log": "^3.0"
-            },
-            "require-dev": {
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Protocol\\Http\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\Protocol\\Http\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "HTTP/OpenAPI + AsyncAPI vertical slice for alama/arazzo-core: normalizers, operation executors, transport, response validation. Reference protocol package.",
-            "keywords": [
-                "alama",
-                "arazzo",
-                "asyncapi",
-                "http",
-                "openapi",
-                "protocol"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-protocol-rpc",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/protocol-rpc",
-                "reference": "83d6f15f5b8c5918ba1b43590851068ada34533d"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-document": "@dev",
-                "alama/arazzo-engine": "@dev",
-                "alama/arazzo-evaluation": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "alama/arazzo-sources": "@dev",
-                "php": "^8.4",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.1",
-                "psr/http-message": "^2.0"
-            },
-            "require-dev": {
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Protocol\\Rpc\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\Protocol\\Rpc\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Protocol-Buffer RPC vertical slice for alama/arazzo-core: gRPC, gRPC-Web, Twirp and Connect executors + RpcResponseTransfer. The .proto parser ships inside this package (DF11 vendored-codec exception); transport is contracts' HttpClientInterface (DF9). Zero framework.",
-            "keywords": [
-                "alama",
-                "arazzo",
-                "connect",
-                "grpc",
-                "grpc-web",
-                "protobuf",
-                "protocol",
-                "rpc",
-                "twirp"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-protocol-soap",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/protocol-soap",
-                "reference": "bc3ec94751bada2eefbb5efcae0d1adf6da31eb3"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-document": "@dev",
-                "alama/arazzo-engine": "@dev",
-                "alama/arazzo-evaluation": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "alama/arazzo-sources": "@dev",
-                "ext-dom": "*",
-                "ext-libxml": "*",
-                "php": "^8.4",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.1",
-                "psr/http-message": "^2.0"
-            },
-            "require-dev": {
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Protocol\\Soap\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\Protocol\\Soap\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "SOAP vertical slice for alama/arazzo-core: SOAP executor, SoapResponseTransfer mapper, XSD response validator (WSDL parsing ships in alama/arazzo-sources — DF8). Zero vendor, DOM + PSR-18.",
-            "keywords": [
-                "alama",
-                "arazzo",
-                "protocol",
-                "soap",
-                "wsdl",
-                "xsd"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-runner",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/runner",
-                "reference": "ef820d142411edd7d44a994864b41e115bbc8d8c"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-document": "@dev",
-                "alama/arazzo-engine": "@dev",
-                "alama/arazzo-evaluation": "@dev",
-                "alama/arazzo-events": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "alama/arazzo-runtime": "@dev",
-                "alama/arazzo-sources": "@dev",
-                "guzzlehttp/guzzle": "^7.9",
-                "open-telemetry/api": "^1.0",
-                "open-telemetry/exporter-otlp": "^1.0",
-                "open-telemetry/sdk": "^1.0",
-                "php": "^8.4",
-                "psr/event-dispatcher": "^1.0",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.0||^2.0",
-                "psr/log": "^3.0",
-                "psr/simple-cache": "^3.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.6",
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Runner\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Arazzo workflow execution engine: state, events, policy, protocol, async, telemetry.",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-runtime",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/runtime",
-                "reference": "9dd000dcc8a2f523086b24e9f4218645dbd0e6f9"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "open-telemetry/api": "^1.1",
-                "php": "^8.4",
-                "psr/log": "^3.0"
-            },
-            "require-dev": {
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Runtime\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\Runtime\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Runtime support services for alama/arazzo-core: retry policy, telemetry, lock strategies, state stores.",
-            "keywords": [
-                "alama",
-                "arazzo",
-                "runtime",
-                "state",
-                "telemetry"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "php-arazzo/arazzo-sources",
-            "version": "1.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/sources",
-                "reference": "5eb8c7fda4f1a15b8846a8b64022ec17a28970b4"
-            },
-            "require": {
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-document": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "cebe/php-openapi": "^1.7",
-                "ext-dom": "*",
-                "ext-libxml": "*",
-                "guzzlehttp/guzzle": "^7.9",
-                "justinrainbow/json-schema": "^6.0",
-                "php": "^8.4",
-                "psr/http-client": "^1.0",
-                "psr/http-message": "^1.0||^2.0",
-                "psr/simple-cache": "^3.0"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "mockery/mockery": "^1.6",
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0",
-                "phpstan/phpstan": "^2.0",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Sources\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Arazzo source resolution, fetching and OpenAPI normalization.",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "alama/laravel-arazzo",
-            "version": "2.0.0-alpha.1",
-            "dist": {
-                "type": "path",
-                "url": "packages/laravel",
-                "reference": "dfee59a505fbcbe73558d2f5cd070d717cd69604"
-            },
-            "require": {
-                "alama/arazzo-cli": "@dev",
-                "alama/arazzo-contracts": "@dev",
-                "alama/arazzo-core": "@dev",
-                "alama/arazzo-document": "@dev",
-                "alama/arazzo-evaluation": "@dev",
-                "alama/arazzo-events": "@dev",
-                "alama/arazzo-expression": "@dev",
-                "alama/arazzo-protocol-http": "@dev",
-                "alama/arazzo-protocol-rpc": "@dev",
-                "alama/arazzo-protocol-soap": "@dev",
-                "alama/arazzo-runner": "@dev",
-                "alama/arazzo-runtime": "@dev",
-                "alama/arazzo-sources": "@dev",
-                "guzzlehttp/guzzle": "^7.8||^8.0",
-                "illuminate/contracts": "^11.0||^12.0||^13.0",
-                "php": "^8.4",
-                "spatie/laravel-package-tools": "^1.16"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "nunomaduro/collision": "^8.8",
-                "orchestra/testbench": "^11.0.0||^10.0.0||^9.0.0",
-                "pestphp/pest": "^5.0",
-                "pestphp/pest-plugin-arch": "^5.0",
-                "pestphp/pest-plugin-laravel": "^5.0",
-                "phpstan/phpstan": "^2.0",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "spatie/laravel-ray": "^1.35"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Alama\\Arazzo\\Laravel\\LaravelArazzoServiceProvider",
-                        "Alama\\Arazzo\\Laravel\\ProtocolHttpServiceProvider",
-                        "Alama\\Arazzo\\Laravel\\SoapServiceProvider",
-                        "Alama\\Arazzo\\Laravel\\RpcServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Laravel\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alama\\Arazzo\\Laravel\\Tests\\": "tests/",
-                    "Workbench\\App\\": "workbench/app/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mohammed Alama",
-                    "email": "mohammedalama96@icloud.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Laravel bridge for alama/arazzo-core: service provider, queue driver, cache lock, Eloquent adapters.",
-            "homepage": "https://github.com/alama/arazzo",
-            "keywords": [
-                "alama",
-                "arazzo",
-                "laravel",
-                "openapi",
-                "workflow"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
         {
             "name": "brick/math",
             "version": "1.0.0",
@@ -4005,6 +3241,606 @@
                 "source": "https://github.com/open-telemetry/opentelemetry-php"
             },
             "time": "2026-11-03T22:37:22+00:00"
+        },
+        {
+            "name": "php-arazzo/arazzo-cli",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/cli",
+                "reference": "841e0ab9d4e8dbe503588955a5f40a9ff6db1c7d"
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.9",
+                "open-telemetry/api": "^1.0",
+                "open-telemetry/exporter-otlp": "^1.0",
+                "open-telemetry/sdk": "^1.0",
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "php-arazzo/arazzo-document": "@dev",
+                "php-arazzo/arazzo-evaluation": "@dev",
+                "php-arazzo/arazzo-expression": "@dev",
+                "php-arazzo/arazzo-protocol-http": "@dev",
+                "php-arazzo/arazzo-runner": "@dev",
+                "php-arazzo/arazzo-sources": "@dev",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0||^2.0",
+                "symfony/console": "^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0"
+            },
+            "bin": [
+                "bin/arazzo"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Cli\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Arazzo CLI and delivery adapters: console, AI generator, renderer.",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-contracts",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/contracts",
+                "reference": "82fceb9e8607f2f9abf8ad55eb293654ba621507"
+            },
+            "require": {
+                "php": "^8.4",
+                "psr/event-dispatcher": "^1.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Contracts\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Arazzo domain model, shared contracts and state DTOs.",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-core",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "packages/core",
+                "reference": "aa9fa7113a7f9cbb81c196a1f51818ac2e22d0c0"
+            },
+            "require": {
+                "cebe/php-openapi": "^1.7",
+                "guzzlehttp/guzzle": "^7.9",
+                "open-telemetry/api": "^1.0",
+                "open-telemetry/exporter-otlp": "^1.0",
+                "open-telemetry/sdk": "^1.0",
+                "php": "^8.4",
+                "php-arazzo/arazzo-cli": "@dev",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "php-arazzo/arazzo-document": "@dev",
+                "php-arazzo/arazzo-evaluation": "@dev",
+                "php-arazzo/arazzo-expression": "@dev",
+                "php-arazzo/arazzo-runner": "@dev",
+                "php-arazzo/arazzo-sources": "@dev",
+                "psr/container": "^2.0",
+                "psr/event-dispatcher": "^1.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0||^2.0",
+                "psr/log": "^3.0",
+                "psr/simple-cache": "^3.0",
+                "softcreatr/jsonpath": "^0.10.0",
+                "symfony/console": "^7.0",
+                "symfony/yaml": "^7.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\": "src/",
+                    "Arazzo\\PHPStan\\Rules\\": "phpstan/rules/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Framework-agnostic Arazzo 1.0.0/1.1.0 workflow engine core: parser, validator, executor, expression resolver.",
+            "keywords": [
+                "alama",
+                "arazzo",
+                "openapi",
+                "parser",
+                "validator",
+                "workflow"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-document",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/document",
+                "reference": "857515a300f140e6ac843f429b58eceb15d79c93"
+            },
+            "require": {
+                "justinrainbow/json-schema": "^6.0",
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "php-arazzo/arazzo-expression": "@dev",
+                "symfony/yaml": "^7.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Document\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Arazzo document parsing, validation and vendor-free model types.",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-engine",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/engine",
+                "reference": "c586086e1218083aa420d5e01cc6c5b089b3ebb7"
+            },
+            "require": {
+                "open-telemetry/api": "^1.1",
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "psr/log": "^3.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^5.0",
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Engine\\": "src/",
+                    "Alama\\Arazzo\\Runtime\\": "src/Runtime/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\Engine\\": "tests/",
+                    "Alama\\Arazzo\\Tests\\Runtime\\": "tests/Runtime/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Arazzo workflow engine - step state machine and workflow transition logic",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-evaluation",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/evaluation",
+                "reference": "ece4e9945a16b28c80d88795736591b73f18c1cb"
+            },
+            "require": {
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "php-arazzo/arazzo-expression": "@dev",
+                "psr/event-dispatcher": "^1.0",
+                "psr/log": "^3.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Evaluation\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Arazzo expression evaluation engine: criteria, selectors, interpolation, payload replacement.",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-expression",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/expression",
+                "reference": "63db8dcb21601357f376ce8263607c648c4afae0"
+            },
+            "require": {
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "psr/event-dispatcher": "^1.0",
+                "psr/log": "^3.0",
+                "softcreatr/jsonpath": "^0.10.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Expression\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Arazzo expression engine and criteria evaluation.",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-protocol-http",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/protocol-http",
+                "reference": "c3cd0499eb16b22a62813b231b5db9c8a809ea7d"
+            },
+            "require": {
+                "cebe/php-openapi": "^1.7",
+                "guzzlehttp/guzzle": "^7.8||^8.0",
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "php-arazzo/arazzo-engine": "@dev",
+                "php-arazzo/arazzo-evaluation": "@dev",
+                "php-arazzo/arazzo-expression": "@dev",
+                "php-arazzo/arazzo-sources": "@dev",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.1",
+                "psr/http-message": "^2.0",
+                "psr/log": "^3.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Protocol\\Http\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\Protocol\\Http\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "HTTP/OpenAPI + AsyncAPI vertical slice for alama/arazzo-core: normalizers, operation executors, transport, response validation. Reference protocol package.",
+            "keywords": [
+                "alama",
+                "arazzo",
+                "asyncapi",
+                "http",
+                "openapi",
+                "protocol"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-protocol-rpc",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/protocol-rpc",
+                "reference": "1b3be3d847a3e1f953a7c67bfb35a2a190baa91f"
+            },
+            "require": {
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "php-arazzo/arazzo-document": "@dev",
+                "php-arazzo/arazzo-engine": "@dev",
+                "php-arazzo/arazzo-evaluation": "@dev",
+                "php-arazzo/arazzo-expression": "@dev",
+                "php-arazzo/arazzo-sources": "@dev",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.1",
+                "psr/http-message": "^2.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Protocol\\Rpc\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\Protocol\\Rpc\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Protocol-Buffer RPC vertical slice for alama/arazzo-core: gRPC, gRPC-Web, Twirp and Connect executors + RpcResponseTransfer. The .proto parser ships inside this package (DF11 vendored-codec exception); transport is contracts' HttpClientInterface (DF9). Zero framework.",
+            "keywords": [
+                "alama",
+                "arazzo",
+                "connect",
+                "grpc",
+                "grpc-web",
+                "protobuf",
+                "protocol",
+                "rpc",
+                "twirp"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-protocol-soap",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/protocol-soap",
+                "reference": "f45f25aaf045feb1c0410240f16d68e32839a563"
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "php-arazzo/arazzo-document": "@dev",
+                "php-arazzo/arazzo-engine": "@dev",
+                "php-arazzo/arazzo-evaluation": "@dev",
+                "php-arazzo/arazzo-expression": "@dev",
+                "php-arazzo/arazzo-sources": "@dev",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.1",
+                "psr/http-message": "^2.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Protocol\\Soap\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\Protocol\\Soap\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "SOAP vertical slice for alama/arazzo-core: SOAP executor, SoapResponseTransfer mapper, XSD response validator (WSDL parsing ships in alama/arazzo-sources — DF8). Zero vendor, DOM + PSR-18.",
+            "keywords": [
+                "alama",
+                "arazzo",
+                "protocol",
+                "soap",
+                "wsdl",
+                "xsd"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-runner",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/runner",
+                "reference": "eab8dba473d1295a8a0d32885c9b81947470cc5f"
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.9",
+                "open-telemetry/api": "^1.0",
+                "open-telemetry/exporter-otlp": "^1.0",
+                "open-telemetry/sdk": "^1.0",
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "php-arazzo/arazzo-document": "@dev",
+                "php-arazzo/arazzo-engine": "@dev",
+                "php-arazzo/arazzo-evaluation": "@dev",
+                "php-arazzo/arazzo-expression": "@dev",
+                "php-arazzo/arazzo-sources": "@dev",
+                "psr/event-dispatcher": "^1.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0||^2.0",
+                "psr/log": "^3.0",
+                "psr/simple-cache": "^3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Runner\\": "src/",
+                    "Alama\\Arazzo\\Events\\": "src/Events/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\": "tests/",
+                    "Alama\\Arazzo\\Tests\\Events\\": "tests/Events/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Arazzo workflow execution engine: state, events, policy, protocol, async, telemetry.",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "php-arazzo/arazzo-sources",
+            "version": "1.0.0-alpha.1",
+            "dist": {
+                "type": "path",
+                "url": "packages/sources",
+                "reference": "553d99d2d54cd5982753dc1efedffc05cbaf8f1b"
+            },
+            "require": {
+                "cebe/php-openapi": "^1.7",
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "guzzlehttp/guzzle": "^7.9",
+                "justinrainbow/json-schema": "^6.0",
+                "php": "^8.4",
+                "php-arazzo/arazzo-contracts": "@dev",
+                "php-arazzo/arazzo-document": "@dev",
+                "php-arazzo/arazzo-expression": "@dev",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^1.0||^2.0",
+                "psr/simple-cache": "^3.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-arch": "^5.0",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Sources\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Alama\\Arazzo\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Arazzo source resolution, fetching and OpenAPI normalization.",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "php-http/discovery",
@@ -14496,21 +14332,18 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "alama/arazzo-cli": 20,
-        "alama/arazzo-contracts": 20,
-        "alama/arazzo-core": 20,
-        "alama/arazzo-document": 20,
-        "alama/arazzo-engine": 20,
-        "alama/arazzo-evaluation": 20,
-        "alama/arazzo-events": 20,
-        "alama/arazzo-expression": 20,
-        "alama/arazzo-protocol-http": 20,
-        "alama/arazzo-protocol-rpc": 20,
-        "alama/arazzo-protocol-soap": 20,
-        "alama/arazzo-runner": 20,
-        "alama/arazzo-runtime": 20,
-        "alama/arazzo-sources": 20,
-        "alama/laravel-arazzo": 20
+        "php-arazzo/arazzo-cli": 20,
+        "php-arazzo/arazzo-contracts": 20,
+        "php-arazzo/arazzo-core": 20,
+        "php-arazzo/arazzo-document": 20,
+        "php-arazzo/arazzo-engine": 20,
+        "php-arazzo/arazzo-evaluation": 20,
+        "php-arazzo/arazzo-expression": 20,
+        "php-arazzo/arazzo-protocol-http": 20,
+        "php-arazzo/arazzo-protocol-rpc": 20,
+        "php-arazzo/arazzo-protocol-soap": 20,
+        "php-arazzo/arazzo-runner": 20,
+        "php-arazzo/arazzo-sources": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
