@@ -44,7 +44,7 @@ if (!is_dir("{$root}/packages/{$pkg}")) {
     $fail("package '{$pkg}' not found under packages/");
 }
 $rawName = $args[1];
-$claim = $args[2] ?? "system will <behavior> when <condition>; false if <observable>";
+$claim = $args[2] ?? 'system will <behavior> when <condition>; false if <observable>';
 
 $words = preg_split('/[^A-Za-z0-9]+/', $rawName, -1, PREG_SPLIT_NO_EMPTY) ?: [];
 $base = implode('', array_map(static fn (string $w): string => ucfirst(strtolower($w)), $words));
@@ -70,7 +70,7 @@ if (!str_starts_with($relPath, '/')) {
     $absPath = "{$root}/{$relPath}";
 } else {
     $absPath = $relPath;
-    $relPath = ltrim(str_replace($root . '/', '', $absPath), '/');
+    $relPath = ltrim(str_replace($root.'/', '', $absPath), '/');
 }
 
 if (file_exists($absPath) && !$dryRun) {
@@ -93,7 +93,7 @@ $nsMap = [
     'protocol-soap' => 'Alama\\Arazzo\\Tests\\Protocol\\Soap',
     'protocol-rpc' => 'Alama\\Arazzo\\Tests\\Protocol\\Rpc',
 ];
-$ns = $nsMap[$pkg] ?? 'Alama\\Arazzo\\Tests\\' . str_replace('-', '\\', ucwords($pkg, '-'));
+$ns = $nsMap[$pkg] ?? 'Alama\\Arazzo\\Tests\\'.str_replace('-', '\\', ucwords($pkg, '-'));
 $subNs = str_replace('Alama\\Arazzo\\', '', $ns);
 if ($subNs !== '' && !str_ends_with($subNs, '\\')) {
     $subNs .= '\\';
@@ -182,7 +182,7 @@ echo "claim:   {$claim}\n";
 if ($dryRun) {
     echo "dry-run — no files written\n";
     echo "--- preview ---\n";
-    echo $render . "\n";
+    echo $render."\n";
     exit(0);
 }
 
@@ -192,4 +192,4 @@ if (!is_dir($dir)) {
 }
 file_put_contents($absPath, $render);
 echo "written\n";
-echo "next: vendor/bin/pint {$relPath} && vendor/bin/pest {$relPath} --filter=" . escapeshellarg($claimSlug ?: $base) . "\n";
+echo "next: vendor/bin/pint {$relPath} && vendor/bin/pest {$relPath} --filter=".escapeshellarg($claimSlug ?: $base)."\n";

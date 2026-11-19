@@ -17,8 +17,11 @@ $args = array_slice($argv, 1);
 $has = static fn (string $flag): bool => in_array($flag, $args, true);
 $get = static function (string $flag) use ($args): ?string {
     $i = array_search($flag, $args, true);
-    if ($i === false || !isset($args[$i + 1])) return null;
+    if ($i === false || !isset($args[$i + 1])) {
+        return null;
+    }
     $v = $args[$i + 1];
+
     return str_starts_with($v, '--') ? null : $v;
 };
 
@@ -28,7 +31,9 @@ if ($has('--help') || $has('-h') || $args === []) {
         $args = ['--overview'];
     } else {
         fwrite(STDERR, "usage: php query-coverage.php [--overview|--dashboard|--hotspots|--file <path>|--uncovered --file <path>] [--package core|laravel|all] [--limit N] [--json]\n");
-        if ($has('--help') || $has('-h')) exit(0);
+        if ($has('--help') || $has('-h')) {
+            exit(0);
+        }
     }
 }
 
@@ -68,13 +73,16 @@ if ($uncovered && $fileArg === null) {
 }
 
 // Helpers
-function findReport(string $root, string $pkg, string $file): ?string {
+function findReport(string $root, string $pkg, string $file): ?string
+{
     $base = "{$root}/packages/{$pkg}/coverage-report";
     $path = "{$base}/{$file}";
+
     return file_exists($path) ? $path : null;
 }
 
-function parseIndex(string $html): array {
+function parseIndex(string $html): array
+{
     $dom = new DOMDocument();
     @$dom->loadHTML($html, LIBXML_NOERROR);
     $xp = new DOMXPath($dom);
@@ -84,7 +92,9 @@ function parseIndex(string $html): array {
     $rows = $xp->query('//tbody/tr');
     foreach ($rows as $tr) {
         $tds = $xp->query('td', $tr);
-        if ($tds === false || $tds->length < 10) continue;
+        if ($tds === false || $tds->length < 10) {
+            continue;
+        }
         $nameTd = $tds->item(0);
         $name = trim($nameTd?->textContent ?? '');
         // progress bars are in td index 1,4,7
@@ -99,11 +109,14 @@ function parseIndex(string $html): array {
             // also check nested progress-bar
             if ($bar === null) {
                 $bars = (new DOMXPath($td->ownerDocument))->query('.//div[@aria-valuenow]', $td);
-                if ($bars && $bars->length > 0) $bar = $bars->item(0);
+                if ($bars && $bars->length > 0) {
+                    $bar = $bars->item(0);
+                }
             }
             if ($bar instanceof DOMElement) {
                 return (float) $bar->getAttribute('aria-valuenow');
             }
+
             return null;
         };
         $extractCount = static function (DOMNode $td): array {
@@ -111,8 +124,9 @@ function parseIndex(string $html): array {
             $text = html_entity_decode($text, ENT_HTML5);
             // handle &nbsp; / NBSP and various separators
             if (preg_match('/(\d+)\D*\/\D*(\d+)/u', $text, $m)) {
-                return [(int)$m[1], (int)$m[2]];
+                return [(int) $m[1], (int) $m[2]];
             }
+
             return [null, null];
         };
         $linesPct = $extractPercent($tds->item(1));
@@ -142,10 +156,12 @@ function parseIndex(string $html): array {
             }
         }
     }
+
     return ['total' => $total, 'directories' => $directories];
 }
 
-function parseDashboard(string $html): array {
+function parseDashboard(string $html): array
+{
     $dom = new DOMDocument();
     @$dom->loadHTML($html, LIBXML_NOERROR);
     $xp = new DOMXPath($dom);
@@ -155,25 +171,35 @@ function parseDashboard(string $html): array {
     if ($nodes) {
         foreach ($nodes as $tr) {
             $tds = $xp->query('td', $tr);
-            if ($tds === false || $tds->length < 2) continue;
+            if ($tds === false || $tds->length < 2) {
+                continue;
+            }
             $a = $xp->query('a', $tds->item(0));
             $class = $a && $a->length > 0 ? trim($a->item(0)->textContent) : trim($tds->item(0)->textContent);
             $cov = trim($tds->item(1)->textContent);
-            if ($class === '' || $class === 'Class') continue;
+            if ($class === '' || $class === 'Class') {
+                continue;
+            }
             // extract href if present
             $href = $a && $a->length > 0 ? $a->item(0)->getAttribute('href') : null;
             $pct = null;
-            if (preg_match('/(\d+(?:\.\d+)?)%/', $cov, $m)) $pct = (float)$m[1];
+            if (preg_match('/(\d+(?:\.\d+)?)%/', $cov, $m)) {
+                $pct = (float) $m[1];
+            }
             $insufficient[] = ['class' => $class, 'coverage' => $pct, 'href' => $href];
         }
     }
+
     // Also Project Risks but similar
     return $insufficient;
 }
 
-function parseFile(string $htmlPath): array {
+function parseFile(string $htmlPath): array
+{
     $html = file_get_contents($htmlPath);
-    if ($html === false) return ['error' => 'cannot read'];
+    if ($html === false) {
+        return ['error' => 'cannot read'];
+    }
     $dom = new DOMDocument();
     @$dom->loadHTML($html, LIBXML_NOERROR);
     $xp = new DOMXPath($dom);
@@ -186,7 +212,9 @@ function parseFile(string $htmlPath): array {
         $bars = $xp->query('//div[@aria-valuenow]');
         if ($bars && $bars->length > 0) {
             $first = $bars->item(0);
-            if ($first instanceof DOMElement) $summary['lines_percent'] = (float)$first->getAttribute('aria-valuenow');
+            if ($first instanceof DOMElement) {
+                $summary['lines_percent'] = (float) $first->getAttribute('aria-valuenow');
+            }
         }
     }
     // Parse uncovered: only executable lines (popin = covered, danger = uncovered). Blank/non-coverable have " d-flex".
@@ -195,29 +223,44 @@ function parseFile(string $htmlPath): array {
     $all = $xp->query('//a[starts-with(@id,"")]');
     if ($all) {
         foreach ($all as $a) {
-            if (!($a instanceof DOMElement)) continue;
+            if (!($a instanceof DOMElement)) {
+                continue;
+            }
             $id = $a->getAttribute('id');
-            if (!ctype_digit($id)) continue;
+            if (!ctype_digit($id)) {
+                continue;
+            }
             $tr = $a->parentNode?->parentNode;
-            if (!($tr instanceof DOMElement)) continue;
+            if (!($tr instanceof DOMElement)) {
+                continue;
+            }
             $class = $tr->getAttribute('class');
             $isCovered = str_contains($class, 'covered-by');
             $isDanger = str_contains($class, 'danger');
             $isPopin = str_contains($class, 'popin');
             // executable iff popin (covered) or danger (uncovered executable)
-            if (!($isPopin || $isDanger)) continue; // not coverable (e.g. <?php, use, blank)
+            if (!($isPopin || $isDanger)) {
+                continue;
+            } // not coverable (e.g. <?php, use, blank)
             $executable++;
             if ($isDanger && !$isCovered) {
-                $uncovered[] = (int)$id;
+                $uncovered[] = (int) $id;
             }
         }
     }
     $uncovered = array_values(array_unique($uncovered));
     sort($uncovered);
     // fallback if summary still missing
-    if ($summary['lines_total'] === null) $summary['lines_total'] = $executable;
-    if ($summary['lines_covered'] === null) $summary['lines_covered'] = $executable - count($uncovered);
-    if ($summary['lines_percent'] === null && $executable > 0) $summary['lines_percent'] = round(($summary['lines_covered'] / max(1, $summary['lines_total'])) * 100, 2);
+    if ($summary['lines_total'] === null) {
+        $summary['lines_total'] = $executable;
+    }
+    if ($summary['lines_covered'] === null) {
+        $summary['lines_covered'] = $executable - count($uncovered);
+    }
+    if ($summary['lines_percent'] === null && $executable > 0) {
+        $summary['lines_percent'] = round(($summary['lines_covered'] / max(1, $summary['lines_total'])) * 100, 2);
+    }
+
     return ['summary' => $summary, 'uncovered' => $uncovered, 'executable' => $executable];
 }
 
@@ -230,12 +273,13 @@ foreach ($packages as $pkg) {
     if (!file_exists($indexPath)) {
         $output[$pkg] = ['error' => "report not found at packages/{$pkg}/coverage-report/index.html — run make coverage"];
         $hasError = true;
+
         continue;
     }
     $indexHtml = file_get_contents($indexPath);
-    $parsedIndex = parseIndex((string)$indexHtml);
+    $parsedIndex = parseIndex((string) $indexHtml);
     $dashHtml = file_exists($dashPath) ? file_get_contents($dashPath) : null;
-    $insufficient = $dashHtml !== false && $dashHtml !== null ? parseDashboard((string)$dashHtml) : [];
+    $insufficient = $dashHtml !== false && $dashHtml !== null ? parseDashboard((string) $dashHtml) : [];
 
     $pkgOut = [
         'package' => $pkg,
@@ -256,7 +300,9 @@ foreach ($packages as $pkg) {
         // Try alternative: if rel already includes directories, try as is
         if (!file_exists($htmlFile)) {
             // try with .php.html suffix already? ensure
-            if (!str_ends_with($htmlFile, '.html')) $htmlFile .= '.html';
+            if (!str_ends_with($htmlFile, '.html')) {
+                $htmlFile .= '.html';
+            }
         }
         // Also try lower-case?
         if (!file_exists($htmlFile)) {
@@ -264,12 +310,14 @@ foreach ($packages as $pkg) {
             $found = null;
             $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("{$root}/packages/{$pkg}/coverage-report"));
             foreach ($it as $f) {
-                if ($f->isFile() && str_ends_with($f->getFilename(), basename($rel) . '.html')) {
+                if ($f->isFile() && str_ends_with($f->getFilename(), basename($rel).'.html')) {
                     $found = $f->getPathname();
                     break;
                 }
             }
-            if ($found) $htmlFile = $found;
+            if ($found) {
+                $htmlFile = $found;
+            }
         }
         if (!file_exists($htmlFile)) {
             $pkgOut['file'] = ['requested' => $fileArg, 'error' => "per-file report not found — tried {$rel}.html — ensure coverage generated and path is relative to src/ (e.g. Runner/Execution/StepExecutor.php)"];
@@ -278,7 +326,7 @@ foreach ($packages as $pkg) {
             $fileData = parseFile($htmlFile);
             $pkgOut['file'] = [
                 'requested' => $fileArg,
-                'report' => str_replace($root . '/', '', $htmlFile),
+                'report' => str_replace($root.'/', '', $htmlFile),
                 'summary' => $fileData['summary'] ?? null,
                 'executable_lines' => $fileData['executable'] ?? null,
                 'uncovered' => $fileData['uncovered'] ?? [],
@@ -297,7 +345,7 @@ foreach ($packages as $pkg) {
 $single = count($packages) === 1 ? $output[$packages[0]] : $output;
 
 if ($json) {
-    echo json_encode(count($packages) === 1 ? $single : $output, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+    echo json_encode(count($packages) === 1 ? $single : $output, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n";
     exit($hasError ? 1 : 0);
 }
 
@@ -306,23 +354,28 @@ foreach ($packages as $pkg) {
     $data = $output[$pkg];
     if (isset($data['error'])) {
         echo "[{$pkg}] ERROR: {$data['error']}\n";
+
         continue;
     }
     echo "=== {$pkg} ===\n";
     $t = $data['total'];
     if ($t['lines_percent'] !== null) {
-        $cov = $t['lines_covered'] !== null ? "{$t['lines_covered']}/{$t['lines_total']}" : "n/a";
+        $cov = $t['lines_covered'] !== null ? "{$t['lines_covered']}/{$t['lines_total']}" : 'n/a';
         echo "Total: {$t['lines_percent']}% lines ({$cov})";
-        if ($t['functions_percent'] !== null) echo " | functions {$t['functions_percent']}%";
-        if ($t['classes_percent'] !== null) echo " | classes {$t['classes_percent']}%";
+        if ($t['functions_percent'] !== null) {
+            echo " | functions {$t['functions_percent']}%";
+        }
+        if ($t['classes_percent'] !== null) {
+            echo " | classes {$t['classes_percent']}%";
+        }
         echo "\n";
     }
     if ($wantOverview) {
         echo "Directories:\n";
         foreach ($data['directories'] as $d) {
-            $pct = $d['lines_percent'] !== null ? sprintf("%.2f%%", $d['lines_percent']) : "n/a";
-            $cnt = $d['lines_covered'] !== null ? "({$d['lines_covered']}/{$d['lines_total']})" : "";
-            $icon = ($d['lines_percent'] !== null && $d['lines_percent'] < 50) ? "🔴" : (($d['lines_percent'] !== null && $d['lines_percent'] < 80) ? "🟡" : "🟢");
+            $pct = $d['lines_percent'] !== null ? sprintf('%.2f%%', $d['lines_percent']) : 'n/a';
+            $cnt = $d['lines_covered'] !== null ? "({$d['lines_covered']}/{$d['lines_total']})" : '';
+            $icon = ($d['lines_percent'] !== null && $d['lines_percent'] < 50) ? '🔴' : (($d['lines_percent'] !== null && $d['lines_percent'] < 80) ? '🟡' : '🟢');
             echo "  {$icon} {$pct} {$cnt} {$d['name']}\n";
         }
     }
@@ -331,7 +384,7 @@ foreach ($packages as $pkg) {
         if ($hots !== []) {
             echo "Hotspots (lowest coverage):\n";
             foreach ($hots as $h) {
-                $pct = $h['coverage'] !== null ? "{$h['coverage']}%" : "n/a";
+                $pct = $h['coverage'] !== null ? "{$h['coverage']}%" : 'n/a';
                 echo "  {$pct} {$h['class']}\n";
             }
         }
@@ -342,14 +395,18 @@ foreach ($packages as $pkg) {
             echo "File '{$f['requested']}': ERROR {$f['error']}\n";
         } else {
             $s = $f['summary'];
-            $pct = $s['lines_percent'] !== null ? "{$s['lines_percent']}%" : "n/a";
+            $pct = $s['lines_percent'] !== null ? "{$s['lines_percent']}%" : 'n/a';
             echo "File '{$f['requested']}' ({$f['report']}): {$pct} executable {$f['executable_lines']} uncovered {$f['uncovered_count']}\n";
             if ($f['uncovered'] !== []) {
                 $preview = array_slice($f['uncovered'], 0, 20);
-                echo "  uncovered lines: " . implode(', ', $preview);
-                if (count($f['uncovered']) > 20) echo " … +" . (count($f['uncovered']) - 20) . " more";
+                echo '  uncovered lines: '.implode(', ', $preview);
+                if (count($f['uncovered']) > 20) {
+                    echo ' … +'.(count($f['uncovered']) - 20).' more';
+                }
                 echo "\n";
-                if ($f['uncovered_count'] > 0) echo "  tip: add tests for those lines, then check falsification (make detect-fake + audit-boundaries)\n";
+                if ($f['uncovered_count'] > 0) {
+                    echo "  tip: add tests for those lines, then check falsification (make detect-fake + audit-boundaries)\n";
+                }
             } else {
                 echo "  fully covered (executable lines)\n";
             }

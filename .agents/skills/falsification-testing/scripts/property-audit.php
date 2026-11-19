@@ -12,8 +12,11 @@ $args = array_slice($argv, 1);
 $has = static fn (string $f): bool => in_array($f, $args, true);
 $get = static function (string $f) use ($args): ?string {
     $i = array_search($f, $args, true);
-    if ($i === false || !isset($args[$i+1])) return null;
-    $v = $args[$i+1];
+    if ($i === false || !isset($args[$i + 1])) {
+        return null;
+    }
+    $v = $args[$i + 1];
+
     return str_starts_with($v, '--') ? null : $v;
 };
 if ($has('--help') || $has('-h')) {
@@ -48,16 +51,22 @@ foreach ($properties as $p) {
     if (file_exists($coversPath)) {
         // Quick parse: extract percent from file html (same as query-coverage)
         $html = file_get_contents($coversPath);
-        if (preg_match('/aria-valuenow="([\d.]+)"/', (string)$html, $m)) $cov = (float)$m[1];
+        if (preg_match('/aria-valuenow="([\d.]+)"/', (string) $html, $m)) {
+            $cov = (float) $m[1];
+        }
         // Count danger lines as proxy for property gap
-        if (preg_match_all('/class="danger d-flex"/', (string)$html, $mm)) $uncovered = count($mm[0]);
+        if (preg_match_all('/class="danger d-flex"/', (string) $html, $mm)) {
+            $uncovered = count($mm[0]);
+        }
     }
     // Check if property test exists: grep for id in InvariantsTest
     $testExists = false;
     $inv = "{$root}/packages/{$package}/tests/Property/InvariantsTest.php";
     if (file_exists($inv)) {
         $c = file_get_contents($inv);
-        if (str_contains((string)$c, $p['line']) || str_contains((string)$c, $p['id'])) $testExists = true;
+        if (str_contains((string) $c, $p['line']) || str_contains((string) $c, $p['id'])) {
+            $testExists = true;
+        }
     }
     // For grue candidates, testExists is false unless candidate has dedicated property
     $status = $testExists ? 'pinned' : ($p['type'] === 'grue' ? 'grue_gap' : 'missing');
@@ -75,21 +84,21 @@ $out = [
     'properties' => $results,
     'uncovered_properties' => $uncoveredProps,
     'pass' => $pass,
-    'advice' => $pass ? 'all grue properties pinned' : 'add property test for: ' . implode(', ', array_column($uncoveredProps, 'id')) . ' — see tests/Property/InvariantsTest.php',
+    'advice' => $pass ? 'all grue properties pinned' : 'add property test for: '.implode(', ', array_column($uncoveredProps, 'id')).' — see tests/Property/InvariantsTest.php',
 ];
 
 if ($json) {
-    echo json_encode($out, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+    echo json_encode($out, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n";
     exit($pass ? 0 : 1);
 }
 
 // Human
 echo "Property audit (Goodman grue) — {$package}\n";
-echo "  Total: " . count($results) . " | pinned: " . count(array_filter($results, fn($r)=>$r['status']==='pinned')) . " | grue gaps: " . count($uncoveredProps) . " → " . ($pass ? "PASS" : "FAIL") . "\n";
+echo '  Total: '.count($results).' | pinned: '.count(array_filter($results, fn ($r) => $r['status'] === 'pinned')).' | grue gaps: '.count($uncoveredProps).' → '.($pass ? 'PASS' : 'FAIL')."\n";
 foreach ($results as $r) {
     $icon = $r['status'] === 'pinned' ? '✓' : ($r['status'] === 'grue_gap' ? '◌' : '✗');
-    $cov = $r['coverage'] !== null ? sprintf("%.1f%%", $r['coverage']) : "n/a";
-    $unc = $r['uncovered_lines'] !== null ? " uncovered {$r['uncovered_lines']}" : "";
+    $cov = $r['coverage'] !== null ? sprintf('%.1f%%', $r['coverage']) : 'n/a';
+    $unc = $r['uncovered_lines'] !== null ? " uncovered {$r['uncovered_lines']}" : '';
     echo "  {$icon} {$r['id']} — {$r['covers']} {$cov}{$unc} — {$r['status']}\n";
 }
 if ($uncoveredProps !== []) {
