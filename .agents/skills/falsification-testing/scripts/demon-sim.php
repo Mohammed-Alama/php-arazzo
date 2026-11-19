@@ -35,7 +35,7 @@ $flaky=0;
 $orderDependence=false;
 for($s=0;$s<$seeds;$s++){
     $seed=1000+$s*137; // deterministic demon seeds
-    $cmd="cd ".escapeshellarg($dir)." && vendor/bin/pest --random-order-seed={$seed} --no-coverage";
+    $cmd="{$root}/vendor/bin/pest --random-order-seed={$seed} --no-coverage --bootstrap={$root}/vendor/autoload.php packages/{$package}/tests";
     if ($filter) $cmd.=" --filter=".escapeshellarg($filter);
     $cmd.=" 2>&1 | tail -n 20";
     $out=[];

@@ -54,7 +54,7 @@ foreach ($properties as $p) {
     }
     // Check if property test exists: grep for id in InvariantsTest
     $testExists = false;
-    $inv = "{$root}/packages/core/tests/Property/InvariantsTest.php";
+    $inv = "{$root}/packages/{$package}/tests/Property/InvariantsTest.php";
     if (file_exists($inv)) {
         $c = file_get_contents($inv);
         if (str_contains((string)$c, $p['line']) || str_contains((string)$c, $p['id'])) $testExists = true;

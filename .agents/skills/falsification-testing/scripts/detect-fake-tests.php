@@ -21,10 +21,23 @@ $paths = array_values(array_filter($argvCopy, static fn (string $a): bool => !st
 
 if ($all || $paths === []) {
     if ($paths === [] && !$all) {
-        // default: scan both packages
-        $paths = ["{$root}/packages/core/tests", "{$root}/packages/laravel/tests"];
+        // default: scan every package's tests dir
+        foreach (glob("{$root}/packages/*/tests", GLOB_ONLYDIR) as $dir) {
+            $paths[] = $dir;
+        }
+        // also cover root-level script tests
+        if (is_dir("{$root}/tests/scripts")) {
+            $paths[] = "{$root}/tests/scripts";
+        }
+        sort($paths);
     } elseif ($all) {
-        $paths = ["{$root}/packages/core/tests", "{$root}/packages/laravel/tests"];
+        foreach (glob("{$root}/packages/*/tests", GLOB_ONLYDIR) as $dir) {
+            $paths[] = $dir;
+        }
+        if (is_dir("{$root}/tests/scripts")) {
+            $paths[] = "{$root}/tests/scripts";
+        }
+        sort($paths);
     }
 }
 

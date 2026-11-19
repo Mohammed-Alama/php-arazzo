@@ -40,8 +40,8 @@ if (count($args) < 2) {
 }
 
 $pkg = strtolower($args[0]);
-if (!in_array($pkg, ['core', 'laravel'], true)) {
-    $fail("first arg must be core or laravel");
+if (!is_dir("{$root}/packages/{$pkg}")) {
+    $fail("package '{$pkg}' not found under packages/");
 }
 $rawName = $args[1];
 $claim = $args[2] ?? "system will <behavior> when <condition>; false if <observable>";
@@ -63,12 +63,8 @@ $claimSlug = trim(substr($claimSlug, 0, 60), '-');
 
 $relPath = $customPath;
 if ($relPath === null) {
-    $hint = match ($pkg) {
-        'core' => 'Runner',
-        'laravel' => 'Feature',
-    };
-    // Heuristic subdir: Runner for core engine, Feature for laravel
-    $relPath = "packages/{$pkg}/tests/{$hint}/{$base}.php";
+    // Default: flat under packages/{pkg}/tests/
+    $relPath = "packages/{$pkg}/tests/{$base}.php";
 }
 if (!str_starts_with($relPath, '/')) {
     $absPath = "{$root}/{$relPath}";
@@ -81,75 +77,35 @@ if (file_exists($absPath) && !$dryRun) {
     $fail("{$relPath} already exists");
 }
 
-$ns = $pkg === 'core' ? 'Alama\\Arazzo\\Tests' : 'Alama\\Arazzo\\Laravel\\Tests';
+// Map package name to its test namespace from root autoload-dev.
+$nsMap = [
+    'core' => 'Alama\\Arazzo\\Tests',
+    'document' => 'Alama\\Arazzo\\Tests\\Document',
+    'expression' => 'Alama\\Arazzo\\Tests\\Expression',
+    'evaluation' => 'Alama\\Arazzo\\Tests\\Evaluation',
+    'runtime' => 'Alama\\Arazzo\\Tests\\Runtime',
+    'runner' => 'Alama\\Arazzo\\Tests\\Runner',
+    'laravel' => 'Alama\\Arazzo\\Laravel\\Tests',
+    'sources' => 'Alama\\Arazzo\\Tests\\Sources',
+    'engine' => 'Alama\\Arazzo\\Tests\\Engine',
+    'events' => 'Alama\\Arazzo\\Tests\\Events',
+    'protocol-http' => 'Alama\\Arazzo\\Tests\\Protocol\\Http',
+    'protocol-soap' => 'Alama\\Arazzo\\Tests\\Protocol\\Soap',
+    'protocol-rpc' => 'Alama\\Arazzo\\Tests\\Protocol\\Rpc',
+];
+$ns = $nsMap[$pkg] ?? 'Alama\\Arazzo\\Tests\\' . str_replace('-', '\\', ucwords($pkg, '-'));
+$subNs = str_replace('Alama\\Arazzo\\', '', $ns);
+if ($subNs !== '' && !str_ends_with($subNs, '\\')) {
+    $subNs .= '\\';
+}
 
-if ($pkg === 'core') {
+if ($pkg === 'laravel') {
     $template = <<<'PHP'
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Runner;
-
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Step;
-
-// Popper claim: {{CLAIM}}
-// Falsifiable: the system will {{CLAIM}}. False if <observable> occurs.
-
-it('{{CLAIM_SLUG}}', function (): void {
-    // Arrange — independently-derived expected value, not a mirror of the implementation
-    // TODO: picks minimal ArazzoDocument / Workflow / Step that isolates the claim
-    $resolver = Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('extractOutputs')->andReturn([]);
-    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(false);
-
-    $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
-    // TODO: fake PSR-18 response for this claim
-
-    $executor = new StepExecutor($openApiExecutor, $resolver, Mockery::mock(OpenApiOperationResolver::class));
-    $step = new Step('s1', null, 'op', null, null, [], null, [], [], [], [], [], null, null, null, null);
-    $context = new WorkflowContext('wf-test', [], [], [], 'exec-1');
-    $document = new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [], new Components([], [], [], []), []);
-
-    // Act
-    [$nextContext, $success] = $executor->execute($step, $context, $document);
-
-    // Assert — specific, falsifiable; would fail if fix were reverted
-    // TODO: replace with exact expectation
-    expect($success)->toBeFalse();
-});
-
-// Hume boundaries to add (at least one per class):
-// - zero/empty/null: empty steps / null field
-// - one: single step / single dep
-// - max: maxSteps / maxWorkflowDepth / retryLimit vs retry_ceiling
-// - exactly-equal: stepsSpent == maxSteps, retryCount == retryLimit
-// - discontinuity: OpenAPI 3.0 vs 3.1, YAML {$...} vs literal
-
-// Socrates adversarial (pick 3):
-// - out-of-order / repeat step / double-submit
-// - concurrent workers / race on same executionId
-// - semantically hostile valid-shaped data (someone else's ID, negative quantity)
-// - mid-operation dependency failure (PSR-18 timeout, SourceRegistry 404)
-
-// Descartes assumptions to violate (one test per violated assumption):
-// - inputs type/range/presence, dependencies shape/latency, clock/timezone, auth
-PHP;
-} else {
-    $template = <<<'PHP'
-<?php
-
-declare(strict_types=1);
-
-use Alama\Arazzo\Laravel\Tests\TestCase;
+use {{NS}}\TestCase;
 use Illuminate\Support\Facades\Queue;
 
 uses(TestCase::class);
@@ -174,11 +130,53 @@ it('{{CLAIM_SLUG}}', function (): void {
 // Descartes: violate each assumption (inputs, deps, env, auth)
 // Remember: tests in Persistence/ get RefreshDatabase automatically (see packages/laravel/tests/Pest.php)
 PHP;
+} else {
+    $template = <<<'PHP'
+<?php
+
+declare(strict_types=1);
+
+namespace {{NS}};
+
+// Popper claim: {{CLAIM}}
+// Falsifiable: the system will {{CLAIM}}. False if <observable> occurs.
+
+// TODO: add use imports for the classes under test (PSR-only, no Illuminate in core packages)
+
+it('{{CLAIM_SLUG}}', function (): void {
+    // Arrange — independently-derived expected value, not a mirror of the implementation
+    // TODO: construct minimal fixtures that isolate the claim
+
+    // Act
+    // TODO: invoke the code under test
+
+    // Assert — specific, falsifiable; would fail if fix were reverted
+    // TODO: replace with exact expectation
+    expect(true)->toBeTrue(); // replace
+});
+
+// Hume boundaries to add (at least one per class):
+// - zero/empty/null: empty input, null field, zero-length collection
+// - one: single item, single dependency, single parameter
+// - max: ceiling values (maxSteps, maxWorkflowDepth, retryLimit vs retry_ceiling)
+// - exactly-equal: stepsSpent == maxSteps, retryCount == retryLimit
+// - discontinuity: OpenAPI 3.0 vs 3.1, YAML {$...} vs literal string, timezone/month-end
+
+// Socrates adversarial (pick 3):
+// - out-of-order / repeat step / double-submit
+// - concurrent workers / race on same executionId
+// - semantically hostile valid-shaped data (someone else's ID, negative quantity)
+// - mid-operation dependency failure (PSR-18 timeout, SourceRegistry 404)
+
+// Descartes assumptions to violate (one test per violated assumption):
+// - inputs type/range/presence, dependencies shape/latency, clock/timezone, auth
+PHP;
 }
 
-$render = str_replace(['{{CLAIM}}', '{{CLAIM_SLUG}}'], [$claim, $claimSlug ?: strtolower(preg_replace('/[^A-Za-z0-9]+/', '-', $base) ?? 'falsifiable-claim')], $template);
+$render = str_replace(['{{CLAIM}}', '{{CLAIM_SLUG}}', '{{NS}}'], [$claim, $claimSlug ?: strtolower(preg_replace('/[^A-Za-z0-9]+/', '-', $base) ?? 'falsifiable-claim'), $ns], $template);
 
 echo "package: {$pkg}\n";
+echo "namespace: {$ns}\n";
 echo "file:    {$relPath}\n";
 echo "claim:   {$claim}\n";
 if ($dryRun) {
@@ -194,4 +192,4 @@ if (!is_dir($dir)) {
 }
 file_put_contents($absPath, $render);
 echo "written\n";
-echo "next: vendor/bin/pint {$relPath} && cd packages/{$pkg} && vendor/bin/pest --filter=" . escapeshellarg($claimSlug ?: $base) . "\n";
+echo "next: vendor/bin/pint {$relPath} && vendor/bin/pest {$relPath} --filter=" . escapeshellarg($claimSlug ?: $base) . "\n";

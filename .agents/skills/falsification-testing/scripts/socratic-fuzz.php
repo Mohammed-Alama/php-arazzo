@@ -66,14 +66,14 @@ for($i=0;$i<$iterations;$i++){
     $out=[];
     // Use php one-liner to try parsing
     $escTmp=escapeshellarg($tmp);
-    $checkCmd="php -r 'require \"{$root}/vendor/autoload.php\"; use Alama\\Arazzo\\Parser\\Loader; use Alama\\Arazzo\\Parser\\Parser; use Alama\\Arazzo\\Parser\\Decoders\\NativeJsonDecoder; use Alama\\Arazzo\\Parser\\Decoders\\SymfonyYamlDecoder; try { \$l=new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()); \$d=(new Parser())->parse(\$l->load('{$tmp}')); echo \"PARSE_OK\"; } catch (Throwable \$e) { echo \"PARSE_FAIL:\".\$e->getMessage(); exit(1); }' 2>&1";
+    $checkCmd="php -r 'require \"{$root}/vendor/autoload.php\"; use Alama\\Arazzo\\Document\\Parser\\Loader; use Alama\\Arazzo\\Document\\Parser\\Parser; use Alama\\Arazzo\\Document\\Parser\\Decoders\\NativeJsonDecoder; use Alama\\Arazzo\\Document\\Parser\\Decoders\\SymfonyYamlDecoder; try { \$l=new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()); \$d=(new Parser())->parse(\$l->load('{$tmp}')); echo \"PARSE_OK\"; } catch (Throwable \$e) { echo \"PARSE_FAIL:\".\$e->getMessage(); exit(1); }' 2>&1";
     exec($checkCmd,$out,$code);
     $outStr=implode("\n",$out);
     if ($code!==0 || str_contains($outStr,'PARSE_FAIL')) {
         $killedThis=true; // parse rejection is a kill (adversary caught)
     } else {
         // If parse ok, try validator
-        $valCmd="php -r 'require \"{$root}/vendor/autoload.php\"; use Alama\\Arazzo\\Parser\\Loader; use Alama\\Arazzo\\Parser\\Parser; use Alama\\Arazzo\\Parser\\Decoders\\NativeJsonDecoder; use Alama\\Arazzo\\Parser\\Decoders\\SymfonyYamlDecoder; use Alama\\Arazzo\\Validator\\Validator; use Alama\\Arazzo\\Validator\\RuleSet; \$l=new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()); \$doc=(new Parser())->parse(\$l->load('{$tmp}')); \$r=(new Validator(RuleSet::default()))->validate(\$doc); echo \$r->isValid()?\"VALID\":\"INVALID:\".count(\$r->errors);' 2>&1";
+        $valCmd="php -r 'require \"{$root}/vendor/autoload.php\"; use Alama\\Arazzo\\Document\\Parser\\Loader; use Alama\\Arazzo\\Document\\Parser\\Parser; use Alama\\Arazzo\\Document\\Parser\\Decoders\\NativeJsonDecoder; use Alama\\Arazzo\\Document\\Parser\\Decoders\\SymfonyYamlDecoder; use Alama\\Arazzo\\Document\\Validator\\Validator; use Alama\\Arazzo\\Document\\Validator\\RuleSet; \$l=new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()); \$doc=(new Parser())->parse(\$l->load('{$tmp}')); \$r=(new Validator(RuleSet::default()))->validate(\$doc); echo \$r->isValid()?\"VALID\":\"INVALID:\".count(\$r->errors);' 2>&1";
         $out2=[]; $code2=0;
         exec($valCmd,$out2,$code2);
         $out2Str=implode("\n",$out2);

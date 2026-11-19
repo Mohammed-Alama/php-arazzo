@@ -33,7 +33,7 @@ if ($has('--help') || $has('-h') || $args === []) {
 }
 
 $json = $has('--json');
-$package = $get('--package') ?? 'core';
+$package = $get('--package') ?? 'all';
 $limit = (int) ($get('--limit') ?? '10');
 $overview = $has('--overview');
 $dashboard = $has('--dashboard');
@@ -41,11 +41,19 @@ $hotspots = $has('--hotspots');
 $uncovered = $has('--uncovered');
 $fileArg = $get('--file');
 
-// normalize package
+// normalize package: enumerate all packages with coverage reports
+$allPackages = [];
+foreach (glob("{$root}/packages/*", GLOB_ONLYDIR) as $dir) {
+    $pkg = basename($dir);
+    if (is_dir("{$root}/packages/{$pkg}/coverage-report")) {
+        $allPackages[] = $pkg;
+    }
+}
+sort($allPackages);
+
 $packages = match ($package) {
-    'all' => ['core', 'laravel'],
-    'laravel' => ['laravel'],
-    default => ['core'],
+    'all' => $allPackages,
+    default => in_array($package, $allPackages, true) ? [$package] : $allPackages,
 };
 if ($fileArg !== null && !$overview && !$hotspots && !$dashboard && !$uncovered) {
     // --file implies file query
@@ -242,7 +250,7 @@ foreach ($packages as $pkg) {
     if ($wantFile) {
         $rel = ltrim($fileArg, '/');
         // strip leading packages/*/src/ if present
-        $rel = preg_replace('#^packages/(core|laravel)/src/#', '', $rel);
+        $rel = preg_replace('#^packages/[^/]+/src/#', '', $rel);
         $rel = preg_replace('#^src/#', '', $rel);
         $htmlFile = "{$root}/packages/{$pkg}/coverage-report/{$rel}.html";
         // Try alternative: if rel already includes directories, try as is

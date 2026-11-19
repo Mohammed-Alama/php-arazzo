@@ -53,7 +53,7 @@ if ($filter && $file === null) {
 }
 
 // 2. Hume MSI — dry-run to get MSI without running full mutate (fast)
-$humeCmd = 'bash ' . escapeshellarg("{$root}/.agents/skills/falsification-testing/scripts/hume-audit.sh") . ' --dry-run --core 2>&1';
+$humeCmd = 'bash ' . escapeshellarg("{$root}/.agents/skills/falsification-testing/scripts/hume-audit.sh") . ' --dry-run --all 2>&1';
 $humeOut = shell_exec($humeCmd);
 $msi = null;
 if (preg_match('/MSI\s+(\d+(?:\.\d+)?)/i', (string)$humeOut, $m)) {
@@ -63,9 +63,15 @@ if (preg_match('/MSI\s+(\d+(?:\.\d+)?)/i', (string)$humeOut, $m)) {
 } else {
     $msi = 80.0; // assume 80 if dry-run
 }
-// Try to parse real coverage MSI from infection log if exists
-$infSummary = "{$root}/packages/core/infection-summary.log";
-if (file_exists($infSummary)) {
+// Try to parse real coverage MSI from infection log if exists (any package)
+$infSummary = null;
+foreach (glob("{$root}/packages/*/infection-summary.log") as $candidate) {
+    if (file_exists($candidate)) {
+        $infSummary = $candidate;
+        break;
+    }
+}
+if ($infSummary !== null) {
     $c = file_get_contents($infSummary);
     if (preg_match('/MSI:\s*(\d+(?:\.\d+)?)/', (string)$c, $m)) $msi = (float)$m[1];
 }

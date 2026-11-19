@@ -15,6 +15,10 @@ $root = dirname(__DIR__, 4);
 $arg = $argv[1] ?? null;
 if ($arg === null || $arg === '--help' || $arg === '-h') {
     fwrite(STDERR, "usage: php audit-boundaries.php <src-file|keyword> [--tests <dir>] [--json]\n");
+    fwrite(STDERR, "examples:\n");
+    fwrite(STDERR, "  php audit-boundaries.php packages/document/src/Parser/Parser.php\n");
+    fwrite(STDERR, "  php audit-boundaries.php packages/runner/src/Execution/StepExecutor.php\n");
+    fwrite(STDERR, "  php audit-boundaries.php WorkflowEngine --json\n");
     exit(2);
 }
 
@@ -90,11 +94,11 @@ if ($testsDir !== null) {
     }
 }
 if ($testsDir === null) {
-    // infer
-    if (str_contains($srcPath, 'packages/core')) {
+    // infer tests dir from the source path: packages/<pkg>/src/... -> packages/<pkg>/tests
+    if (preg_match('#^packages/([^/]+)/src/#', $isFile ? $srcPath : $arg, $m)) {
+        $testsDir = "{$root}/packages/{$m[1]}/tests";
+    } elseif (is_dir("{$root}/packages/core/tests")) {
         $testsDir = "{$root}/packages/core/tests";
-    } elseif (str_contains($srcPath, 'packages/laravel')) {
-        $testsDir = "{$root}/packages/laravel/tests";
     } else {
         $testsDir = "{$root}/packages/core/tests";
     }

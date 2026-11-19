@@ -18,18 +18,18 @@ JSON=0
 OPEN=0
 while [ $# -gt 0 ]; do
   case "$1" in
-    --core) PKG="core"; shift ;;
-    --laravel) PKG="laravel"; shift ;;
+    --core|--contracts|--document|--engine|--evaluation|--events|--expression|--laravel|--protocol-http|--protocol-rpc|--protocol-soap|--runner|--runtime|--sources)
+      PKG="${1#--}"; shift ;;
     --all) PKG="all"; shift ;;
+    --package) PKG="$2"; shift 2 ;;
     --json) JSON=1; shift ;;
     --open) OPEN=1; shift ;;
-    --help|-h) echo "usage: bash generate-coverage.sh [--core|--laravel|--all] [--json] [--open]"; exit 0 ;;
+    --help|-h) echo "usage: bash generate-coverage.sh [--all|--core|--laravel|--package <pkg>] [--json] [--open]"; exit 0 ;;
     *) echo "unknown arg: $1" >&2; exit 2 ;;
   esac
 done
 
 # Run coverage for a single package that has its own phpunit.xml.dist.
-# Only laravel has one today; core has no production source.
 run_pkg() {
   local pkg="$1"
   local dir="$ROOT/packages/$pkg"
@@ -106,9 +106,12 @@ run_all() {
 FAIL=0
 if [ "$PKG" = "all" ]; then
   run_all || FAIL=1
-  run_pkg laravel || FAIL=1
-elif [ "$PKG" = "laravel" ]; then
-  run_pkg laravel || FAIL=1
+  # Per-package reports for packages that have their own phpunit.xml.dist
+  for dir in "$ROOT"/packages/*/phpunit.xml.dist; do
+    [ -f "$dir" ] || continue
+    pkg=$(basename "$(dirname "$dir")")
+    run_pkg "$pkg" || FAIL=1
+  done
 elif [ "$PKG" = "core" ]; then
   echo "=== [core] no production source (packages/core/src is committed-empty) — N/A ==="
 else
@@ -193,7 +196,7 @@ if [ "$JSON" -eq 1 ]; then
       ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     ' | tee "$ROOT/storage/coverage-summary.json"
   else
-    php "$ROOT/.agents/skills/coverage-insights/scripts/query-coverage.php" --overview --package "$PKG" --json 2>&1 | tee "$ROOT/storage/coverage-summary.json"
+    php "$ROOT/.agents/skills/falsification-testing/scripts/query-coverage.php" --overview --package "$PKG" --json 2>&1 | tee "$ROOT/storage/coverage-summary.json"
   fi
 fi
 

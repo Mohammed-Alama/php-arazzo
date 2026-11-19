@@ -17,18 +17,20 @@ FILTER=""
 DRY_RUN=0
 TARGET="all"
 MODE=""
+PACKAGES=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --core) TARGET="core"; shift ;;
-    --laravel) TARGET="laravel"; shift ;;
+    --core|--contracts|--document|--engine|--evaluation|--events|--expression|--laravel|--protocol-http|--protocol-rpc|--protocol-soap|--runner|--runtime|--sources)
+      PACKAGES="$PACKAGES ${1#--}"; shift ;;
     --all) TARGET="all"; shift ;;
+    --package) PACKAGES="$PACKAGES $2"; shift 2 ;;
     --threshold) THRESHOLD="$2"; shift 2 ;;
     --no-covered-only) COVERED_ONLY=""; shift ;;
     --covered-only) COVERED_ONLY="--covered-only"; shift ;;
     --filter) FILTER="$2"; shift 2 ;;
     --dry-run) DRY_RUN=1; shift ;;
-    --help|-h) echo "usage: bash hume-audit.sh [--core|--laravel|--all] [--threshold N] [--no-covered-only] [--filter <pest-filter>] [--dry-run]"; exit 0 ;;
+    --help|-h) echo "usage: bash hume-audit.sh [--all|--core|--laravel|--package <pkg>|--package <pkg1> <pkg2>] [--threshold N] [--no-covered-only] [--filter <pest-filter>] [--dry-run]"; exit 0 ;;
     *) echo "unknown arg: $1" >&2; exit 2 ;;
   esac
 done
@@ -91,14 +93,25 @@ run_one() {
 }
 
 FAIL=0
-if [ "$TARGET" = "all" ]; then
-  run_one core || FAIL=1
-  run_one laravel || FAIL=1
-elif [ "$TARGET" = "core" ]; then
-  run_one core || FAIL=1
-elif [ "$TARGET" = "laravel" ]; then
-  run_one laravel || FAIL=1
+# Resolve the package list: explicit --package flags, or all packages with tests/
+if [ -n "$PACKAGES" ]; then
+  # dedupe
+  PKG_LIST=$(echo "$PACKAGES" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+elif [ "$TARGET" = "all" ]; then
+  PKG_LIST=""
+  for dir in "$ROOT"/packages/*/tests; do
+    [ -d "$dir" ] || continue
+    pkg=$(basename "$(dirname "$dir")")
+    PKG_LIST="$PKG_LIST $pkg"
+  done
+  PKG_LIST=$(echo "$PKG_LIST" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+else
+  PKG_LIST=""
 fi
+
+for pkg in $PKG_LIST; do
+  run_one "$pkg" || FAIL=1
+done
 
 if [ "$FAIL" -ne 0 ]; then
   echo

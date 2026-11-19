@@ -24,12 +24,11 @@ test: ## Run Pest tests
 	composer run test
 
 test-coverage: ## Run Pest tests with coverage
-	cd packages/core && vendor/bin/pest --coverage
 	cd packages/laravel && vendor/bin/pest --coverage
 
 test-mutate: ## Run Pest mutation testing
-	cd packages/core && vendor/bin/pest --mutate --covered-only
-	cd packages/laravel && vendor/bin/pest --mutate --covered-only
+	vendor/bin/pest --mutate --covered-only packages/runner/tests
+	vendor/bin/pest --mutate --covered-only packages/laravel/tests
 
 format: ## Format code using Laravel Pint
 	vendor/bin/pint
