@@ -485,8 +485,8 @@
             }
         },
         {
-            "name": "alama/arazzo-protocol-soap",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-protocol-soap",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/protocol-soap",
