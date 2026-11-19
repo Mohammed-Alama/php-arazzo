@@ -538,8 +538,8 @@
             }
         },
         {
-            "name": "alama/arazzo-runner",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-runner",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/runner",

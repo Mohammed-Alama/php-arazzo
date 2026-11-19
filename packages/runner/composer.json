@@ -1,7 +1,8 @@
 {
-    "name": "alama/arazzo-runner",
+    "name": "php-arazzo/arazzo-runner",
     "description": "Arazzo workflow execution engine: state, events, policy, protocol, async, telemetry.",
     "type": "library",
+    "version": "1.0.0-alpha.1",
     "license": "MIT",
     "require": {
         "php": "^8.4",
