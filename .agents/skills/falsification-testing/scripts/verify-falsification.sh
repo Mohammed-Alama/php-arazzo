@@ -87,8 +87,8 @@ fi
 if [ -z "$FILTER" ]; then
   echo
   echo "--- conformance fixtures ---"
-  # Run only conformance suite separately for clearer signal (already covered by composer test, but explicit)
-  (cd "$ROOT/packages/core" && vendor/bin/pest tests/Conformance --ci 2>&1 | tail -n 20) || echo "(conformance run: see above)"
+  # Run conformance suite from root (packages have no local vendor/bin/pest)
+  (cd "$ROOT" && "$ROOT/vendor/bin/pest" "$ROOT/packages/core/tests/Conformance" --ci 2>&1 | tail -n 20) || echo "(conformance run: see above)"
 fi
 
 echo

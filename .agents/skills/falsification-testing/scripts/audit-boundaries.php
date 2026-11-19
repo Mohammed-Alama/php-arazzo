@@ -15,6 +15,10 @@ $root = dirname(__DIR__, 4);
 $arg = $argv[1] ?? null;
 if ($arg === null || $arg === '--help' || $arg === '-h') {
     fwrite(STDERR, "usage: php audit-boundaries.php <src-file|keyword> [--tests <dir>] [--json]\n");
+    fwrite(STDERR, "examples:\n");
+    fwrite(STDERR, "  php audit-boundaries.php packages/document/src/Parser/Parser.php\n");
+    fwrite(STDERR, "  php audit-boundaries.php packages/runner/src/Execution/StepExecutor.php\n");
+    fwrite(STDERR, "  php audit-boundaries.php WorkflowEngine --json\n");
     exit(2);
 }
 
@@ -77,7 +81,7 @@ if ($isFile && $content !== '') {
     $uniqNums = array_unique($nums[1]);
     sort($uniqNums);
     if (count($uniqNums) > 0 && count($uniqNums) < 10) {
-        $boundaries[] = 'numeric literals in file: ' . implode(', ', $uniqNums) . ' — test ±1 around each';
+        $boundaries[] = 'numeric literals in file: '.implode(', ', $uniqNums).' — test ±1 around each';
     }
 }
 
@@ -90,11 +94,11 @@ if ($testsDir !== null) {
     }
 }
 if ($testsDir === null) {
-    // infer
-    if (str_contains($srcPath, 'packages/core')) {
+    // infer tests dir from the source path: packages/<pkg>/src/... -> packages/<pkg>/tests
+    if (preg_match('#^packages/([^/]+)/src/#', $isFile ? $srcPath : $arg, $m)) {
+        $testsDir = "{$root}/packages/{$m[1]}/tests";
+    } elseif (is_dir("{$root}/packages/core/tests")) {
         $testsDir = "{$root}/packages/core/tests";
-    } elseif (str_contains($srcPath, 'packages/laravel')) {
-        $testsDir = "{$root}/packages/laravel/tests";
     } else {
         $testsDir = "{$root}/packages/core/tests";
     }
@@ -104,7 +108,7 @@ if (is_dir($testsDir)) {
     $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($testsDir));
     foreach ($it as $f) {
         if ($f->isFile() && $f->getExtension() === 'php') {
-            $testContent .= file_get_contents($f->getPathname()) . "\n";
+            $testContent .= file_get_contents($f->getPathname())."\n";
         }
     }
 }
@@ -129,7 +133,7 @@ $result = [
 ];
 
 if ($json) {
-    echo json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+    echo json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n";
     exit(0);
 }
 
@@ -138,13 +142,13 @@ if ($isFile) {
     echo " file: {$srcPath}\n";
 }
 echo " tests: {$testsDir}\n";
-echo "\nChecklist (" . count($boundaries) . " classes):\n";
+echo "\nChecklist (".count($boundaries)." classes):\n";
 foreach ($boundaries as $b) {
     $mark = in_array($b, $hits, true) ? '[~hit]' : '[MISS]';
     echo "  {$mark} {$b}\n";
 }
 if ($misses !== []) {
-    echo "\n" . count($misses) . " boundary class(es) with no keyword hit in tests — likely uncovered (verify manually).\n";
+    echo "\n".count($misses)." boundary class(es) with no keyword hit in tests — likely uncovered (verify manually).\n";
     echo "Tip: for each MISS, add at least one test at the exact boundary (Pass 2). Use --json for machine output.\n";
 } else {
     echo "\nAll boundary keywords seen in tests (heuristic — still verify the assertion is specific, not vague).\n";

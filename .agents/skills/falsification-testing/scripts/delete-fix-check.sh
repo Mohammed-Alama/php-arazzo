@@ -50,12 +50,11 @@ PEST_DIR=""
 PEST_FILTER_ARG=""
 if [ -n "$FILTER" ]; then PEST_FILTER_ARG="--filter=\"$FILTER\""; fi
 
-if [[ "$PKGPATH" == *"packages/core"* ]]; then
-  PKG_NAME="core"
-elif [[ "$PKGPATH" == *"packages/laravel"* ]]; then
-  PKG_NAME="laravel"
+# Extract package name from PKGPATH (e.g. packages/runner -> runner)
+if [[ "$PKGPATH" == packages/* ]]; then
+  PKG_NAME="${PKGPATH#packages/}"
 else
-  # infer from filter path or default to core
+  # fallback: infer from filter path or default to core
   PKG_NAME="core"
 fi
 

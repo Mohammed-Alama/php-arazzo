@@ -18,26 +18,33 @@ This skill operationalizes four philosophical moves (Popper, Hume, Socrates, Des
 ```
 packages/core/       — alama/arazzo-core, PSR-only engine (no Illuminate)
   src/               — committed-empty (.gitkeep only); no production source → coverage N/A
-  tests/{Parser,Validator,Resolver,Runner,Expression,Generator,Dto,Events,Feature,Conformance,...}
-  infection.json, phpunit.xml (executionOrder=random, failOnWarning/Risky true)
-  Pest.php → pest()->extend(TestCase::class)->in(__DIR__)  (Alama\Arazzo\Tests\TestCase extends PHPUnit\Framework\TestCase)
+  tests/{Architecture,Conformance,Contracts,Ecosystem,Feature,fixtures,Loader,Property,Support,Unit,Validator,...}
+  phpunit.xml.dist (executionOrder=random, failOnWarning/Risky true)
+  Pest.php → pest()->extend(TestCase::class)->in(__DIR__)
 
 packages/laravel/    — alama/laravel-arazzo, Laravel bridge
   src/{Persistence,Queue,Lock,State,Http,...} + LaravelArazzoServiceProvider
-  tests/{Feature,Queue,Lock,Persistence,State,Resolver,Http,...}
+  tests/{Architecture,BackendCompatibility,Bindings,Config,Events,Feature,Queue,Lock,Persistence,State,Resolver,Http,...}
+  phpunit.xml.dist
   Pest.php → uses(TestCase::class)->in(__DIR__) + uses(RefreshDatabase::class)->in('Persistence')
-  TestCase extends Orchestra\Testbench\TestCase, registers LaravelArazzoServiceProvider
+
+packages/{contracts,document,engine,evaluation,events,expression,protocol-http,protocol-rpc,protocol-soap,runner,runtime,sources}/
+  src/               — production source (PSR-only, no Illuminate)
+  tests/             — Pest tests per package
+  phpunit.xml.dist   (only core and laravel have their own; others use root phpunit.xml.dist)
+
+Root phpunit.xml.dist aggregates all 15 package test suites + tools/issue-intake/tests + tests/scripts.
 ```
 
-**Rule:** All production source lives in the non-`core` packages (document, expression, evaluation, sources, runtime, engine, events, runner, cli, laravel, protocol-*). `core` must never `use Illuminate\...`. If your test needs `Illuminate`, the production code belongs in `laravel`. If the test needs PSR-18/PSR-16/PSR-3, it belongs in `core`.
+**Rule:** All production source lives in the non-`core` packages (document, expression, evaluation, sources, runtime, engine, events, runner, cli, laravel, protocol-*). `core` must never `use Illuminate\...`. If your test needs `Illuminate`, the production code belongs in `laravel`. If the test needs PSR-18/PSR-16/PSR-3, it belongs in `core`. Class namespaces moved with the split: `Alama\Arazzo\Parser\*` → `Alama\Arazzo\Document\Parser\*`, `Alama\Arazzo\Validator\*` → `Alama\Arazzo\Document\Validator\*`, `Alama\Arazzo\Runner\Execution\StepExecutor` → `packages/runner/src/`.
 
 ### Toolchain you must respect
 
 - **Runner:** Pest 4 on PHPUnit 10.3, PHP `^8.4`, `declare(strict_types=1)` in every file.
 - **Style:** `laravel/pint` with preset `laravel` (`pint.json` at repo root — single_quote, ordered imports, trailing commas). Run `vendor/bin/pint` / `make format`. CI checks `pint --test`.
 - **Analysis:** PHPStan `level: max` (`phpstan-baseline.neon` + larastan for laravel). Run `composer analyse` / `composer analyse-core` / `composer analyse-laravel` / `make analyse`.
-- **Gates:** `composer test` = `test-core` + `test-laravel`; `make verify` = `pint --test && composer analyse && composer test` (same as `.githooks/pre-push` and CI). Any suite that doesn't pass `make verify` is not done.
-- **Mutation / Hume audit:** `infection/infection ^0.35.2`, config `testFramework: pest`, `mutators: @default`, `source.directories: ["src"]`. Run `make test-mutate` or `cd packages/core && vendor/bin/pest --mutate --covered-only` (same for `laravel`). A suite with high line coverage and high mutant survival is coverage theater — flag it.
+- **Gates:** `composer test` runs all 15 package suites + tools + scripts; `make verify` = `pint --test && composer analyse && composer test` (same as `.githooks/pre-push` and CI). Any suite that doesn't pass `make verify` is not done.
+- **Mutation / Hume audit:** `infection/infection ^0.35.2`, config `testFramework: pest`, `mutators: @default`, `source.directories: ["src"]`. Run `make test-mutate` or `vendor/bin/pest --mutate --covered-only packages/<pkg>/tests` from root. A suite with high line coverage and high mutant survival is coverage theater — flag it.
 - **Pest semantics:** `phpunit.xml` sets `executionOrder=random`, `failOnWarning=true`, `failOnRisky=true`, `beStrictAboutOutputDuringTests=true`. Don't rely on test ordering; don't emit output in tests; a risky test (no assertion) fails the suite.
 
 ### Domain model to falsify against
@@ -234,8 +241,8 @@ All scripts live under `.agents/skills/falsification-testing/scripts/` and are s
 
 | Script | What it does | When to use | Command |
 |--------|--------------|-------------|---------|
-| `detect-fake-tests.php` | Static Fake Test Detector (FAKE-1..7, STYLE, BOUNDARY, NAMING). Scans Pest files for `not->toBeNull`, `toBeTruthy`, vague `toBeLessThan(500)`, mock-only, single-test files, `Illuminate` leak in `core`. | Before adding coverage; in review | `php .agents/skills/falsification-testing/scripts/detect-fake-tests.php --all` <br> `php .agents/skills/falsification-testing/scripts/detect-fake-tests.php packages/core/tests/Runner/StepExecutorTest.php --json` |
-| `audit-boundaries.php` | Hume boundary checklist generator. For a src file or keyword, emits zero/one/max/equal/discontinuity classes tailored to php-arazzo (empty workflow, `maxSteps`/`maxWorkflowDepth`, `retryLimit` vs `retry_ceiling`, 3.0 vs 3.1, YAML vs JSON) and heuristically checks if tests mention them. | Pass 2 | `php .agents/skills/falsification-testing/scripts/audit-boundaries.php packages/core/src/Runner/Execution/StepExecutor.php` <br> `php .agents/skills/falsification-testing/scripts/audit-boundaries.php WorkflowEngine --json` |
+| `detect-fake-tests.php` | Static Fake Test Detector (FAKE-1..7, STYLE, BOUNDARY, NAMING). Scans Pest files for `not->toBeNull`, `toBeTruthy`, vague `toBeLessThan(500)`, mock-only, single-test files, `Illuminate` leak in `core`. | Before adding coverage; in review | `php .agents/skills/falsification-testing/scripts/detect-fake-tests.php --all` <br> `php .agents/skills/falsification-testing/scripts/detect-fake-tests.php packages/runner/tests/Sync/StepExecutorTest.php --json` |
+| `audit-boundaries.php` | Hume boundary checklist generator. For a src file or keyword, emits zero/one/max/equal/discontinuity classes tailored to php-arazzo (empty workflow, `maxSteps`/`maxWorkflowDepth`, `retryLimit` vs `retry_ceiling`, 3.0 vs 3.1, YAML vs JSON) and heuristically checks if tests mention them. | Pass 2 | `php .agents/skills/falsification-testing/scripts/audit-boundaries.php packages/runner/src/Sync/StepExecutor.php` <br> `php .agents/skills/falsification-testing/scripts/audit-boundaries.php WorkflowEngine --json` |
 | `hume-audit.sh` | Wraps `pest --mutate --covered-only` (Infection) and reports MSI / survival theater. Fails if MSI < threshold. | Pass 2 (mutation is the Hume audit) | `bash .agents/skills/falsification-testing/scripts/hume-audit.sh --all --threshold 80` <br> `bash .agents/skills/falsification-testing/scripts/hume-audit.sh --core --dry-run` |
 | `scaffold-falsification-test.php` | Generates a Pest file with Popper/Hume/Socrates/Descartes placeholders, package-correct imports (`Mockery` for `core`, Testbench + `Queue::fake()` for `laravel`, `declare(strict_types=1)`, pint-friendly). | Pass 1 scaffold | `php .agents/skills/falsification-testing/scripts/scaffold-falsification-test.php core StepExecutorRetry "returns Retry when successCriteria false"` <br> `php .agents/skills/falsification-testing/scripts/scaffold-falsification-test.php laravel ConcurrentLock "only one worker acquires Redis lock" --dry-run` |
 | `delete-fix-check.sh` | Delete-the-fix check (FAKE-5). Stashes the fix, runs Pest filtered to the claim, verifies suite goes RED without fix and GREEN with fix. | Pass 1 highest-signal | `bash .agents/skills/falsification-testing/scripts/delete-fix-check.sh --filter "marks pending_retry"` <br> `bash .agents/skills/falsification-testing/scripts/delete-fix-check.sh --filter "step.dependson_no_cycle" --path packages/core` |
@@ -271,7 +278,7 @@ Adds Lakatos/Mayo severity, Goodman/Quine grue+property, Hegelian red-team fuzz,
 php .agents/skills/falsification-testing/scripts/scaffold-falsification-test.php core MyFeature "system will <behavior> when <condition>; false if <observable>"
 
 # 2. Boundaries + coverage hotspots
-php .agents/skills/falsification-testing/scripts/audit-boundaries.php packages/core/src/Runner/Execution/MyFeature.php
+php .agents/skills/falsification-testing/scripts/audit-boundaries.php packages/runner/src/Sync/MyFeature.php
 make coverage-hotspots && make coverage-query ARGS="--file Runner/Execution/MyFeature.php"
 
 # 3. Fake + severity

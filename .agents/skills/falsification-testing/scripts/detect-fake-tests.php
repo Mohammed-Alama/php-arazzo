@@ -21,10 +21,23 @@ $paths = array_values(array_filter($argvCopy, static fn (string $a): bool => !st
 
 if ($all || $paths === []) {
     if ($paths === [] && !$all) {
-        // default: scan both packages
-        $paths = ["{$root}/packages/core/tests", "{$root}/packages/laravel/tests"];
+        // default: scan every package's tests dir
+        foreach (glob("{$root}/packages/*/tests", GLOB_ONLYDIR) as $dir) {
+            $paths[] = $dir;
+        }
+        // also cover root-level script tests
+        if (is_dir("{$root}/tests/scripts")) {
+            $paths[] = "{$root}/tests/scripts";
+        }
+        sort($paths);
     } elseif ($all) {
-        $paths = ["{$root}/packages/core/tests", "{$root}/packages/laravel/tests"];
+        foreach (glob("{$root}/packages/*/tests", GLOB_ONLYDIR) as $dir) {
+            $paths[] = $dir;
+        }
+        if (is_dir("{$root}/tests/scripts")) {
+            $paths[] = "{$root}/tests/scripts";
+        }
+        sort($paths);
     }
 }
 
@@ -62,7 +75,7 @@ foreach ($files as $file) {
     if ($content === false) {
         continue;
     }
-    $rel = str_starts_with($file, $root . '/') ? substr($file, strlen($root) + 1) : $file;
+    $rel = str_starts_with($file, $root.'/') ? substr($file, strlen($root) + 1) : $file;
 
     // Count test definitions
     preg_match_all('/\b(it|test)\s*\(/', $content, $m);
@@ -155,13 +168,13 @@ foreach ($files as $file) {
 }
 
 if ($json) {
-    echo json_encode(['files' => count($files), 'tests' => $totalTests, 'violations' => $violations], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+    echo json_encode(['files' => count($files), 'tests' => $totalTests, 'violations' => $violations], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n";
 } else {
-    echo "Scanned " . count($files) . " files, {$totalTests} test definitions\n";
+    echo 'Scanned '.count($files)." files, {$totalTests} test definitions\n";
     if ($violations === []) {
         echo "No fake-test violations found.\n";
     } else {
-        echo count($violations) . " violation(s):\n";
+        echo count($violations)." violation(s):\n";
         $byFile = [];
         foreach ($violations as $v) {
             $byFile[$v['file']][] = $v;

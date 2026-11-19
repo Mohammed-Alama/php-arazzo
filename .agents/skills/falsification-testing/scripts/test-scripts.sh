@@ -77,8 +77,8 @@ echo
 echo "-- 4/6 audit-boundaries --"
 php "$SCRIPT_DIR/audit-boundaries.php" WorkflowEngine --json 2>&1 | grep -q '"boundaries"' && ok "audit WorkflowEngine --json" || fail "audit WorkflowEngine" "no boundaries"
 php "$SCRIPT_DIR/audit-boundaries.php" WorkflowEngine --json 2>&1 | grep -q 'maxSteps' && ok "audit WorkflowEngine has maxSteps" || fail "audit maxSteps" "missing"
-php "$SCRIPT_DIR/audit-boundaries.php" packages/core/src/Runner/Execution/StepExecutor.php --json 2>&1 | grep -q '"misses"' && ok "audit StepExecutor file" || fail "audit StepExecutor" "no misses key"
-php "$SCRIPT_DIR/audit-boundaries.php" packages/core/src/Validator/Validator.php 2>&1 | grep -q "Checklist" && ok "audit Validator text" || fail "audit Validator" "no Checklist"
+php "$SCRIPT_DIR/audit-boundaries.php" packages/runner/src/Sync/StepExecutor.php --json 2>&1 | grep -q '"misses"' && ok "audit StepExecutor file" || fail "audit StepExecutor" "no misses key"
+php "$SCRIPT_DIR/audit-boundaries.php" packages/document/src/Validator/Validator.php 2>&1 | grep -q "Checklist" && ok "audit Validator text" || fail "audit Validator" "no Checklist"
 
 # 5 — scaffold
 echo

@@ -12,8 +12,11 @@ $args = array_slice($argv, 1);
 $has = static fn (string $f): bool => in_array($f, $args, true);
 $get = static function (string $f) use ($args): ?string {
     $i = array_search($f, $args, true);
-    if ($i === false || !isset($args[$i+1])) return null;
-    $v = $args[$i+1];
+    if ($i === false || !isset($args[$i + 1])) {
+        return null;
+    }
+    $v = $args[$i + 1];
+
     return str_starts_with($v, '--') ? null : $v;
 };
 if ($has('--help') || $has('-h')) {
@@ -26,16 +29,17 @@ $file = $get('--file');
 $threshold = (float) ($get('--threshold') ?? '0.7');
 
 // 1. Fake detector
-$fakeCmd = 'php ' . escapeshellarg("{$root}/.agents/skills/falsification-testing/scripts/detect-fake-tests.php") . ' --json ';
-if ($file) $fakeCmd .= escapeshellarg($file);
-elseif ($filter) {
+$fakeCmd = 'php '.escapeshellarg("{$root}/.agents/skills/falsification-testing/scripts/detect-fake-tests.php").' --json ';
+if ($file) {
+    $fakeCmd .= escapeshellarg($file);
+} elseif ($filter) {
     // map filter to file heuristic: try to find file containing filter
     $fakeCmd .= '--all';
 } else {
     $fakeCmd .= '--all';
 }
-$fakeJson = shell_exec($fakeCmd . ' 2>&1');
-$fakeData = json_decode((string)$fakeJson, true);
+$fakeJson = shell_exec($fakeCmd.' 2>&1');
+$fakeData = json_decode((string) $fakeJson, true);
 $fakeViolations = 0;
 $fakePass = true;
 if (isset($fakeData['violations'])) {
@@ -53,21 +57,29 @@ if ($filter && $file === null) {
 }
 
 // 2. Hume MSI — dry-run to get MSI without running full mutate (fast)
-$humeCmd = 'bash ' . escapeshellarg("{$root}/.agents/skills/falsification-testing/scripts/hume-audit.sh") . ' --dry-run --core 2>&1';
+$humeCmd = 'bash '.escapeshellarg("{$root}/.agents/skills/falsification-testing/scripts/hume-audit.sh").' --dry-run --all 2>&1';
 $humeOut = shell_exec($humeCmd);
 $msi = null;
-if (preg_match('/MSI\s+(\d+(?:\.\d+)?)/i', (string)$humeOut, $m)) {
-    $msi = (float)$m[1];
-} elseif (preg_match('/(\d+(?:\.\d+)?)%.*threshold/i', (string)$humeOut, $m)) {
+if (preg_match('/MSI\s+(\d+(?:\.\d+)?)/i', (string) $humeOut, $m)) {
+    $msi = (float) $m[1];
+} elseif (preg_match('/(\d+(?:\.\d+)?)%.*threshold/i', (string) $humeOut, $m)) {
     $msi = 85.0; // dry-run default 80 pass, assume 85
 } else {
     $msi = 80.0; // assume 80 if dry-run
 }
-// Try to parse real coverage MSI from infection log if exists
-$infSummary = "{$root}/packages/core/infection-summary.log";
-if (file_exists($infSummary)) {
+// Try to parse real coverage MSI from infection log if exists (any package)
+$infSummary = null;
+foreach (glob("{$root}/packages/*/infection-summary.log") as $candidate) {
+    if (file_exists($candidate)) {
+        $infSummary = $candidate;
+        break;
+    }
+}
+if ($infSummary !== null) {
     $c = file_get_contents($infSummary);
-    if (preg_match('/MSI:\s*(\d+(?:\.\d+)?)/', (string)$c, $m)) $msi = (float)$m[1];
+    if (preg_match('/MSI:\s*(\d+(?:\.\d+)?)/', (string) $c, $m)) {
+        $msi = (float) $m[1];
+    }
 }
 
 // 3. Severity = weighted: fake 0.5 + MSI 0.5, but fake fail heavily penalizes
@@ -87,25 +99,29 @@ $result = [
     'filter' => $filter,
     'file' => $file,
     'fake' => ['pass' => $fakePass, 'violations' => $fakeViolations],
-    'hume' => ['msi' => $msi, 'score' => round($msiScore,3)],
+    'hume' => ['msi' => $msi, 'score' => round($msiScore, 3)],
     'severity' => $severity,
     'severity_label' => $severity >= 0.85 ? 'HIGH' : ($severity >= 0.7 ? 'MEDIUM' : 'LOW'),
     'threshold' => $threshold,
     'pass' => $severity >= $threshold,
     'delete_fix_hint' => $deleteHint,
-    'advice' => $severity >= $threshold ? 'corroborated (severe)' : 'not severe — add mutant-killing test, check delete-fix-check.sh --filter "' . ($filter ?? $file ?? '') . '"',
+    'advice' => $severity >= $threshold ? 'corroborated (severe)' : 'not severe — add mutant-killing test, check delete-fix-check.sh --filter "'.($filter ?? $file ?? '').'"',
 ];
 
 if ($json) {
-    echo json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+    echo json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n";
     exit($result['pass'] ? 0 : 1);
 }
 
-echo "Severity audit" . ($filter ? " --filter '{$filter}'" : ($file ? " --file '{$file}'" : " --all")) . "\n";
-echo "  Fake: " . ($fakePass ? "PASS" : "FAIL ({$fakeViolations} violations)") . " → score " . round($fakeScore,2) . "\n";
-echo "  Hume MSI: " . ($msi !== null ? "{$msi}%" : "n/a") . " → score " . round($msiScore,2) . "\n";
-echo "  Severity: {$severity} ({$result['severity_label']}) threshold {$threshold} → " . ($result['pass'] ? "PASS" : "FAIL") . "\n";
-if ($deleteHint) echo "  Delete-fix hint: {$deleteHint}\n";
+echo 'Severity audit'.($filter ? " --filter '{$filter}'" : ($file ? " --file '{$file}'" : ' --all'))."\n";
+echo '  Fake: '.($fakePass ? 'PASS' : "FAIL ({$fakeViolations} violations)").' → score '.round($fakeScore, 2)."\n";
+echo '  Hume MSI: '.($msi !== null ? "{$msi}%" : 'n/a').' → score '.round($msiScore, 2)."\n";
+echo "  Severity: {$severity} ({$result['severity_label']}) threshold {$threshold} → ".($result['pass'] ? 'PASS' : 'FAIL')."\n";
+if ($deleteHint) {
+    echo "  Delete-fix hint: {$deleteHint}\n";
+}
 echo "  Advice: {$result['advice']}\n";
-if (!$result['pass']) echo "  Tip: `make detect-fake` + `make hume-audit` + `bash delete-fix-check.sh --filter \"{$filter}\"`\n";
+if (!$result['pass']) {
+    echo "  Tip: `make detect-fake` + `make hume-audit` + `bash delete-fix-check.sh --filter \"{$filter}\"`\n";
+}
 exit($result['pass'] ? 0 : 1);
