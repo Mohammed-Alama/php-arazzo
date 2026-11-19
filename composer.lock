@@ -174,8 +174,8 @@
             }
         },
         {
-            "name": "alama/arazzo-document",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-document",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/document",
