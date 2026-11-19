@@ -13,14 +13,10 @@ Live measurements of the gates enforced by `.githooks/pre-commit` and
 Only metrics are rendered (never durations or timestamps) so this file stays
 byte-deterministic per measurement.
 
-| Gate | Status | Metrics | Command |
-|---|---|---|---|
-| Code Style (Pint) | **PASS** | files-reported: **0** | `vendor/bin/pint --test` |
-| Mess Detector (PHPMD) | **PASS** | violations: **0** | `vendor/bin/phpmd analyze packages/cli/src packages/contracts/src packages/core/src packages/document/src packages/engine/src packages/evaluation/src packages/events/src packages/expression/src packages/laravel/src packages/protocol-http/src packages/protocol-rpc/src packages/protocol-soap/src packages/runner/src packages/runtime/src packages/sources/src --format text --ruleset phpmd.xml --baseline-file phpmd.baseline.xml --threads 1` |
-| Static Analysis · core | **PASS** | errors: **0** | `composer run analyse-contracts && composer run analyse-expression && composer run analyse-evaluation && composer run analyse-document && composer run analyse-sources && composer run analyse-runtime && composer run analyse-engine && composer run analyse-events && composer run analyse-runner && composer run analyse-cli` |
-| Static Analysis · laravel | **PASS** | errors: **0** | `composer run analyse-laravel` |
-| Baseline Policy · correctness | **PASS** | violations: **0** | `php scripts/check-baselines.php --json` |
-| Tests · core | **PASS** | skipped: **3** · passed: **284** · assertions: **1545** | `vendor/bin/pest packages/core/tests --no-coverage` |
-| Tests · laravel | **PASS** | passed: **165** · assertions: **397** | `vendor/bin/pest packages/laravel/tests --no-coverage` |
+## No measurements recorded
 
-**7/7 gates passing.**
+`storage/quality-gates.json` does not exist yet. Run:
+
+    make quality-gates
+
+and commit the resulting snapshot to populate this scorecard.
