@@ -187,7 +187,7 @@ jobs:
         run: vendor/bin/phpdoc run
 
   test:
-    name: Test P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
+    name: Test P${{ matrix.php }} - ${{ matrix.stability }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     strategy:
@@ -195,11 +195,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         php: ['8.4']
-        laravel: ['13.*']
         stability: [prefer-stable]
-        include:
-          - laravel: 13.*
-            testbench: 11.*
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -222,10 +218,6 @@ jobs:
       - name: Install dependencies
         run: |
           composer update --no-progress --${{ matrix.stability }} --prefer-dist --no-interaction
-          cd packages/laravel
-          composer require "illuminate/contracts:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --no-progress --${{ matrix.stability }} --prefer-dist --no-interaction
-          cd ../..
       - name: Execute tests
         run: composer run test
       - name: Check conformance manifest drift
