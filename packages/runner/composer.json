@@ -10,8 +10,6 @@
         "alama/arazzo-expression": "@dev",
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-document": "@dev",
-        "alama/arazzo-events": "@dev",
-        "alama/arazzo-runtime": "@dev",
         "alama/arazzo-sources": "@dev",
         "alama/arazzo-engine": "@dev",
         "guzzlehttp/guzzle": "^7.9",
@@ -31,11 +29,15 @@
         "pestphp/pest-plugin-arch": "^5.0"
     },
     "autoload": {
-        "psr-4": {"Alama\\Arazzo\\Runner\\": "src/"}
+        "psr-4": {
+            "Alama\\Arazzo\\Runner\\": "src/",
+            "Alama\\Arazzo\\Events\\": "src/Events/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Alama\\Arazzo\\Tests\\": "tests/"
+            "Alama\\Arazzo\\Tests\\": "tests/",
+            "Alama\\Arazzo\\Tests\\Events\\": "tests/Events/"
         }
     },
     "config": {
