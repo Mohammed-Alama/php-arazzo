@@ -17,7 +17,7 @@ This skill operationalizes four philosophical moves (Popper, Hume, Socrates, Des
 
 ```
 packages/core/       — alama/arazzo-core, PSR-only engine (no Illuminate)
-  src/{Spec,Parser,Validator,Resolver,Runner,Expression,Generator,Support,...}
+  src/               — committed-empty (.gitkeep only); no production source → coverage N/A
   tests/{Parser,Validator,Resolver,Runner,Expression,Generator,Dto,Events,Feature,Conformance,...}
   infection.json, phpunit.xml (executionOrder=random, failOnWarning/Risky true)
   Pest.php → pest()->extend(TestCase::class)->in(__DIR__)  (Alama\Arazzo\Tests\TestCase extends PHPUnit\Framework\TestCase)
@@ -29,7 +29,7 @@ packages/laravel/    — alama/laravel-arazzo, Laravel bridge
   TestCase extends Orchestra\Testbench\TestCase, registers LaravelArazzoServiceProvider
 ```
 
-**Rule:** `core` must never `use Illuminate\...`. If your test needs `Illuminate`, the production code belongs in `laravel`. If the test needs PSR-18/PSR-16/PSR-3, it belongs in `core`.
+**Rule:** All production source lives in the non-`core` packages (document, expression, evaluation, sources, runtime, engine, events, runner, cli, laravel, protocol-*). `core` must never `use Illuminate\...`. If your test needs `Illuminate`, the production code belongs in `laravel`. If the test needs PSR-18/PSR-16/PSR-3, it belongs in `core`.
 
 ### Toolchain you must respect
 
@@ -242,14 +242,16 @@ All scripts live under `.agents/skills/falsification-testing/scripts/` and are s
 | `verify-falsification.sh` | Orchestrator: `detect-fake` → `pint --test` → `phpstan max` → `pest` (random) → optional `hume-audit` → conformance. Same as `make verify` plus falsification. | Final gate before PR | `bash .agents/skills/falsification-testing/scripts/verify-falsification.sh` <br> `bash .agents/skills/falsification-testing/scripts/verify-falsification.sh --quick` (skip mutate) <br> `bash .agents/skills/falsification-testing/scripts/verify-falsification.sh --with-mutate --threshold 80` |
 | `test-scripts.sh` | Self-test for all scripts (33 checks). Runs `bash -n`/`php -l` + fixture `fake vs real` + `audit` + `scaffold pint` + `hume dry`. | CI / after editing scripts | `bash .agents/skills/falsification-testing/scripts/test-scripts.sh` |
 
-### Coverage — Pest HTML (from coverage-insights)
+### Coverage — Pest HTML (pcov, root-level all-packages report)
 
-Reports live at `packages/{core,laravel}/coverage-report/index.html` (total 87.55% core 95.89% laravel) + `dashboard.html` + `.../File.php.html`. Generate via `phpdbg` (no pcov/xdebug): `make coverage`.
+Reports live at `coverage-report-all/index.html` (all packages, baseline 89.64% lines) and `packages/laravel/coverage-report/index.html` (laravel only, 96.1%) + `dashboard.html` + `.../File.php.html`. `packages/core/src` is committed-empty (no production source → N/A). Generate via CLI `php` + pcov (no phpdbg/xdebug needed): `make coverage`. Serve both in one command: `make coverage-serve` (`:8000` all-packages, `:8001` laravel) → `make coverage-serve-stop`.
+
+Coverage runs as a **pre-commit action** (`.githooks/pre-commit` step 2): it regenerates `coverage-report-all/`, writes `storage/coverage-summary.json`, and stages that summary if it changed — same pattern as `docs/generated`. Skip with `git commit --no-verify`.
 
 | Script | What it does | Command |
 |--------|--------------|---------|
-| `query-coverage.php` | Query coverage: `--overview`, `--file Runner/Execution/StepExecutor.php`, `--hotspots --limit 10`, `--uncovered --file WorkflowEngine.php`, `--dashboard`. Parses `index.html` total `2896/3308` + `dashboard.html` insufficient (`0% InputPart … 32% WorkflowEngine`) + per-file `69.57% 92 executable 28 uncovered [47,52…]`. | `php .agents/skills/falsification-testing/scripts/query-coverage.php --overview` <br> `php .agents/skills/falsification-testing/scripts/query-coverage.php --file Runner/Execution/StepExecutor.php --json | jq .file.uncovered` |
-| `generate-coverage.sh` | Regenerate reports via `phpdbg -qrr pest --coverage --coverage-html --coverage-clover`. Supports `--core/--laravel/--all --json --open`. | `bash .agents/skills/falsification-testing/scripts/generate-coverage.sh --all` <br> `bash .agents/skills/falsification-testing/scripts/generate-coverage.sh --core --json` |
+| `query-coverage.php` | Query coverage: `--overview`, `--file Runner/Execution/StepExecutor.php`, `--hotspots --limit 10`, `--uncovered --file WorkflowEngine.php`, `--dashboard`. Parses `coverage-report-all/index.html` total (covered/total lines) + `dashboard.html` insufficient list + per-file uncovered lines. | `php .agents/skills/falsification-testing/scripts/query-coverage.php --overview` <br> `php .agents/skills/falsification-testing/scripts/query-coverage.php --file Runner/Execution/StepExecutor.php --json \| jq .file.uncovered` |
+| `generate-coverage.sh` | Regenerate reports via root `vendor/bin/pest --coverage --coverage-html --coverage-clover` (pcov). `--all` writes `coverage-report-all/` + `packages/laravel/coverage-report/`; `--json` writes `storage/coverage-summary.json`; `--open` opens in browser. | `bash .agents/skills/falsification-testing/scripts/generate-coverage.sh --all` <br> `bash .agents/skills/falsification-testing/scripts/generate-coverage.sh --all --json` <br> `bash .agents/skills/falsification-testing/scripts/generate-coverage.sh --laravel --open` |
 
 ### V2 — Severe / Grue / Agon / Demon (from v2)
 

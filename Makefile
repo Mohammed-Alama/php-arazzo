@@ -1,4 +1,4 @@
-.PHONY: help test test-coverage test-mutate format analyse analyse-baseline phpmd phpmd-report phpmd-baseline pdepend phpdoc ci-all ci-test ci-phpstan ci-format hooks-install verify docs insights quality-gates detect-fake audit-boundaries hume-audit scaffold-test test-scripts verify-falsification falsify coverage coverage-core coverage-laravel coverage-query coverage-hotspots coverage-dashboard severity-audit property-audit socratic-fuzz demon-sim verify-falsification-v2 report report-json report-all
+.PHONY: help test test-coverage test-mutate format analyse analyse-baseline phpmd phpmd-report phpmd-baseline pdepend phpdoc ci-all ci-test ci-phpstan ci-format hooks-install verify docs insights quality-gates detect-fake audit-boundaries hume-audit scaffold-test test-scripts verify-falsification falsify coverage coverage-core coverage-laravel coverage-query coverage-hotspots coverage-dashboard coverage-serve coverage-serve-stop severity-audit property-audit socratic-fuzz demon-sim verify-falsification-v2 report report-json report-all
 
 # Every package with a src/ directory, in one place. The four phpmd targets and
 # the CI job all scan this set; tests/scripts/PhpmdGateWiringTest.php holds them
@@ -186,6 +186,28 @@ coverage-hotspots: ## Show lowest-coverage hotspots (ARGS="--limit 10 --json")
 
 coverage-dashboard: ## Show dashboard/insufficient coverage (ARGS="--json --package all")
 	@php .agents/skills/falsification-testing/scripts/query-coverage.php --dashboard $(ARGS)
+
+# Serve coverage HTML for all packages (one command). :8000 = all-packages root report,
+# :8001 = laravel per-package report. Run `make coverage-serve`, open the URLs, then
+# `make coverage-serve-stop` in another shell.
+coverage-serve: ## Serve coverage HTML for all packages (:8000 all, :8001 laravel)
+	@mkdir -p coverage-report-all packages/laravel/coverage-report 2>/dev/null || true
+	@php -S 127.0.0.1:8000 -t coverage-report-all > /tmp/arazzo-coverage-all.log 2>&1 & echo $$! > /tmp/arazzo-coverage-all.pid
+	@php -S 127.0.0.1:8001 -t packages/laravel/coverage-report > /tmp/arazzo-coverage-laravel.log 2>&1 & echo $$! > /tmp/arazzo-coverage-laravel.pid
+	@echo ""
+	@echo "  all packages:  http://127.0.0.1:8000  (89.64% baseline)"
+	@echo "  laravel only:  http://127.0.0.1:8001  (96.1%)"
+	@echo ""
+	@echo "  Generate first (if missing): make coverage"
+	@echo "  Stop:          make coverage-serve-stop"
+
+coverage-serve-stop: ## Stop the coverage servers started by make coverage-serve
+	@kill $$(cat /tmp/arazzo-coverage-all.pid 2>/dev/null) 2>/dev/null || true
+	@kill $$(cat /tmp/arazzo-coverage-laravel.pid 2>/dev/null) 2>/dev/null || true
+	@pkill -f "php -S 127.0.0.1:8000" 2>/dev/null || true
+	@pkill -f "php -S 127.0.0.1:8001" 2>/dev/null || true
+	@rm -f /tmp/arazzo-coverage-all.pid /tmp/arazzo-coverage-laravel.pid
+	@echo "coverage servers stopped"
 
 # Falsification V2 — severity/grue/agon/demon (see .agents/skills/falsification-testing-v2/SKILL.md)
 severity-audit: ## Lakatos severity (ARGS="--filter WorkflowEngine --json --threshold 0.7")
