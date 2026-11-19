@@ -50,6 +50,16 @@ final class ConformanceManifestBuilder
         'LoginAndRetrievePets' => 'operationPath `#/paths/~1pet~1findByStatus` omits the HTTP-method segment required to reach an Operation Object',
     ];
 
+    /**
+     * Documents that fail Tier 1 because the specification prose overrides the
+     * published example. These are deliberate rejections, not capability gaps.
+     */
+    private const PROSE_OVERRIDES = [
+        'pet-coupons' => 'Sets a Reusable Object value to the integers 1 and 10; Arazzo 1.0.1 §4.6.10.1 types value as a string.',
+    ];
+
+    private const PROSE_OVERRIDE_RESULT = 'expected-fail (prose override)';
+
     private const CORPUS_TITLE = 'OAI Arazzo examples';
 
     private const CORPUS_SOURCE_URL = 'https://github.com/OAI/Arazzo-Specification/tree/main/examples';
@@ -114,22 +124,29 @@ final class ConformanceManifestBuilder
     {
         $tier1 = OaiCorpusRunner::tier1($path);
         $subWorkflow = self::hasSubWorkflowSteps($path);
+        $proseOverride = self::PROSE_OVERRIDES[$name] ?? null;
 
         $row = [
             'name' => $name,
             'version' => str_starts_with($name, 'pet-asyncapi') ? '1.1.0' : '1.0.0',
-            'parseValidate' => $tier1->isValid() ? 'pass' : 'FAIL',
+            'parseValidate' => $tier1->isValid()
+                ? 'pass'
+                : ($proseOverride !== null ? self::PROSE_OVERRIDE_RESULT : 'FAIL'),
             'adapter' => '—',
             'execute' => 'skipped',
             'notes' => [],
         ];
 
-        if (!$tier1->isValid()) {
+        if (!$tier1->isValid() && $proseOverride === null) {
             foreach ($tier1->errors as $error) {
                 $row['notes'][] = '['.$error->code.'] '.$error->message;
             }
 
             return $row;
+        }
+
+        if ($proseOverride !== null && !$tier1->isValid()) {
+            $row['notes'][] = $proseOverride;
         }
 
         if (isset(self::MISSING_SOURCES[$name])) {
@@ -191,7 +208,7 @@ final class ConformanceManifestBuilder
                     fn (array $row): array => [
                         'document' => $row['name'],
                         'result' => $row['parseValidate'],
-                        'ok' => $row['parseValidate'] === 'pass',
+                        'ok' => in_array($row['parseValidate'], ['pass', self::PROSE_OVERRIDE_RESULT], true),
                     ],
                     $rows,
                 ),

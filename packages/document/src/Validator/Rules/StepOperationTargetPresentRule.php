@@ -19,20 +19,41 @@ final class StepOperationTargetPresentRule implements Rule
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
                 $target = $s->target;
-                $fields = [
-                    'operationId' => $target->operationId,
-                    'operationPath' => $target->operationPath,
+                $kinds = [];
+
+                // An async step selects its operation or channel through
+                // operationId/channelPath, so those are selectors *within* the
+                // async target rather than a separate HTTP target. action and
+                // channelPath together form one target kind (Arazzo 1.1 §5.8.5).
+                $isAsync = $target->action !== null || $target->channelPath !== null;
+
+                if ($isAsync) {
+                    $kinds[] = 'action/channelPath';
+                } else {
+                    if ($target->operationId !== null) {
+                        $kinds[] = 'operationId';
+                    }
+                    if ($target->operationPath !== null) {
+                        $kinds[] = 'operationPath';
+                    }
+                }
+
+                foreach ([
                     'workflowId' => $target->workflowId,
                     'operationName' => $target->operationName,
                     'rpcMethod' => $target->rpcMethod,
                     'interaction' => $target->interaction,
                     'graphqlOperation' => $target->graphqlOperation,
-                ];
-                $set = array_filter($fields, static fn ($v) => $v !== null);
-                if (count($set) !== 1) {
+                ] as $field => $value) {
+                    if ($value !== null) {
+                        $kinds[] = $field;
+                    }
+                }
+
+                if (count($kinds) !== 1) {
                     $errors->error(
                         $this->code(),
-                        "Step '{$s->stepId}' must set exactly one of operationId, operationPath, workflowId, operationName, rpcMethod, interaction, graphqlOperation (got ".count($set).').',
+                        "Step '{$s->stepId}' must set exactly one target: operationId/operationPath, action with operationId or channelPath, workflowId, operationName, rpcMethod, interaction, or graphqlOperation (got ".count($kinds).').',
                         "/workflows/{$i}/steps/{$j}",
                     );
                 }

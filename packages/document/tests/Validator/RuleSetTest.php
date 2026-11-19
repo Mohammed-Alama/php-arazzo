@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
+use Alama\Arazzo\Document\Validator\Rules\ReceiveStepSuccessCriteriaRule;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Expression\ExpressionEngine;
 
@@ -51,6 +52,18 @@ it('registers the receive missing-criteria rule', function (): void {
         RuleSet::default(new ExpressionEngine())->activeRules());
 
     expect($codes)->toContain('step.receive_missing_success_criteria');
+});
+
+it('warns rather than errors when a receive step omits successCriteria', function (): void {
+    $rules = RuleSet::default(new ExpressionEngine())->activeRules();
+
+    $receive = array_values(array_filter(
+        $rules,
+        static fn (Rule $rule): bool => $rule instanceof ReceiveStepSuccessCriteriaRule,
+    ));
+
+    expect($receive)->toHaveCount(1)
+        ->and($receive[0]->strict)->toBeFalse();
 });
 
 it('lets the receive missing-criteria rule be disabled', function (): void {

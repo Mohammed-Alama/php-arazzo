@@ -22,7 +22,7 @@ flowchart LR
         S_cli_Generator["cli:Generator<br/><small>141 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1453 LOC</small>"]:::supportingDomain
-        S_document_Validator["document:Validator<br/><small>4684 LOC</small>"]:::supportingDomain
+        S_document_Validator["document:Validator<br/><small>5055 LOC</small>"]:::supportingDomain
         S_sources_Resolver["sources:Resolver<br/><small>512 LOC</small>"]:::supportingDomain
         S_sources_Validator["sources:Validator<br/><small>325 LOC</small>"]:::supportingDomain
     end
@@ -48,7 +48,7 @@ flowchart LR
         S_engine_Data["engine:Data<br/><small>74 LOC</small>"]:::unknownDomain
         S_engine_Enum["engine:Enum<br/><small>17 LOC</small>"]:::unknownDomain
         S_engine_Exceptions["engine:Exceptions<br/><small>42 LOC</small>"]:::unknownDomain
-        S_engine_Execution["engine:Execution<br/><small>1000 LOC</small>"]:::unknownDomain
+        S_engine_Execution["engine:Execution<br/><small>1031 LOC</small>"]:::unknownDomain
         S_evaluation_Condition["evaluation:Condition<br/><small>1023 LOC</small>"]:::unknownDomain
         S_evaluation_Data["evaluation:Data<br/><small>86 LOC</small>"]:::unknownDomain
         S_evaluation_Enum["evaluation:Enum<br/><small>123 LOC</small>"]:::unknownDomain
@@ -84,9 +84,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,207 | 0 | 5% |
-| Supporting | 7 | 8,313 | 0 | 36% |
+| Supporting | 7 | 8,684 | 0 | 37% |
 | Generic subdomain | 13 | 2,237 | 1,407 | 16% |
-| Unclassified | 32 | 9,736 | 0 | 43% |
+| Unclassified | 32 | 9,767 | 0 | 42% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

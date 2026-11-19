@@ -22,7 +22,7 @@ _No catalog found (LedgerAppendingListener not found)._
 
 | Class | Level(s) | Calls |
 |---|---|---:|
-| `OfficialSchemaRule` <small>core</small> | `error` | 2 |
+| `OfficialSchemaRule` <small>core</small> | `error` | 4 |
 | `ActionGotoTargetResolvesRule` <small>core</small> | `error` | 2 |
 | `ActionOutputTargetExclusivityRule` <small>core</small> | `error` | 2 |
 | `ActionRetryLimitsRule` <small>core</small> | `error` | 2 |
@@ -82,7 +82,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `WorkflowDependencyCycleWalker` <small>core</small> | `error` | 1 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 
-95 logging calls total. PSR-14 events are dispatched independently (see events.md).
+97 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 

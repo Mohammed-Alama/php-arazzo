@@ -136,9 +136,23 @@ test('parse-and-validate is supported across the whole corpus', function () use 
 
         expect($evidence['ok'])->toBeTrue("'{$evidence['document']}' did not pass Tier 1");
 
-        expect($evidence['result'])->toBe('pass');
+        $expected = $evidence['document'] === 'pet-coupons'
+            ? 'expected-fail (prose override)'
+            : 'pass';
+
+        expect($evidence['result'])->toBe($expected);
 
     }
+
+});
+
+test('pet-coupons records the deliberate prose-override rejection', function () use ($model) {
+
+    $row = array_column($model['documents'], null, 'name')['pet-coupons'];
+
+    expect($row['parseValidate'])->toBe('expected-fail (prose override)');
+
+    expect(implode(' ', $row['notes']))->toContain('Reusable Object value');
 
 });
 

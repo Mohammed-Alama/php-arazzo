@@ -16,6 +16,33 @@ use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepDependsOnNoCycleRule;
 
+it('accepts a cross-document dependsOn without resolving it offline', function (): void {
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['$sourceDescriptions.other.remoteWorkflow.steps.remoteStep']), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.1.0', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toBeEmpty();
+});
+
+it('rejects a malformed cross-document dependsOn', function (): void {
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['$sourceDescriptions.other.remoteWorkflow']), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.1.0', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.dependson_unresolved_reference');
+});
+
 it('reports an error when a workflow step contains a dependsOn cycle', function (): void {
     $workflow = new Workflow('w1', null, null, null, [], [
         new Step('A', null, new StepTarget(), new StepFlow(dependsOn: ['B']), new StepIo()),

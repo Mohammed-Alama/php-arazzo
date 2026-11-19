@@ -106,7 +106,7 @@ final readonly class RuleSet
         $selectorRegistry ??= $engine->selectorPlugins();
 
         return new self([
-            new OfficialSchemaRule(),
+            new OfficialSchemaRule($engine),
             new ActionGotoTargetResolvesRule(),
             new ActionTargetExclusivityRule(),
             new ActionOutputTargetExclusivityRule($engine),
@@ -155,7 +155,10 @@ final readonly class RuleSet
             new StepParametersHaveNameRule(),
             new StepRequestBodyReplacementsTargetRule(),
             new StepSuccessCriteriaConditionRule(),
-            new ReceiveStepSuccessCriteriaRule($strict),
+            // Arazzo 1.1 §5.8.5.3 says authors SHOULD define successCriteria
+            // for receive steps, but MAY omit them when the channel's single
+            // message type unambiguously signals success. Warn; do not reject.
+            new ReceiveStepSuccessCriteriaRule(false),
             new StepUniqueIdRule(),
             new SubWorkflowInvokeTargetResolvesRule(),
             new SuccessCriteriaVersionSupportedRule($selectorRegistry->supportedVersions(ExpressionType::XPath)),
