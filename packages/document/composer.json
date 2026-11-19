@@ -6,8 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "alama/arazzo-contracts": "@dev",
-        "alama/arazzo-expression": "@dev",
+        "php-arazzo/arazzo-contracts": "@dev",
+        "php-arazzo/arazzo-expression": "@dev",
         "justinrainbow/json-schema": "^6.0",
         "symfony/yaml": "^7.0"
     },

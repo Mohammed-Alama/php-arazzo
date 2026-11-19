@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "alama/arazzo-contracts": "@dev",
+        "php-arazzo/arazzo-contracts": "@dev",
         "open-telemetry/api": "^1.1",
         "psr/log": "^3.0"
     },

@@ -36,20 +36,11 @@
         <testsuite name="Arazzo Evaluation Test Suite">
             <directory>packages/evaluation/tests</directory>
         </testsuite>
-        <testsuite name="Arazzo Runtime Test Suite">
-            <directory>packages/runtime/tests</directory>
-        </testsuite>
-        <testsuite name="Arazzo Events Test Suite">
-            <directory>packages/events/tests</directory>
-        </testsuite>
         <testsuite name="Arazzo Engine Test Suite">
             <directory>packages/engine/tests</directory>
         </testsuite>
         <testsuite name="Arazzo Core Test Suite">
             <directory>packages/core/tests</directory>
-        </testsuite>
-        <testsuite name="Arazzo Laravel Test Suite">
-            <directory>packages/laravel/tests</directory>
         </testsuite>
         <testsuite name="Arazzo Tools Test Suite">
             <directory>tools/issue-intake/tests</directory>
@@ -65,13 +56,10 @@
             <directory suffix=".php">packages/evaluation/src</directory>
             <directory suffix=".php">packages/document/src</directory>
             <directory suffix=".php">packages/sources/src</directory>
-            <directory suffix=".php">packages/runtime/src</directory>
-            <directory suffix=".php">packages/events/src</directory>
             <directory suffix=".php">packages/engine/src</directory>
             <directory suffix=".php">packages/runner/src</directory>
             <directory suffix=".php">packages/cli/src</directory>
             <directory suffix=".php">packages/core/src</directory>
-            <directory suffix=".php">packages/laravel/src</directory>
             <directory suffix=".php">tools/issue-intake/src</directory>
         </include>
     </source>
