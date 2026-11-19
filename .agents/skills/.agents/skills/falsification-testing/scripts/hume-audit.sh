@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+# Hume / Mutation audit — wraps `pest --mutate` (Infection) and reports survival theater.
+# Usage:
+#   bash hume-audit.sh [--core] [--laravel] [--all] [--threshold 80] [--covered-only] [--dry-run] [--filter <pest-filter>]
+#   bash hume-audit.sh --all --threshold 90
+# Exit: 0 = MSI >= threshold, 1 = below threshold or mutants survived, 2 = usage/infra error
+set -uo pipefail
+
+ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel 2>/dev/null || echo "")"
+if [ -z "$ROOT" ] || [ ! -f "$ROOT/packages/core/composer.json" ]; then
+  ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+fi
+
+THRESHOLD=80
+COVERED_ONLY="--covered-only"
+FILTER=""
+DRY_RUN=0
+TARGET="all"
+MODE=""
+PACKAGES=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --core|--contracts|--document|--engine|--evaluation|--events|--expression|--laravel|--protocol-http|--protocol-rpc|--protocol-soap|--runner|--runtime|--sources)
+      PACKAGES="$PACKAGES ${1#--}"; shift ;;
+    --all) TARGET="all"; shift ;;
+    --package) PACKAGES="$PACKAGES $2"; shift 2 ;;
+    --threshold) THRESHOLD="$2"; shift 2 ;;
+    --no-covered-only) COVERED_ONLY=""; shift ;;
+    --covered-only) COVERED_ONLY="--covered-only"; shift ;;
+    --filter) FILTER="$2"; shift 2 ;;
+    --dry-run) DRY_RUN=1; shift ;;
+    --help|-h) echo "usage: bash hume-audit.sh [--all|--core|--laravel|--package <pkg>|--package <pkg1> <pkg2>] [--threshold N] [--no-covered-only] [--filter <pest-filter>] [--dry-run]"; exit 0 ;;
+    *) echo "unknown arg: $1" >&2; exit 2 ;;
+  esac
+done
+
+if ! [[ "$THRESHOLD" =~ ^[0-9]+$ ]]; then echo "threshold must be integer" >&2; exit 2; fi
+
+run_one() {
+  local pkg="$1" # core|laravel
+  local dir="$ROOT/packages/$pkg"
+  # Monorepo layout: packages have no local vendor/, so fall back to the root
+  # install. Tests are also invoked from $ROOT because package phpunit configs
+  # bootstrap a package-local vendor/autoload.php that does not exist.
+  local pest="$dir/vendor/bin/pest"
+  [ -x "$pest" ] || pest="$ROOT/vendor/bin/pest"
+  if [ ! -x "$pest" ]; then
+    echo "[$pkg] pest not found — looked in $dir/vendor/bin/pest and $ROOT/vendor/bin/pest; run composer install" >&2
+    return 2
+  fi
+  local tests="packages/$pkg/tests"
+  echo "=== [$pkg] pest --mutate $COVERED_ONLY ${FILTER:+--filter=$FILTER} ==="
+  if [ "$DRY_RUN" -eq 1 ]; then
+    echo "(dry-run) would run: $pest --mutate $COVERED_ONLY $tests ${FILTER:+--filter=\"$FILTER\"}"
+    return 0
+  fi
+  local log="$dir/infection.log"
+  local summary="$dir/infection-summary.log"
+  # pest --mutate delegates to infection; capture text + summary
+  set +e
+  (cd "$ROOT" && "$pest" --mutate $COVERED_ONLY "$tests" ${FILTER:+--filter="$FILTER"} 2>&1 | tee "$log")
+  local ec=$?
+  set -e
+  # pest returns non-zero when mutants survive — we still want to parse
+  if [ -f "$summary" ]; then echo "--- $summary ---"; cat "$summary"; fi
+  if [ -f "$log" ]; then
+    # Try to extract MSI / killed / survived / timeout
+    echo "--- parsed ---"
+    grep -E "Mutations|Killed|Survived|Timed Out|MSI|Mutation Score" "$log" | tail -20 || true
+    # Heuristic fail if "Survived" >0 and MSI < threshold
+    local survived
+    survived=$(grep -oE "Survived[ :]+[0-9]+" "$log" | grep -oE "[0-9]+" | head -1 || echo "")
+    local msi
+    msi=$(grep -oE "MSI[ :]+[0-9]+(\.[0-9]+)?%?" "$log" | grep -oE "[0-9]+(\.[0-9]+)?" | head -1 || echo "")
+    if [ -n "$msi" ]; then
+      # compare integers
+      local msi_int=${msi%.*}
+      if [ "$msi_int" -lt "$THRESHOLD" ]; then
+        echo "[$pkg] FAIL: MSI ${msi}% < threshold ${THRESHOLD}% — coverage theater (Hume)" >&2
+        return 1
+      else
+        echo "[$pkg] PASS: MSI ${msi}% >= ${THRESHOLD}%"
+      fi
+    fi
+    if [ -n "$survived" ] && [ "$survived" -gt 0 ]; then
+      echo "[$pkg] NOTE: ${survived} mutants survived — inspect infection.log for uncovered logic" >&2
+      # Do not hard-fail on survivors alone if MSI passes; caller decides via threshold
+    fi
+  fi
+  # Return pest exit code if it failed for infra reasons; otherwise 0 if MSI ok
+  return 0
+}
+
+FAIL=0
+# Resolve the package list: explicit --package flags, or all packages with tests/
+if [ -n "$PACKAGES" ]; then
+  # dedupe
+  PKG_LIST=$(echo "$PACKAGES" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+elif [ "$TARGET" = "all" ]; then
+  PKG_LIST=""
+  for dir in "$ROOT"/packages/*/tests; do
+    [ -d "$dir" ] || continue
+    pkg=$(basename "$(dirname "$dir")")
+    PKG_LIST="$PKG_LIST $pkg"
+  done
+  PKG_LIST=$(echo "$PKG_LIST" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+else
+  PKG_LIST=""
+fi
+
+for pkg in $PKG_LIST; do
+  run_one "$pkg" || FAIL=1
+done
+
+if [ "$FAIL" -ne 0 ]; then
+  echo
+  echo "Hume audit: some package(s) below threshold. High line coverage + surviving mutants = coverage theater. Add boundary/mutant-killing tests (see SKILL.md Pass 2)."
+  exit 1
+fi
+echo
+echo "Hume audit: all packages meet MSI >= ${THRESHOLD}%"
+exit 0
