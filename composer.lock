@@ -62,8 +62,8 @@
             }
         },
         {
-            "name": "alama/arazzo-contracts",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-contracts",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/contracts",

@@ -1,7 +1,8 @@
 {
-    "name": "alama/arazzo-contracts",
+    "name": "php-arazzo/arazzo-contracts",
     "description": "Arazzo domain model, shared contracts and state DTOs.",
     "type": "library",
+    "version": "1.0.0-alpha.1",
     "license": "MIT",
     "autoload": {
         "psr-4": {
