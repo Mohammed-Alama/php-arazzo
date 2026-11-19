@@ -59,7 +59,7 @@ workflows:
         parameters:
           - name: petId
             in: path
-            value: $steps.getPetsByStatus.outputs.availablePets[0].id
+            value: $steps.getPetsByStatus.response.body#/0/id
         successCriteria:
           - condition: $statusCode == 200
         outputs:

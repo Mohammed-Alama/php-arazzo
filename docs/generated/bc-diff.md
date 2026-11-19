@@ -10,4 +10,7 @@ compatibility.
 
 Override the comparison tag with `ARAZZO_BC_TAG=<tag>`; default is the latest
 tag (or the second-latest when HEAD sits exactly on a tag).
-_No comparison tag available (no tags exist yet). Tag a release to enable this report._
+
+Comparing `arazzo-core/1.0.0-alpha.1` → working tree.
+
+**No breaking changes.**
