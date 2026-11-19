@@ -1,5 +1,5 @@
 {
-    "name": "alama/arazzo-protocol-http",
+    "name": "php-arazzo/arazzo-protocol-http",
     "description": "HTTP/OpenAPI + AsyncAPI vertical slice for alama/arazzo-core: normalizers, operation executors, transport, response validation. Reference protocol package.",
     "keywords": [
         "alama",
@@ -10,6 +10,7 @@
         "protocol"
     ],
     "license": "MIT",
+    "version": "1.0.0-alpha.1",
     "repositories": [
         {
             "type": "path",

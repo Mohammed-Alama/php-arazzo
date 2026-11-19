@@ -378,8 +378,8 @@
             }
         },
         {
-            "name": "alama/arazzo-protocol-http",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-protocol-http",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/protocol-http",
