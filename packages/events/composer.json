@@ -1,7 +1,8 @@
 {
-    "name": "alama/arazzo-events",
+    "name": "php-arazzo/arazzo-events",
     "description": "Arazzo event DTOs and listener interfaces",
     "type": "library",
+    "version": "1.0.0-alpha.1",
     "license": "MIT",
     "require": {
         "php": "^8.4",

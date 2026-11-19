@@ -298,8 +298,8 @@
             }
         },
         {
-            "name": "alama/arazzo-events",
-            "version": "dev-main",
+            "name": "php-arazzo/arazzo-events",
+            "version": "1.0.0-alpha.1",
             "dist": {
                 "type": "path",
                 "url": "packages/events",
