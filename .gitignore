@@ -43,6 +43,9 @@ public/ST_local_api.json
 /docs_ignored/
 packages/laravel/coverage-report/
 packages/core/coverage-report/
+coverage-report-all
+coverage.xml-all
+packages/*/coverage.xml
 # Keep ecosystem feed (daily poll) + committed quality-gate artifacts,
 # but ignore other local storage artifacts
 storage/**
@@ -50,6 +53,7 @@ storage/**
 !storage/ecosystem-feed/**
 !storage/quality-gates.json
 !storage/quality-history.jsonl
+!storage/coverage-summary.json
 
 # Pest mutation testing temp files
 /packages/core/_*.json
