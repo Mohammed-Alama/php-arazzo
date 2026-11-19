@@ -21,7 +21,7 @@ targets. Regenerated before every commit.
 | `contracts:State` | 3 | 907 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1441 | 7 | 2 | 0.22 |  |
-| `document:Validator` | 79 | 4976 | 6 | 7 | 0.54 |  |
+| `document:Validator` | 80 | 5052 | 6 | 7 | 0.54 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
@@ -73,21 +73,21 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 324 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 335 | 2 | 10 | 0.83 |  |
 
-Total cross-module edges: **1147**
+Total cross-module edges: **1151**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `document:Validator` → `contracts:Spec` | 132 |
+| `document:Validator` → `contracts:Spec` | 134 |
 | `document:Parser` → `contracts:Spec` | 38 |
 | `(evaluation root)` → `contracts:Spec` | 28 |
 | `runner:Sync` → `contracts:Spec` | 25 |
 | `runner:Async` → `contracts:Spec` | 23 |
 | `contracts:Interfaces` → `contracts:Spec` | 22 |
 | `(expression root)` → `expression:Ast` | 20 |
+| `document:Validator` → `expression:Interfaces` | 15 |
 | `(runner root)` → `contracts:Interfaces` | 14 |
-| `document:Validator` → `expression:Interfaces` | 14 |
 | `(document root)` → `contracts:Spec` | 13 |
 | `engine:Execution` → `contracts:Spec` | 13 |
 | `sources:Normalizer` → `contracts:Spec` | 13 |

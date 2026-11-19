@@ -158,6 +158,8 @@ flowchart LR
     C_document_document_Validator_GraphQlStepRule -.->|implements| I_Rule
     C_document_document_Validator_InteractionStepRule["InteractionStepRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_InteractionStepRule -.->|implements| I_Rule
+    C_document_document_Validator_MessageRefRequiresReceiveRule["MessageRefRequiresReceiveRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_MessageRefRequiresReceiveRule -.->|implements| I_Rule
     C_document_document_Validator_ParameterQuerystringOperationShapeRule["ParameterQuerystringOperationShapeRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ParameterQuerystringOperationShapeRule -.->|implements| I_Rule
     C_document_document_Validator_ReceiveStepSuccessCriteriaRule["ReceiveStepSuccessCriteriaRule<br/><small>document:Validator</small>"]:::implCore

@@ -43,12 +43,12 @@ contracts-State,contracts-Spec,3
 document-Parser,contracts-Spec,38
 document-Parser,contracts-Support,2
 document-Validator,contracts-Dependency,1
-document-Validator,contracts-Spec,132
+document-Validator,contracts-Spec,134
 document-Validator,contracts-Support,2
 document-Validator,expression-Data,2
-document-Validator,expression-Enum,10
+document-Validator,expression-Enum,11
 document-Validator,expression-Exceptions,2
-document-Validator,expression-Interfaces,14
+document-Validator,expression-Interfaces,15
 document-root,contracts-Spec,13
 document-root,document-Parser,4
 document-root,document-Validator,4

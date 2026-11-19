@@ -29,6 +29,7 @@ use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedWorkflowRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExtensionsXPrefixRule;
 use Alama\Arazzo\Document\Validator\Rules\GraphQlStepRule;
 use Alama\Arazzo\Document\Validator\Rules\InteractionStepRule;
+use Alama\Arazzo\Document\Validator\Rules\MessageRefRequiresReceiveRule;
 use Alama\Arazzo\Document\Validator\Rules\ParameterQuerystringOperationShapeRule;
 use Alama\Arazzo\Document\Validator\Rules\ReceiveStepSuccessCriteriaRule;
 use Alama\Arazzo\Document\Validator\Rules\RpcStepRule;
@@ -159,6 +160,7 @@ final readonly class RuleSet
             // for receive steps, but MAY omit them when the channel's single
             // message type unambiguously signals success. Warn; do not reject.
             new ReceiveStepSuccessCriteriaRule(false),
+            new MessageRefRequiresReceiveRule($engine),
             new StepUniqueIdRule(),
             new SubWorkflowInvokeTargetResolvesRule(),
             new SuccessCriteriaVersionSupportedRule($selectorRegistry->supportedVersions(ExpressionType::XPath)),

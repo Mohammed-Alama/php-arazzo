@@ -9,7 +9,7 @@ every commit.
 
 ```mermaid
 flowchart TD
-    ROOT["Validator rules (61)"]
+    ROOT["Validator rules (62)"]
     G_Actions["Actions — 6"]
     ROOT --> G_Actions
     R_ActionGotoTargetResolvesRule["ActionGotoTargetResolves"]
@@ -60,12 +60,14 @@ flowchart TD
     G_Expressions --> R_ExpressionUnresolvedStepRefRule
     R_ExpressionUnresolvedWorkflowRefRule["ExpressionUnresolvedWorkflowRef"]
     G_Expressions --> R_ExpressionUnresolvedWorkflowRefRule
-    G_General["General — 7"]
+    G_General["General — 8"]
     ROOT --> G_General
     R_GraphQlStepRule["GraphQlStep"]
     G_General --> R_GraphQlStepRule
     R_InteractionStepRule["InteractionStep"]
     G_General --> R_InteractionStepRule
+    R_MessageRefRequiresReceiveRule["MessageRefRequiresReceive"]
+    G_General --> R_MessageRefRequiresReceiveRule
     R_ReceiveStepSuccessCriteriaRule["ReceiveStepSuccessCriteria"]
     G_General --> R_ReceiveStepSuccessCriteriaRule
     R_RpcStepRule["RpcStep"]
@@ -165,7 +167,7 @@ flowchart TD
 | **Components** | `ComponentsUniqueNamesRule` |
 | **Document-level** | `DocUnknownFieldRule`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule`, `DocumentSourceDescriptionsPresentRule` |
 | **Expressions** | `ExpressionContextMisuseRule`, `ExpressionJsonPointerSyntaxRule`, `ExpressionSyntaxRule`, `ExpressionUnresolvedComponentRefRule`, `ExpressionUnresolvedInputRefRule`, `ExpressionUnresolvedSourceRefRule`, `ExpressionUnresolvedStepRefRule`, `ExpressionUnresolvedWorkflowRefRule` |
-| **General** | `GraphQlStepRule`, `InteractionStepRule`, `ReceiveStepSuccessCriteriaRule`, `RpcStepRule`, `SubWorkflowInvokeTargetResolvesRule`, `SuccessCriteriaVersionSupportedRule`, `WsdlStepRule` |
+| **General** | `GraphQlStepRule`, `InteractionStepRule`, `MessageRefRequiresReceiveRule`, `ReceiveStepSuccessCriteriaRule`, `RpcStepRule`, `SubWorkflowInvokeTargetResolvesRule`, `SuccessCriteriaVersionSupportedRule`, `WsdlStepRule` |
 | **Parameters** | `ParameterQuerystringOperationShapeRule` |
 | **Selectors** | `SelectorTypeSupportedRule` |
 | **Sources** | `SelfUriSyntaxRule`, `SourceTypeMatchesRule`, `SourceUniqueNameRule`, `SourceUrlSyntaxRule` |
