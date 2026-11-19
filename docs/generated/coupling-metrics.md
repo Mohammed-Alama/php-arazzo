@@ -21,12 +21,12 @@ targets. Regenerated before every commit.
 | `contracts:State` | 3 | 907 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1441 | 7 | 2 | 0.22 |  |
-| `document:Validator` | 77 | 4607 | 6 | 7 | 0.54 |  |
+| `document:Validator` | 79 | 4976 | 6 | 7 | 0.54 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
 | `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
-| `engine:Execution` | 8 | 992 | 2 | 4 | 0.67 |  |
+| `engine:Execution` | 8 | 1023 | 2 | 4 | 0.67 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 17 | 1006 | 1 | 8 | 0.89 |  |
 | `evaluation:Data` | 2 | 84 | 3 | 2 | 0.40 |  |
@@ -73,7 +73,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 324 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 335 | 2 | 10 | 0.83 |  |
 
-Total cross-module edges: **1146**
+Total cross-module edges: **1147**
 
 ## Most entangled module pairs
 
@@ -87,7 +87,7 @@ Total cross-module edges: **1146**
 | `contracts:Interfaces` → `contracts:Spec` | 22 |
 | `(expression root)` → `expression:Ast` | 20 |
 | `(runner root)` → `contracts:Interfaces` | 14 |
+| `document:Validator` → `expression:Interfaces` | 14 |
 | `(document root)` → `contracts:Spec` | 13 |
-| `document:Validator` → `expression:Interfaces` | 13 |
 | `engine:Execution` → `contracts:Spec` | 13 |
 | `sources:Normalizer` → `contracts:Spec` | 13 |

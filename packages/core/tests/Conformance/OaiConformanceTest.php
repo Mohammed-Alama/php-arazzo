@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Document\Validator\Data\Error;
 use Alama\Arazzo\Tests\Conformance\OaiCorpusRunner;
 use Alama\Arazzo\Tests\Conformance\OaiFixtureRunner;
 use Alama\Arazzo\Tests\Conformance\OaiQueueFixtureRunner;
@@ -27,6 +28,15 @@ const OAI_UPSTREAM_DEFECTS = [
     'LoginAndRetrievePets' => 'operationPath pointer "#/paths/~1pet~1findByStatus" omits the HTTP method segment required to reach an Operation Object',
 ];
 
+/**
+ * Examples the specification prose rejects even though the published schema
+ * accepts them. Rejection is the intended outcome, so assert it explicitly
+ * rather than skipping the example.
+ */
+const OAI_PROSE_OVERRIDES = [
+    'pet-coupons' => 'Sets a Reusable Object value to the integers 1 and 10; Arazzo 1.0.1 §4.6.10.1 types value as a string.',
+];
+
 function oaiHasSubWorkflowSteps(string $path): bool
 {
     $decoded = (new SymfonyYamlDecoder())->decode((string) file_get_contents($path));
@@ -47,6 +57,19 @@ function oaiHasSubWorkflowSteps(string $path): bool
  */
 it('parses and validates official OAI example', function (string $name, string $path) {
     $result = OaiCorpusRunner::tier1($path);
+
+    if (array_key_exists($name, OAI_PROSE_OVERRIDES)) {
+        expect($result->isValid())->toBeFalse(OAI_PROSE_OVERRIDES[$name]);
+
+        $messages = implode(' ', array_map(
+            static fn (Error $error): string => $error->message,
+            $result->errors,
+        ));
+
+        expect($messages)->toContain('Reusable Object value MUST be a string');
+
+        return;
+    }
 
     expect($result->isValid())->toBeTrue(
         "Official example '{$name}' should be valid, errors: ".json_encode($result->errors),

@@ -45,7 +45,7 @@
                 },
                 {
                     "document": "pet-coupons",
-                    "result": "pass",
+                    "result": "expected-fail (prose override)",
                     "ok": true
                 }
             ]
@@ -170,10 +170,12 @@
         {
             "name": "pet-coupons",
             "version": "1.0.0",
-            "parseValidate": "pass",
+            "parseValidate": "expected-fail (prose override)",
             "adapter": "queued (sub-workflow)",
             "execute": "succeeded",
-            "notes": []
+            "notes": [
+                "Sets a Reusable Object value to the integers 1 and 10; Arazzo 1.0.1 §4.6.10.1 types value as a string."
+            ]
         }
     ]
 }

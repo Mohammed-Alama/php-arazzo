@@ -18,6 +18,12 @@ final class StepDependsOnNoCycleRule implements Rule
 {
     private const string CROSS_WORKFLOW_PATTERN = '/^\$workflows\.(?<workflowId>.+)\.steps\.(?<stepId>.+)$/';
 
+    /**
+     * Arazzo 1.1 §5.8.5.1: a step in a separate Arazzo document is referenced
+     * as $sourceDescriptions.<name>.<workflowId>.steps.<stepId>.
+     */
+    private const string CROSS_DOCUMENT_PATTERN = '/^\$sourceDescriptions\.[^.]+\.[^.]+\.steps\.[^.]+$/';
+
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         $workflowsById = [];
@@ -91,6 +97,17 @@ final class StepDependsOnNoCycleRule implements Rule
                 $node = "{$workflow->workflowId}::{$step->stepId}";
 
                 foreach ($step->flow->dependsOn as $ref) {
+                    // Cross-document references point at another Arazzo
+                    // description, which cannot be resolved offline. Accept a
+                    // well-formed reference; malformed ones stay unresolved.
+                    if (str_starts_with($ref, '$sourceDescriptions.')) {
+                        if (preg_match(self::CROSS_DOCUMENT_PATTERN, $ref) !== 1) {
+                            $unresolved[$node][] = $ref;
+                        }
+
+                        continue;
+                    }
+
                     $target = $this->resolveTarget($ref, $workflow->workflowId, $workflowsById);
                     if ($target === null || !isset($adjacency[$target])) {
                         $unresolved[$node][] = $ref;
