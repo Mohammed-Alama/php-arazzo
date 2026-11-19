@@ -16,7 +16,7 @@
 | 1 | Idea → Spec | `grill-with-docs`, `to-spec`, `spec-driven-development` | Spec (`docs/superpowers/specs/...`) | Stage 2 |
 | 2 | Spec → Tickets | `to-tickets`, `planning-and-task-breakdown` | Tickets (issues via `file-issue`) | Stage 3 |
 | 3 | Design Review (Architecture) | `balanced-coupling`, `improve-codebase-architecture`, `codebase-design`, `domain-modeling` | Architecture decision record + design sign-off | Stage 4 |
-| 4 | Ticket → Code | `implement`, `tdd`, `incremental-implementation` | Code + tests on a branch | Stage 5 |
+| 4 | Ticket → Code | `implement`, `tdd`, `incremental-implementation`, `falsification-testing` | Code + tests on a branch | Stage 5 |
 | 5 | Code → Review | `code-review`, `code-review-and-quality` | Review verdict | Stage 6 |
 | 6 | Review → PR | `pr-prep`, `git-workflow-and-versioning` | Pull request | Stage 7 |
 | 7 | PR → Release | `release`, `shipping-and-launch` | Tagged release | — |
@@ -235,22 +235,26 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 **Goal:** Implement a ticket test-first, in thin vertical slices.
 
-**Skill(s):** `implement` (drives `tdd` internally, closes with `code-review`) · `tdd` · `incremental-implementation`.
+**Skill(s):** `implement` (drives `tdd` internally, closes with `code-review`) · `tdd` · `incremental-implementation` · `falsification-testing`.
 
 **Inputs:** a `ready-for-agent` issue with approved design review (Stage 3 complete).
 
 **Procedure:**
 1. Read the issue: `gh issue view <n> --comments`. Confirm the design review output (ADR or comment) is linked.
 2. Run `implement` (it drives `tdd`: red → green → refactor, one slice at a time).
-3. Use `incremental-implementation` to land changes in thin, verifiable slices behind flags where risky.
-4. Keep `packages/core` free of `Illuminate\*`; Laravel code goes in `packages/laravel`.
-5. Run `make verify` (Pint + PHPStan max + Pest random-order) before declaring done.
+3. For each test, scaffold with `falsification-testing` (`scaffold-falsification-test.php`) starting from a falsifiable claim: "The system will `<behavior>` when `<condition>`. False if `<observable>` occurs."
+4. For each source file under test, run `audit-boundaries.php` and add missing boundary tests: empty/null, one, max/ceiling (`maxSteps`, `maxWorkflowDepth`, `retryLimit` vs `retry_ceiling`), exactly-equal (`stepsSpent == maxSteps`), discontinuity (OpenAPI 3.0 vs 3.1, YAML `{$...}` vs literal).
+5. Use `incremental-implementation` to land changes in thin, verifiable slices behind flags where risky.
+6. Keep `packages/core` free of `Illuminate\*`; Laravel code goes in `packages/laravel`.
+7. Run `detect-fake-tests.php` on every new/changed test file; fix any FAKE-# red flag before proceeding.
+8. Run `delete-fix-check.sh` on the fix to prove tests falsify it (suite goes RED without the fix, GREEN with).
+9. Run `make verify` (Pint + PHPStan max + Pest random-order) before declaring done.
 
 **Artifact:** code + tests on a branch.
 
 **Handoff:** branch ready → Stage 5.
 
-**Verification:** `make verify` green; no `Illuminate` leak in core; tests pass in random order.
+**Verification:** `make verify` green; no `Illuminate` leak in core; tests pass in random order; `detect-fake-tests.php` clean (no FAKE-#); `delete-fix-check.sh` goes RED without fix / GREEN with fix; `audit-boundaries.php` boundary classes covered.
 
 > Supplement — **quality bar** (`constraint-driven-development`): before the first ship, establish `CONSTRAINTS.md` (coverage thresholds, lint rules, perf budgets). Watch the diff for weakened bars (new `@ts-ignore`/suppressions, skipped tests, lowered thresholds). Applies to stages 4–6.
 >
@@ -262,7 +266,7 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 **Goal:** Review the diff on two axes (Standards + Spec) before it enters main.
 
-**Skill(s):** `code-review` · `code-review-and-quality`.
+**Skill(s):** `code-review` · `code-review-and-quality` · `falsification-testing`.
 
 **Inputs:** branch/PR against a fixed point (commit, branch, tag, or merge-base).
 
@@ -270,13 +274,14 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 1. Run `code-review` (Standards axis: does it follow repo coding standards? Spec axis: does it match the originating issue/spec?).
 2. Run `code-review-and-quality` for the multi-axis quality pass.
 3. Fix findings; re-run `make verify`.
-4. If a modularity/coupling concern arises, run `review` (+ `balanced-coupling`).
+4. Run `falsification-testing` verification: `verify-falsification.sh --quick` (fake-detector → pint → phpstan → pest → hume dry-run → conformance). No fake-test red flags; mutation checked where relevant.
+5. If a modularity/coupling concern arises, run `review` (+ `balanced-coupling`).
 
 **Artifact:** review verdict (findings resolved or explicitly accepted).
 
 **Handoff:** clean review → Stage 6.
 
-**Verification:** both review axes pass; `make verify` green; no unresolved blocking findings.
+**Verification:** both review axes pass; `make verify` green; `falsification-testing` green (no fake-test red flags, boundaries covered); no unresolved blocking findings.
 
 > Supplement — **adversarial pre-ship** (`doubt-driven-development`): for high-stakes changes (auth, security, migrations, irreversible ops), run a fresh-context adversarial review before the change stands. Use when correctness matters more than speed.
 
@@ -329,7 +334,7 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 **Goal:** Diagnose and fix a bug with a regression test, then re-enter the main flow at review.
 
-**Skill(s):** `diagnosing-bugs` · `debugging-and-error-recovery`.
+**Skill(s):** `diagnosing-bugs` · `debugging-and-error-recovery` · `falsification-testing`.
 
 **Inputs:** a bug report or failing test.
 
@@ -345,7 +350,7 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 
 **Handoff:** → Stage 5.
 
-**Verification:** regression test fails without the fix and passes with it (delete-the-fix check); `make verify` green.
+**Verification:** regression test fails without the fix and passes with it (`delete-fix-check.sh`); `detect-fake-tests.php` clean on the regression test; `make verify` green.
 
 > Supplement — **debugging depth** (`debugging-and-error-recovery`): use when the cause is non-obvious (builds break, unexpected errors, "worked yesterday"); complements `diagnosing-bugs` for harder cases.
 
@@ -360,12 +365,12 @@ Kinds: `kind:bugfix` / `kind:feature` / `kind:chore` / `kind:release`. Exactly o
 **Procedure:**
 1. Run `constraint-driven-development` to interview on which dimensions matter and record them in `CONSTRAINTS.md` (coverage thresholds, lint rules, perf budgets). Supplies sane defaults when you have no number in mind.
 2. Watch the diff for a weakened bar: new suppressions, skipped/deleted tests, stripped assertions, unimplemented stubs, lowered thresholds.
-3. For every test written or reviewed, run `falsification-testing` (4-pass: Popper/Hume/Socrates/Descartes) — never "coverage theater".
+3. For every test written or reviewed, run `falsification-testing` (4-pass): Popper (falsifiable claim via `scaffold-falsification-test.php`), Hume (boundaries via `audit-boundaries.php`, mutation via `hume-audit.sh`), Socrates (adversarial fuzz via `socratic-fuzz.php`), Descartes (order/time dependence via `demon-sim.php`, property gaps via `property-audit.php`) — never "coverage theater".
 4. Gates:
    - `make verify` (Pint + PHPStan max + Pest random-order) before any PR.
    - `make test-mutate` (Infection) when touching execution/transition logic.
    - Conformance: `OaiConformanceTest` + `FixtureTest` (sync + `QueueFixtureRunner` parity) for parser/validator/runner changes.
-   - `falsification-testing` scripts: `detect-fake-tests.php`, `audit-boundaries.php`, `delete-fix-check.sh`, `verify-falsification.sh`.
+   - `falsification-testing` scripts: `detect-fake-tests.php`, `audit-boundaries.php`, `delete-fix-check.sh`, `verify-falsification.sh`, `severity-audit.php`, `property-audit.php`, `socratic-fuzz.php`, `demon-sim.php`.
 
 **Artifact:** `CONSTRAINTS.md` + a verified, non-theatrical test suite.
 
@@ -427,9 +432,17 @@ php tools/issue-intake/bin/code-permalink packages/evaluation/src/JsonPath.php:8
 php tools/issue-intake/bin/validate-issue   # stdin: {"body":..,"labels":..,"parentLevel":..}
 scripts/bin/gh issue create --title "..." --body-file body.md --label kind:bugfix --label level:story
 
-# Conformance / coverage
-php .agents/skills/falsification-testing/scripts/detect-fake-tests.php --all
-php .agents/skills/falsification-testing/scripts/query-coverage.php --overview
+# Conformance / coverage / falsification-testing
+php .agents/skills/falsification-testing/scripts/detect-fake-tests.php --all --json
+php .agents/skills/falsification-testing/scripts/audit-boundaries.php packages/runner/src/Sync/StepExecutor.php --json
+php .agents/skills/falsification-testing/scripts/scaffold-falsification-test.php runner MyFeatureTest "claim" --dry-run
+php .agents/skills/falsification-testing/scripts/delete-fix-check.sh --filter "..." --path packages/runner
+php .agents/skills/falsification-testing/scripts/hume-audit.sh --dry-run --all
+php .agents/skills/falsification-testing/scripts/property-audit.php --json --package core
+php .agents/skills/falsification-testing/scripts/severity-audit.php --json --filter "..."
+php .agents/skills/falsification-testing/scripts/socratic-fuzz.php --iterations 50 --json
+php .agents/skills/falsification-testing/scripts/demon-sim.php --seeds 5 --json --package runner
+php .agents/skills/falsification-testing/scripts/query-coverage.php --overview --json
 php .agents/skills/falsification-testing/scripts/verify-falsification.sh --quick
 ```
 
