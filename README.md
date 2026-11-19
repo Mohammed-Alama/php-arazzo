@@ -1,6 +1,10 @@
 # Arazzo Workflow Engine for PHP & Laravel
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
+[![PHP](https://img.shields.io/badge/PHP-^8.4-blue.svg)](https://www.php.net/)
+[![Latest Stable Version](https://img.shields.io/packagist/v/php-arazzo/arazzo-core.svg)](https://packagist.org/packages/php-arazzo/arazzo-core)
+[![Total Downloads](https://img.shields.io/packagist/dt/php-arazzo/arazzo-core.svg)](https://packagist.org/packages/php-arazzo/arazzo-core)
+[![CI](https://github.com/PHP-Arazzo/php-arazzo/actions/workflows/ci.yml/badge.svg)](https://github.com/PHP-Arazzo/php-arazzo/actions/workflows/ci.yml)
 [![Ecosystem Feed](https://img.shields.io/badge/docs-ecosystem%20feed-informational)](docs/ECOSYSTEM_FEED.md)
 [![Tia Benchmark](https://img.shields.io/badge/docs-tia%20benchmark-success)](docs/TIA-BENCHMARK.md)
 
