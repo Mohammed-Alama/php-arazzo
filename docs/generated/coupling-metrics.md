@@ -37,17 +37,17 @@ targets. Regenerated before every commit.
 | `evaluation:Plugins` | 2 | 118 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
 | `(evaluation root)` | 6 | 843 | 10 | 13 | 0.57 |  |
-| `expression:Ast` | 15 | 335 | 4 | 2 | 0.33 |  |
+| `expression:Ast` | 15 | 340 | 4 | 2 | 0.33 |  |
 | `expression:Data` | 5 | 145 | 11 | 3 | 0.21 |  |
 | `expression:Enum` | 2 | 43 | 5 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 7 | 1 | 0.13 |  |
 | `expression:Interfaces` | 5 | 206 | 14 | 5 | 0.26 |  |
-| `expression:Internal` | 3 | 422 | 1 | 6 | 0.86 |  |
+| `expression:Internal` | 3 | 430 | 1 | 6 | 0.86 |  |
 | `expression:Plugins` | 3 | 125 | 1 | 4 | 0.80 |  |
 | `expression:Registries` | 1 | 72 | 2 | 2 | 0.50 |  |
 | `expression:Support` | 1 | 58 | 1 | 1 | 0.50 |  |
 | `expression:Xpath` | 3 | 170 | 2 | 2 | 0.50 |  |
-| `(expression root)` | 9 | 1268 | 5 | 11 | 0.69 |  |
+| `(expression root)` | 9 | 1272 | 5 | 11 | 0.69 |  |
 | `protocol-http:Execution` | 4 | 532 | 5 | 9 | 0.64 |  |
 | `protocol-http:Protocol` | 2 | 327 | 1 | 9 | 0.90 |  |
 | `protocol-http:Registrar` | 1 | 140 | 0 | 6 | 1.00 |  |

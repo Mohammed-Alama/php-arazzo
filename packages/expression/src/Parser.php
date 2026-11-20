@@ -151,7 +151,11 @@ final class Parser implements ParserInterface
         $tail = array_slice($rest, 5);
 
         return new StepRef($stepId, match ($sub) {
-            'outputs' => $this->parseNamedPart($tail, OutputPart::class, $raw, allowPointer: true),
+            // Selector payload: `$steps.<stepId>.outputs` with no output name
+            // refers to all outputs of the step (relaxed form for selector
+            // contexts; the strict `steps-reference` ABNF requires an
+            // output-name, so this is deliberately the only non-ABNF shape).
+            'outputs' => $tail === [] ? new OutputPart(null) : $this->parseNamedPart($tail, OutputPart::class, $raw, allowPointer: true),
             'inputs' => $this->parseNamedPart($tail, InputPart::class, $raw),
             'request' => $this->parseHttpPart($tail, RequestPart::class, $raw),
             'response' => $this->parseHttpPart($tail, ResponsePart::class, $raw),

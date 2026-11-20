@@ -182,3 +182,26 @@ it('projects every reference form to the expected ExpressionReference', function
     '$statusCode' => ['$statusCode', new ExpressionReference(ReferenceKind::HttpMeta, httpPart: 'statusCode')],
     '$self' => ['$self', new ExpressionReference(ReferenceKind::Self)],
 ]);
+
+it('accepts $steps.<id>.outputs as an all-outputs selector payload (R4)', function (): void {
+    $ast = (new ExprParser())->parse('$steps.previous.outputs');
+    expect($ast)->toBeInstanceOf(StepRef::class)
+        ->and($ast->stepId)->toBe('previous')
+        ->and($ast->part)->toBeInstanceOf(OutputPart::class)
+        ->and($ast->part->name)->toBeNull();
+
+    // The wrapped `{$...}` spelling must resolve to the same all-outputs form.
+    $wrapped = (new ExprParser())->parse('{$steps.previous.outputs}');
+    expect($wrapped)->toBeInstanceOf(StepRef::class)
+        ->and($wrapped->stepId)->toBe('previous')
+        ->and($wrapped->part)->toBeInstanceOf(OutputPart::class)
+        ->and($wrapped->part->name)->toBeNull();
+});
+
+it('rejects $response.body.<name> per ABNF body-reference (R1/S1)', function (): void {
+    (new ExprParser())->parse('$response.body.token');
+})->throws(ExpressionSyntaxException::class);
+
+it('rejects $response.headers.<x> per ABNF header-reference (R2/S2)', function (): void {
+    (new ExprParser())->parse('$response.headers.X-Request-Id');
+})->throws(ExpressionSyntaxException::class);
