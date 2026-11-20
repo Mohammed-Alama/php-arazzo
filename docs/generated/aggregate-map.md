@@ -19,14 +19,15 @@ Where mutable state lives, and which of it crosses process boundaries:
 | contracts | 37 | 10 | 79% |
 | expression | 22 | 19 | 54% |
 | evaluation | 14 | 13 | 52% |
-| document | 11 | 82 | 12% |
 | sources | 3 | 21 | 12% |
-| runtime | 3 | 12 | 20% |
-| engine | 4 | 8 | 33% |
-| events | 9 | 1 | 90% |
-| runner | 6 | 28 | 18% |
+| document | 11 | 82 | 12% |
+| engine | 7 | 20 | 26% |
+| protocol-http | 0 | 6 | 0% |
+| protocol-rpc | 5 | 10 | 33% |
+| protocol-soap | 1 | 9 | 10% |
+| runner | 15 | 29 | 34% |
+| core | 0 | 0 | — |
 | cli | 0 | 15 | 0% |
-| laravel | 0 | 28 | 0% |
 
 ## Mutable clusters
 
@@ -35,10 +36,9 @@ Where mutable state lives, and which of it crosses process boundaries:
 | `ImplicitDependencies` | contracts | `Dependency` | `hydrate` |
 | `WorkflowDataMap` | contracts | `State` | `hydrate` |
 | `DecoderRegistry` | document | `Parser` | `hydrate` |
-| `ExecutionContext` | runtime | `State/Data` | `toArray`, `hydrate` |
 | `ParameterSerializer` | engine | `Execution` | `serialize` |
+| `ExecutionContext` | engine | `Runtime/State/Data` | `toArray`, `hydrate` |
 | `CliRunResult` | cli | `Console/Cli` | `hydrate` |
-| `SchemeSourceFetcher` | laravel | `Support` | `hydrate` |
 
 ## Cross-process aggregates
 
@@ -49,5 +49,4 @@ Mutable types that serialize themselves or are carried by queue jobs — each ne
 - `WorkflowDataMap` <small>contracts · `hydrate`</small>
 - `DecoderRegistry` <small>document · `hydrate`</small>
 - `ParameterSerializer` <small>engine · `serialize`</small>
-- `SchemeSourceFetcher` <small>laravel · `hydrate`</small>
-- `ExecutionContext` <small>runtime · `toArray`, `hydrate`</small>
+- `ExecutionContext` <small>engine · `toArray`, `hydrate`</small>

@@ -8,39 +8,4 @@ Derived live from the Laravel migrations in
 
 ```mermaid
 erDiagram
-    arazzo_definitions {
-        string content_hash 
-        timestamp created_at 
-        string document_identity 
-        ulid id PK
-        json raw_document 
-    }
-    arazzo_events {
-        timestamp created_at 
-        string event_type 
-        ulid execution_id  "indexed"
-        json payload 
-    }
-    arazzo_executions {
-        timestamp completed_at 
-        ulid definition_id FK "indexed"
-        ulid id PK
-        string status 
-        string workflow_id 
-    }
-    arazzo_pending_correlations {
-        string channel_path 
-        string correlation_id UK
-        timestamp created_at 
-        ulid execution_id  "indexed"
-        timestamp expires_at  "indexed"
-        string step_id 
-    }
-    arazzo_definitions ||--o{ arazzo_executions : "definition_id"
-    arazzo_executions ||--o{ arazzo_events : "execution_id"
-    arazzo_executions ||--o{ arazzo_pending_correlations : "execution_id"
 ```
-
-## Composite constraints
-
-- `arazzo_definitions`: unique(document_identity, content_hash)

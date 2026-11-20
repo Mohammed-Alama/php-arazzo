@@ -12,67 +12,68 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "document:Validator", "cli:Console", "runner:Execution", "laravel:Http", "laravel:Persistence", "runner:Async", "laravel:Support", "expression:Interfaces", "document:Parser", "laravel:Queue", "sources:Normalizer"]
-    y-axis "Touches" 0 --> 60
-    bar [47, 34, 33, 27, 22, 20, 17, 16, 15, 14, 14, 13]
+    x-axis ["cli:Console", "document:Validator", "runner:Execution", "runner:Async", "expression:Interfaces", "document:Parser", "sources:Normalizer", "contracts:Interfaces", "contracts:Spec", "runner:Sync", "engine:Execution", "evaluation:Plugins"]
+    y-axis "Touches" 0 --> 50
+    bar [35, 34, 27, 17, 15, 14, 13, 11, 11, 10, 8, 7]
 ```
 
-Analyzed 437 total file-touches across 53 modules.
+Analyzed 326 total file-touches across 54 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 47 | 11% | 395 | 119 |
-| `document:Validator` | 34 | 8% | 5,132 | 6.6 |
-| `cli:Console` | 33 | 8% | 943 | 35 |
-| `runner:Execution` | 27 | 6% | 383 | 70.5 |
-| `laravel:Http` | 22 | 5% | 187 | 117.6 |
-| `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
-| `runner:Async` | 17 | 4% | 1,346 | 12.6 |
-| `laravel:Support` | 16 | 4% | 272 | 58.8 |
-| `expression:Interfaces` | 15 | 3% | 211 | 71.1 |
-| `document:Parser` | 14 | 3% | 1,453 | 9.6 |
-| `laravel:Queue` | 14 | 3% | 109 | 128.4 |
-| `sources:Normalizer` | 13 | 3% | 1,282 | 10.1 |
-| `laravel:State` | 12 | 3% | 52 | 230.8 |
+| `cli:Console` | 35 | 11% | 943 | 37.1 |
+| `document:Validator` | 34 | 10% | 5,132 | 6.6 |
+| `runner:Execution` | 27 | 8% | 383 | 70.5 |
+| `runner:Async` | 17 | 5% | 1,346 | 12.6 |
+| `expression:Interfaces` | 15 | 5% | 211 | 71.1 |
+| `document:Parser` | 14 | 4% | 1,453 | 9.6 |
+| `sources:Normalizer` | 13 | 4% | 1,282 | 10.1 |
 | `contracts:Interfaces` | 11 | 3% | 367 | 30 |
 | `contracts:Spec` | 11 | 3% | 1,207 | 9.1 |
-| `runner:Sync` | 10 | 2% | 1,046 | 9.6 |
-| `laravel:Lock` | 9 | 2% | 52 | 173.1 |
+| `runner:Sync` | 10 | 3% | 1,046 | 9.6 |
 | `engine:Execution` | 8 | 2% | 1,031 | 7.8 |
 | `evaluation:Plugins` | 7 | 2% | 120 | 58.3 |
-| `evaluation:Condition` | 6 | 1% | 1,023 | 5.9 |
-| `evaluation:Registries` | 6 | 1% | 121 | 49.6 |
-| `expression:Data` | 6 | 1% | 150 | 40 |
-| `expression:Xpath` | 5 | 1% | 173 | 28.9 |
-| `runtime:State` | 5 | 1% | 1,056 | 4.7 |
-| `sources:Resolver` | 5 | 1% | 512 | 9.8 |
+| `protocol-http:Protocol` | 7 | 2% | 329 | 21.3 |
+| `evaluation:Condition` | 6 | 2% | 1,023 | 5.9 |
+| `evaluation:Registries` | 6 | 2% | 121 | 49.6 |
+| `expression:Data` | 6 | 2% | 150 | 40 |
+| `expression:Xpath` | 5 | 2% | 173 | 28.9 |
+| `protocol-http:Registrar` | 5 | 2% | 141 | 35.5 |
+| `protocol-soap:Execution` | 5 | 2% | 597 | 8.4 |
+| `runner:Events` | 5 | 2% | 328 | 15.2 |
+| `sources:Resolver` | 5 | 2% | 512 | 9.8 |
 | `cli:Generator` | 4 | 1% | 141 | 28.4 |
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
 | `contracts:Dependency` | 4 | 1% | 336 | 11.9 |
 | `evaluation:Data` | 4 | 1% | 86 | 46.5 |
 | `expression:Ast` | 4 | 1% | 350 | 11.4 |
+| `protocol-http:Execution` | 4 | 1% | 536 | 7.5 |
 | `contracts:State` | 3 | 1% | 910 | 3.3 |
 | `contracts:Support` | 3 | 1% | 185 | 16.2 |
 | `evaluation:Interfaces` | 3 | 1% | 44 | 68.2 |
 | `expression:Enum` | 3 | 1% | 45 | 66.7 |
-| `laravel:Events` | 3 | 1% | 24 | 125 |
+| `protocol-rpc:Execution` | 3 | 1% | 313 | 9.6 |
 | `sources:Validator` | 3 | 1% | 325 | 9.2 |
-| `contracts:Exceptions` | 2 | 0% | 31 | 64.5 |
-| `engine:Data` | 2 | 0% | 74 | 27 |
-| `engine:Enum` | 2 | 0% | 17 | 117.6 |
-| `evaluation:Enum` | 2 | 0% | 123 | 16.3 |
-| `expression:Exceptions` | 2 | 0% | 55 | 36.4 |
-| `expression:Internal` | 2 | 0% | 425 | 4.7 |
-| `expression:Plugins` | 2 | 0% | 128 | 15.6 |
-| `expression:Registries` | 2 | 0% | 73 | 27.4 |
-| `runtime:Infrastructure` | 2 | 0% | 162 | 12.3 |
+| `contracts:Exceptions` | 2 | 1% | 31 | 64.5 |
+| `engine:Data` | 2 | 1% | 74 | 27 |
+| `engine:Enum` | 2 | 1% | 17 | 117.6 |
+| `evaluation:Enum` | 2 | 1% | 123 | 16.3 |
+| `expression:Exceptions` | 2 | 1% | 55 | 36.4 |
+| `expression:Internal` | 2 | 1% | 425 | 4.7 |
+| `expression:Plugins` | 2 | 1% | 128 | 15.6 |
+| `expression:Registries` | 2 | 1% | 73 | 27.4 |
+| `protocol-rpc:Normalizer` | 2 | 1% | 661 | 3 |
+| `protocol-rpc:Registrar` | 2 | 1% | 93 | 21.5 |
+| `protocol-soap:Registrar` | 2 | 1% | 97 | 20.6 |
 | `engine:Exceptions` | 1 | 0% | 42 | 23.8 |
+| `engine:Runtime` | 1 | 0% | 1,602 | 0.6 |
 | `evaluation:Events` | 1 | 0% | 27 | 37 |
-| `events:Interfaces` | 1 | 0% | 19 | 52.6 |
-| `events:Listener` | 1 | 0% | 95 | 10.5 |
 | `expression:Support` | 1 | 0% | 59 | 16.9 |
+| `protocol-rpc:Protocol` | 1 | 0% | 514 | 1.9 |
+| `protocol-rpc:Transfer` | 1 | 0% | 219 | 4.6 |
+| `protocol-soap:Resolver` | 1 | 0% | 136 | 7.4 |
+| `protocol-soap:Transfer` | 1 | 0% | 203 | 4.9 |
+| `protocol-soap:Validation` | 1 | 0% | 139 | 7.2 |
 | `runner:Interfaces` | 1 | 0% | 25 | 40 |
-| `runtime:Policy` | 1 | 0% | 102 | 9.8 |
-| `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (128.4), `laravel:Bindings` (119), `laravel:Http` (117.6)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `expression:Interfaces` (71.1), `runner:Execution` (70.5), `evaluation:Plugins` (58.3)

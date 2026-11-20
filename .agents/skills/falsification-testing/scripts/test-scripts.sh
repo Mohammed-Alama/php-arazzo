@@ -96,7 +96,7 @@ if vendor/bin/pint "$TMP/ScaffoldHarnessTest.php" --test >/dev/null 2>&1; then o
   if echo "$out" | grep -q "single_blank_line_at_eof" && ! echo "$out" | grep -q "ordered_imports\|declare_strict"; then ok "scaffold pint (only eof)";
   else fail "scaffold pint" "$out"; fi
 fi
-php "$SCRIPT_DIR/scaffold-falsification-test.php" laravel ScaffoldLaravelTest "laravel claim" --path "$TMP/ScaffoldLaravelTest.php" --dry-run 2>&1 | grep -q "package: laravel" && ok "scaffold laravel variant" || fail "scaffold laravel" "no package hint"
+php "$SCRIPT_DIR/scaffold-falsification-test.php" core ScaffoldCoreTest "core claim" --path "$TMP/ScaffoldCoreTest.php" --dry-run 2>&1 | grep -q "package: core" && ok "scaffold core variant" || fail "scaffold core" "no package hint"
 
 # 6 — integration dry helpers
 echo

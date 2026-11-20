@@ -389,6 +389,24 @@ this file on a commit is a public API change — review it deliberately.
 - `public function register(ExpressionEvaluatorPluginInterface $plugin, int $priority = 0): void`
 - `public function resolve(Expression $expression): ?ExpressionEvaluatorPluginInterface`
 
+## sources
+
+### `SourceGraph` class
+- `public static function createRegistry(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ): SourceRegistry`
+- `public static function document(?ExpressionEngineInterface $engine = null, ?OpenApiOperationResolver $operationResolver = null, ): DocumentInterface`
+- `public static function loader(?SourceRegistry $registry = null): SourceLoader`
+- `public static function operations(?SourceRegistry $registry = null): OpenApiOperationResolver`
+- `public static function runtime(?SourceRegistry $registry = null, ?OpenApiOperationResolver $operations = null, ?ExpressionEngineInterface $engine = null, ): SourceRuntime`
+- `public static function using(): DocumentInterface`
+
+### `Alama\Arazzo\Sources`
+
+#### `SourceLoader` class
+- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight, private readonly SourceNormalizerRegistryInterface $normalizers)`
+- `public function detectOpenApiVersion(array $document): string`
+- `public function normalizeSources(ArazzoDocument $document, string $basePath = ''): array`
+- `public function preflightSource(ArazzoDocument $document): ValidationResult`
+
 ## document
 
 ### `DocumentInterface` interface
@@ -458,24 +476,6 @@ this file on a commit is a public API change — review it deliberately.
 #### `PreflightFailureException` class
 - `public function __construct(string $message, public readonly ValidationResult $result)`
 
-## sources
-
-### `SourceGraph` class
-- `public static function createRegistry(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ): SourceRegistry`
-- `public static function document(?ExpressionEngineInterface $engine = null, ?OpenApiOperationResolver $operationResolver = null, ): DocumentInterface`
-- `public static function loader(?SourceRegistry $registry = null): SourceLoader`
-- `public static function operations(?SourceRegistry $registry = null): OpenApiOperationResolver`
-- `public static function runtime(?SourceRegistry $registry = null, ?OpenApiOperationResolver $operations = null, ?ExpressionEngineInterface $engine = null, ): SourceRuntime`
-- `public static function using(): DocumentInterface`
-
-### `Alama\Arazzo\Sources`
-
-#### `SourceLoader` class
-- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight, private readonly SourceNormalizerRegistryInterface $normalizers)`
-- `public function detectOpenApiVersion(array $document): string`
-- `public function normalizeSources(ArazzoDocument $document, string $basePath = ''): array`
-- `public function preflightSource(ArazzoDocument $document): ValidationResult`
-
 ## engine
 
 ### `Alama\Arazzo\Engine\Data`
@@ -513,14 +513,4 @@ this file on a commit is a public API change — review it deliberately.
 
 #### `RunCommand` class
 - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $httpFactory = null, private readonly ?SourceRegistry $registry = null)`
-
-## laravel
-
-### `Alama\Arazzo\Laravel`
-
-#### `LaravelArazzoServiceProvider` class
-- `public function configurePackage(Package $package): void`
-- `public function packageBooted(): void`
-- `public function packageRegistered(): void`
-- `public function register(): void`
 

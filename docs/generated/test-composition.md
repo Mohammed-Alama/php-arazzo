@@ -83,59 +83,33 @@ pie showData
 | Module-scoped | 12 | 71% |
 | Root | 5 | 29% |
 
-## Runtime package
-
-```mermaid
-pie showData
-    title Runtime — 7 test files
-    "Module-scoped": 7
-```
-
-| Suite | Files | Share |
-|---|---:|---:|
-| Module-scoped | 7 | 100% |
-
 ## Engine package
 
 ```mermaid
 pie showData
-    title Engine — 4 test files
-    "Module-scoped": 2
+    title Engine — 11 test files
+    "Module-scoped": 9
     "Root": 2
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 2 | 50% |
-| Root | 2 | 50% |
-
-## Events package
-
-```mermaid
-pie showData
-    title Events — 5 test files
-    "Module-scoped": 3
-    "Root": 2
-```
-
-| Suite | Files | Share |
-|---|---:|---:|
-| Module-scoped | 3 | 60% |
-| Root | 2 | 40% |
+| Module-scoped | 9 | 82% |
+| Root | 2 | 18% |
 
 ## Runner package
 
 ```mermaid
 pie showData
-    title Runner — 49 test files
-    "Module-scoped": 41
+    title Runner — 54 test files
+    "Module-scoped": 46
     "Root": 8
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 41 | 84% |
-| Root | 8 | 16% |
+| Module-scoped | 46 | 85% |
+| Root | 8 | 15% |
 
 ## Cli package
 
@@ -150,6 +124,72 @@ pie showData
 |---|---:|---:|
 | Module-scoped | 11 | 92% |
 | Root | 1 | 8% |
+
+## Protocol-http package
+
+```mermaid
+pie showData
+    title Protocol-http — 7 test files
+    "Module-scoped": 6
+    "Architecture": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 6 | 86% |
+| Architecture | 1 | 14% |
+
+## Protocol-rpc package
+
+```mermaid
+pie showData
+    title Protocol-rpc — 10 test files
+    "Module-scoped": 9
+    "Architecture": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 9 | 90% |
+| Architecture | 1 | 10% |
+
+## Protocol-soap package
+
+```mermaid
+pie showData
+    title Protocol-soap — 9 test files
+    "Module-scoped": 8
+    "Architecture": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 8 | 89% |
+| Architecture | 1 | 11% |
+
+## Core package
+
+```mermaid
+pie showData
+    title Core — 40 test files
+    "Module-scoped": 23
+    "Feature": 5
+    "Conformance": 4
+    "Unit": 4
+    "Root": 2
+    "Architecture": 1
+    "Property": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 23 | 57% |
+| Feature | 5 | 12% |
+| Conformance | 4 | 10% |
+| Unit | 4 | 10% |
+| Root | 2 | 5% |
+| Architecture | 1 | 2% |
+| Property | 1 | 2% |
 
 ## Core (integration) package
 
@@ -177,20 +217,4 @@ pie showData
 
 ## Laravel package
 
-```mermaid
-pie showData
-    title Laravel — 35 test files
-    "Module-scoped": 25
-    "Root": 6
-    "Feature": 2
-    "Architecture": 1
-    "Unit": 1
-```
-
-| Suite | Files | Share |
-|---|---:|---:|
-| Module-scoped | 25 | 71% |
-| Root | 6 | 17% |
-| Feature | 2 | 6% |
-| Architecture | 1 | 3% |
-| Unit | 1 | 3% |
+_No test files found._

@@ -59,10 +59,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-      - name: Check PHP code style
-        uses: aglipanci/laravel-pint-action@2.6
         with:
-          testMode: true
+          submodules: true
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - name: Install Pint
+        run: composer global require laravel/pint:^1.0 --no-progress --dev
+      - name: Check PHP code style
+        run: ~/.composer/vendor/bin/pint --test
 
   phpstan:
     name: PHPStan
@@ -71,6 +77,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -105,6 +113,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -134,10 +144,9 @@ jobs:
           # if the two lists drift apart or if a package is left out.
           vendor/bin/phpmd analyze \
             packages/core/src packages/contracts/src packages/document/src \
-            packages/expression/src packages/evaluation/src packages/sources/src \
-            packages/runtime/src packages/engine/src packages/events/src \
-            packages/runner/src packages/cli/src packages/laravel/src \
+            packages/engine/src packages/evaluation/src packages/expression/src \
             packages/protocol-http/src packages/protocol-rpc/src packages/protocol-soap/src \
+            packages/runner/src packages/sources/src packages/cli/src \
             --format github \
             --ruleset phpmd.xml \
             --baseline-file phpmd.baseline.xml \
@@ -165,6 +174,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -188,7 +199,7 @@ jobs:
         run: vendor/bin/phpdoc run
 
   test:
-    name: Test P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
+    name: Test P${{ matrix.php }} - ${{ matrix.stability }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     strategy:
@@ -196,14 +207,12 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         php: ['8.4']
-        laravel: ['13.*']
         stability: [prefer-stable]
-        include:
-          - laravel: 13.*
-            testbench: 11.*
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -223,10 +232,6 @@ jobs:
       - name: Install dependencies
         run: |
           composer update --no-progress --${{ matrix.stability }} --prefer-dist --no-interaction
-          cd packages/laravel
-          composer require "illuminate/contracts:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --no-progress --${{ matrix.stability }} --prefer-dist --no-interaction
-          cd ../..
       - name: Execute tests
         run: composer run test
       - name: Check conformance manifest drift
@@ -239,6 +244,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          submodules: true
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:

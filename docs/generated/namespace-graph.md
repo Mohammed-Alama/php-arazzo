@@ -25,6 +25,7 @@ flowchart LR
     engine_Enum["Alama\Arazzo\Engine\Enum"]:::coreNode
     engine_Exceptions["Alama\Arazzo\Engine\Exceptions"]:::coreNode
     engine_Execution["Alama\Arazzo\Engine\Execution"]:::coreNode
+    engine_Runtime["Alama\Arazzo\Runtime\State\Data"]:::coreNode
     engine__["(engine package root)"]:::coreNode
     evaluation_Condition["Alama\Arazzo\Evaluation\Condition"]:::coreNode
     evaluation_Data["Alama\Arazzo\Evaluation\Data"]:::coreNode
@@ -34,9 +35,6 @@ flowchart LR
     evaluation_Plugins["Alama\Arazzo\Evaluation\Plugins"]:::coreNode
     evaluation_Registries["Alama\Arazzo\Evaluation\Registries"]:::coreNode
     evaluation__["(evaluation package root)"]:::coreNode
-    events_Interfaces["Alama\Arazzo\Events\Interfaces"]:::coreNode
-    events_Listener["Alama\Arazzo\Events\Listener"]:::coreNode
-    events__["(events package root)"]:::coreNode
     expression_Ast["Alama\Arazzo\Expression\Ast"]:::coreNode
     expression_Data["Alama\Arazzo\Expression\Data"]:::coreNode
     expression_Enum["Alama\Arazzo\Expression\Enum"]:::coreNode
@@ -48,23 +46,25 @@ flowchart LR
     expression_Support["Alama\Arazzo\Expression\Support"]:::coreNode
     expression_Xpath["Alama\Arazzo\Expression\Xpath"]:::coreNode
     expression__["(expression package root)"]:::coreNode
-    laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
-    laravel_Http["Alama\Arazzo\Laravel\Http\Controllers"]:::laravelNode
-    laravel_Lock["Alama\Arazzo\Laravel\Lock"]:::laravelNode
-    laravel_Persistence["Alama\Arazzo\Laravel\Persistence"]:::laravelNode
-    laravel_Queue["Alama\Arazzo\Laravel\Queue\Jobs"]:::laravelNode
-    laravel_State["Alama\Arazzo\Laravel\State"]:::laravelNode
-    laravel_Support["Alama\Arazzo\Laravel\Support"]:::laravelNode
-    laravel__["(laravel package root)"]:::laravelNode
+    protocol_http_Execution["Alama\Arazzo\Protocol\Http\Execution"]:::coreNode
+    protocol_http_Protocol["Alama\Arazzo\Protocol\Http\Protocol"]:::coreNode
+    protocol_http_Registrar["Alama\Arazzo\Protocol\Http\Registrar"]:::coreNode
+    protocol_rpc_Execution["Alama\Arazzo\Protocol\Rpc\Execution"]:::coreNode
+    protocol_rpc_Normalizer["Alama\Arazzo\Protocol\Rpc\Normalizer"]:::coreNode
+    protocol_rpc_Protocol["Alama\Arazzo\Protocol\Rpc\Protocol"]:::coreNode
+    protocol_rpc_Registrar["Alama\Arazzo\Protocol\Rpc\Registrar"]:::coreNode
+    protocol_rpc_Transfer["Alama\Arazzo\Protocol\Rpc\Transfer"]:::coreNode
+    protocol_soap_Execution["Alama\Arazzo\Protocol\Soap\Execution"]:::coreNode
+    protocol_soap_Registrar["Alama\Arazzo\Protocol\Soap\Registrar"]:::coreNode
+    protocol_soap_Resolver["Alama\Arazzo\Protocol\Soap\Resolver"]:::coreNode
+    protocol_soap_Transfer["Alama\Arazzo\Protocol\Soap\Transfer"]:::coreNode
+    protocol_soap_Validation["Alama\Arazzo\Protocol\Soap\Validation"]:::coreNode
     runner_Async["Alama\Arazzo\Runner\Async"]:::coreNode
+    runner_Events["Alama\Arazzo\Events"]:::coreNode
     runner_Execution["Alama\Arazzo\Runner\Execution\Data"]:::coreNode
     runner_Interfaces["Alama\Arazzo\Runner\Interfaces"]:::coreNode
     runner_Sync["Alama\Arazzo\Runner\Sync"]:::coreNode
     runner__["(runner package root)"]:::coreNode
-    runtime_Infrastructure["Alama\Arazzo\Runtime\Infrastructure"]:::coreNode
-    runtime_Policy["Alama\Arazzo\Runtime\Policy"]:::coreNode
-    runtime_State["Alama\Arazzo\Runtime\State\Data"]:::coreNode
-    runtime_Telemetry["Alama\Arazzo\Runtime\Telemetry"]:::coreNode
     sources_Normalizer["Alama\Arazzo\Sources\Normalizer"]:::coreNode
     sources_Resolver["Alama\Arazzo\Sources\Resolver\Exceptions"]:::coreNode
     sources_Validator["Alama\Arazzo\Sources\Validator"]:::coreNode
@@ -184,13 +184,6 @@ flowchart LR
     sources__ --> document_Parser
     sources__ --> expression__
     sources__ --> expression_Interfaces
-    runtime_Infrastructure --> contracts_Interfaces
-    runtime_Policy --> contracts_Interfaces
-    runtime_Policy --> contracts_Spec
-    runtime_Policy --> contracts_State
-    runtime_State --> contracts_Interfaces
-    runtime_State --> contracts_Spec
-    runtime_State --> contracts_State
     engine_Data --> contracts_Spec
     engine_Data --> engine_Enum
     engine_Data --> contracts_State
@@ -199,12 +192,12 @@ flowchart LR
     engine_Execution --> contracts_State
     engine_Execution --> document_Parser
     engine_Execution --> evaluation__
+    engine_Runtime --> contracts_Interfaces
+    engine_Runtime --> contracts_Spec
+    engine_Runtime --> contracts_State
     engine__ --> contracts_Spec
     engine__ --> contracts_State
     engine__ --> engine_Data
-    events_Listener --> contracts_Support
-    events_Listener --> events__
-    events_Listener --> events_Interfaces
     runner_Async --> contracts_Spec
     runner_Async --> contracts_State
     runner_Async --> engine_Exceptions
@@ -212,27 +205,26 @@ flowchart LR
     runner_Async --> expression_Data
     runner_Async --> runner_Execution
     runner_Async --> runner_Sync
-    runner_Async --> runtime_State
+    runner_Async --> engine_Runtime
     runner_Async --> contracts_Exceptions
     runner_Async --> contracts_Interfaces
     runner_Async --> contracts_Support
     runner_Async --> document__
     runner_Async --> document_Validator
     runner_Async --> engine_Execution
-    runner_Async --> events__
-    runner_Async --> events_Interfaces
+    runner_Async --> runner_Events
     runner_Async --> runner__
-    runner_Async --> runtime_Telemetry
     runner_Async --> contracts_Dependency
+    runner_Events --> contracts_Support
     runner_Execution --> document__
     runner_Execution --> sources_Normalizer
     runner_Execution --> contracts_Spec
-    runner_Execution --> runtime_State
+    runner_Execution --> engine_Runtime
     runner_Execution --> contracts_Support
     runner_Execution --> contracts_Interfaces
     runner_Execution --> runner_Sync
     runner_Execution --> contracts_State
-    runner_Execution --> events_Interfaces
+    runner_Execution --> runner_Events
     runner_Interfaces --> contracts_Interfaces
     runner_Interfaces --> contracts_Spec
     runner_Sync --> contracts_Spec
@@ -241,24 +233,25 @@ flowchart LR
     runner_Sync --> evaluation__
     runner_Sync --> expression_Data
     runner_Sync --> runner_Execution
-    runner_Sync --> runtime_Policy
-    runner_Sync --> runtime_State
+    runner_Sync --> engine_Runtime
     runner_Sync --> contracts_Exceptions
     runner_Sync --> contracts_Interfaces
     runner_Sync --> contracts_Support
     runner_Sync --> engine_Exceptions
     runner_Sync --> engine_Execution
+    runner_Sync --> protocol_http_Execution
     runner_Sync --> runner__
     runner_Sync --> sources_Normalizer
     runner_Sync --> document__
     runner_Sync --> document_Validator
-    runner_Sync --> events__
+    runner_Sync --> runner_Events
     runner__ --> contracts_Interfaces
     runner__ --> runner_Async
     runner__ --> runner_Sync
     runner__ --> contracts_Spec
-    runner__ --> events_Interfaces
-    runner__ --> runtime_State
+    runner__ --> runner_Events
+    runner__ --> protocol_http_Execution
+    runner__ --> engine_Runtime
     runner__ --> contracts_Exceptions
     runner__ --> engine_Exceptions
     runner__ --> evaluation__
@@ -272,12 +265,11 @@ flowchart LR
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State
     cli_Console --> evaluation__
-    cli_Console --> events_Interfaces
+    cli_Console --> runner_Events
     cli_Console --> runner_Async
     cli_Console --> runner__
     cli_Console --> runner_Execution
-    cli_Console --> runtime_State
-    cli_Console --> runtime_Telemetry
+    cli_Console --> engine_Runtime
     cli_Console --> document_Parser
     cli_Console --> document_Validator
     cli_Console --> expression__
@@ -285,64 +277,80 @@ flowchart LR
     cli_Console --> contracts_Dependency
     cli_Console --> cli_Renderer
     cli_Console --> contracts_Exceptions
+    cli_Console --> protocol_http_Execution
     cli_Console --> sources_Resolver
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
-    laravel_Bindings --> evaluation__
-    laravel_Bindings --> laravel_Support
-    laravel_Bindings --> runner__
-    laravel_Bindings --> runner_Sync
-    laravel_Bindings --> contracts_Interfaces
-    laravel_Bindings --> laravel_Http
-    laravel_Bindings --> contracts_Support
-    laravel_Bindings --> events_Interfaces
-    laravel_Bindings --> events_Listener
-    laravel_Bindings --> document_Parser
-    laravel_Bindings --> laravel_Lock
-    laravel_Bindings --> laravel_Persistence
-    laravel_Bindings --> laravel_Queue
-    laravel_Bindings --> laravel_State
-    laravel_Bindings --> runtime_State
-    laravel_Bindings --> sources_Normalizer
-    laravel_Bindings --> sources_Resolver
-    laravel_Bindings --> sources_Validator
-    laravel_Bindings --> cli_Generator
-    laravel_Bindings --> document__
-    laravel_Bindings --> expression__
-    laravel_Bindings --> expression_Interfaces
-    laravel_Bindings --> runner_Execution
-    laravel_Bindings --> sources__
-    laravel_Http --> contracts_Interfaces
-    laravel_Http --> cli_Generator
-    laravel_Http --> contracts_Spec
-    laravel_Http --> laravel_Support
-    laravel_Http --> sources_Resolver
-    laravel_Http --> runner_Async
-    laravel_Lock --> contracts_Interfaces
-    laravel_Persistence --> contracts_Interfaces
-    laravel_Persistence --> contracts_Spec
-    laravel_Persistence --> events_Interfaces
-    laravel_Persistence --> runtime_State
-    laravel_Persistence --> document_Parser
-    laravel_Queue --> contracts_Interfaces
-    laravel_Queue --> runner_Async
-    laravel_Queue --> runner__
-    laravel_State --> laravel_Support
-    laravel_State --> runtime_State
-    laravel_Support --> sources_Resolver
-    laravel_Support --> contracts_Interfaces
-    laravel_Support --> events_Interfaces
-    laravel_Support --> runner__
-    laravel_Support --> runtime_State
-    laravel__ --> contracts_Interfaces
-    laravel__ --> evaluation__
-    laravel__ --> expression_Interfaces
-    laravel__ --> laravel_Support
-    laravel__ --> runner__
-    laravel__ --> sources_Normalizer
-    laravel__ --> sources_Resolver
-    laravel__ --> laravel_Bindings
-    laravel__ --> laravel_Http
+    protocol_http_Execution --> contracts_Exceptions
+    protocol_http_Execution --> contracts_Interfaces
+    protocol_http_Execution --> contracts_Spec
+    protocol_http_Execution --> engine_Execution
+    protocol_http_Execution --> sources_Normalizer
+    protocol_http_Execution --> evaluation__
+    protocol_http_Execution --> expression_Data
+    protocol_http_Execution --> expression_Enum
+    protocol_http_Execution --> expression_Interfaces
+    protocol_http_Protocol --> contracts_Interfaces
+    protocol_http_Protocol --> contracts_Spec
+    protocol_http_Protocol --> contracts_State
+    protocol_http_Protocol --> engine_Execution
+    protocol_http_Protocol --> evaluation__
+    protocol_http_Protocol --> protocol_http_Execution
+    protocol_http_Protocol --> sources_Normalizer
+    protocol_http_Protocol --> engine_Exceptions
+    protocol_http_Protocol --> expression_Data
+    protocol_http_Registrar --> contracts_Interfaces
+    protocol_http_Registrar --> engine_Execution
+    protocol_http_Registrar --> evaluation__
+    protocol_http_Registrar --> protocol_http_Execution
+    protocol_http_Registrar --> protocol_http_Protocol
+    protocol_http_Registrar --> sources_Normalizer
+    protocol_rpc_Execution --> contracts_Spec
+    protocol_rpc_Execution --> contracts_State
+    protocol_rpc_Execution --> document__
+    protocol_rpc_Execution --> engine_Exceptions
+    protocol_rpc_Execution --> engine_Execution
+    protocol_rpc_Execution --> evaluation__
+    protocol_rpc_Execution --> protocol_rpc_Protocol
+    protocol_rpc_Execution --> contracts_Interfaces
+    protocol_rpc_Execution --> protocol_rpc_Transfer
+    protocol_rpc_Normalizer --> contracts_Interfaces
+    protocol_rpc_Normalizer --> contracts_Spec
+    protocol_rpc_Normalizer --> document__
+    protocol_rpc_Protocol --> contracts_Spec
+    protocol_rpc_Protocol --> document__
+    protocol_rpc_Protocol --> protocol_rpc_Normalizer
+    protocol_rpc_Protocol --> sources_Resolver
+    protocol_rpc_Registrar --> contracts_Interfaces
+    protocol_rpc_Registrar --> protocol_rpc_Execution
+    protocol_rpc_Registrar --> protocol_rpc_Normalizer
+    protocol_rpc_Registrar --> protocol_rpc_Protocol
+    protocol_rpc_Registrar --> protocol_rpc_Transfer
+    protocol_rpc_Transfer --> contracts_Interfaces
+    protocol_rpc_Transfer --> contracts_Spec
+    protocol_rpc_Transfer --> protocol_rpc_Protocol
+    protocol_soap_Execution --> contracts_Spec
+    protocol_soap_Execution --> protocol_soap_Transfer
+    protocol_soap_Execution --> document__
+    protocol_soap_Execution --> sources_Normalizer
+    protocol_soap_Execution --> sources_Resolver
+    protocol_soap_Execution --> contracts_Interfaces
+    protocol_soap_Execution --> contracts_State
+    protocol_soap_Execution --> engine_Exceptions
+    protocol_soap_Execution --> engine_Execution
+    protocol_soap_Execution --> evaluation__
+    protocol_soap_Registrar --> contracts_Interfaces
+    protocol_soap_Registrar --> protocol_soap_Execution
+    protocol_soap_Registrar --> protocol_soap_Resolver
+    protocol_soap_Registrar --> protocol_soap_Transfer
+    protocol_soap_Registrar --> protocol_soap_Validation
+    protocol_soap_Registrar --> sources_Normalizer
+    protocol_soap_Resolver --> contracts_Interfaces
+    protocol_soap_Transfer --> contracts_Interfaces
+    protocol_soap_Validation --> contracts_Exceptions
+    protocol_soap_Validation --> contracts_Interfaces
+    protocol_soap_Validation --> contracts_Spec
+    protocol_soap_Validation --> protocol_soap_Execution
     classDef coreNode fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
 ```

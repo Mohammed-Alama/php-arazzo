@@ -23,6 +23,7 @@ flowchart LR
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1453 LOC</small>"]:::supportingDomain
         S_document_Validator["document:Validator<br/><small>5132 LOC</small>"]:::supportingDomain
+        S_protocol_soap_Resolver["protocol-soap:Resolver<br/><small>136 LOC</small>"]:::supportingDomain
         S_sources_Resolver["sources:Resolver<br/><small>512 LOC</small>"]:::supportingDomain
         S_sources_Validator["sources:Validator<br/><small>325 LOC</small>"]:::supportingDomain
     end
@@ -31,15 +32,7 @@ flowchart LR
         S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
         S_evaluation_Events["evaluation:Events<br/><small>27 LOC</small>"]:::genericDomain
         S_expression_Support["expression:Support<br/><small>59 LOC</small>"]:::genericDomain
-        S_laravel_Bindings["laravel:Bindings<br/><small>395 LOC</small>"]:::genericDomain
-        S_laravel_Events["laravel:Events<br/><small>24 LOC</small>"]:::genericDomain
-        S_laravel_Http["laravel:Http<br/><small>187 LOC</small>"]:::genericDomain
-        S_laravel_Lock["laravel:Lock<br/><small>52 LOC</small>"]:::genericDomain
-        S_laravel_Persistence["laravel:Persistence<br/><small>316 LOC</small>"]:::genericDomain
-        S_laravel_Queue["laravel:Queue<br/><small>109 LOC</small>"]:::genericDomain
-        S_laravel_State["laravel:State<br/><small>52 LOC</small>"]:::genericDomain
-        S_laravel_Support["laravel:Support<br/><small>272 LOC</small>"]:::genericDomain
-        S_runtime_State["runtime:State<br/><small>1056 LOC</small>"]:::genericDomain
+        S_runner_Events["runner:Events<br/><small>328 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified["Unclassified"]
         S_contracts_Dependency["contracts:Dependency<br/><small>336 LOC</small>"]:::unknownDomain
@@ -49,14 +42,13 @@ flowchart LR
         S_engine_Enum["engine:Enum<br/><small>17 LOC</small>"]:::unknownDomain
         S_engine_Exceptions["engine:Exceptions<br/><small>42 LOC</small>"]:::unknownDomain
         S_engine_Execution["engine:Execution<br/><small>1031 LOC</small>"]:::unknownDomain
+        S_engine_Runtime["engine:Runtime<br/><small>1602 LOC</small>"]:::unknownDomain
         S_evaluation_Condition["evaluation:Condition<br/><small>1023 LOC</small>"]:::unknownDomain
         S_evaluation_Data["evaluation:Data<br/><small>86 LOC</small>"]:::unknownDomain
         S_evaluation_Enum["evaluation:Enum<br/><small>123 LOC</small>"]:::unknownDomain
         S_evaluation_Interfaces["evaluation:Interfaces<br/><small>44 LOC</small>"]:::unknownDomain
         S_evaluation_Plugins["evaluation:Plugins<br/><small>120 LOC</small>"]:::unknownDomain
         S_evaluation_Registries["evaluation:Registries<br/><small>121 LOC</small>"]:::unknownDomain
-        S_events_Interfaces["events:Interfaces<br/><small>19 LOC</small>"]:::unknownDomain
-        S_events_Listener["events:Listener<br/><small>95 LOC</small>"]:::unknownDomain
         S_expression_Ast["expression:Ast<br/><small>350 LOC</small>"]:::unknownDomain
         S_expression_Data["expression:Data<br/><small>150 LOC</small>"]:::unknownDomain
         S_expression_Enum["expression:Enum<br/><small>45 LOC</small>"]:::unknownDomain
@@ -66,13 +58,22 @@ flowchart LR
         S_expression_Plugins["expression:Plugins<br/><small>128 LOC</small>"]:::unknownDomain
         S_expression_Registries["expression:Registries<br/><small>73 LOC</small>"]:::unknownDomain
         S_expression_Xpath["expression:Xpath<br/><small>173 LOC</small>"]:::unknownDomain
+        S_protocol_http_Execution["protocol-http:Execution<br/><small>536 LOC</small>"]:::unknownDomain
+        S_protocol_http_Protocol["protocol-http:Protocol<br/><small>329 LOC</small>"]:::unknownDomain
+        S_protocol_http_Registrar["protocol-http:Registrar<br/><small>141 LOC</small>"]:::unknownDomain
+        S_protocol_rpc_Execution["protocol-rpc:Execution<br/><small>313 LOC</small>"]:::unknownDomain
+        S_protocol_rpc_Normalizer["protocol-rpc:Normalizer<br/><small>661 LOC</small>"]:::unknownDomain
+        S_protocol_rpc_Protocol["protocol-rpc:Protocol<br/><small>514 LOC</small>"]:::unknownDomain
+        S_protocol_rpc_Registrar["protocol-rpc:Registrar<br/><small>93 LOC</small>"]:::unknownDomain
+        S_protocol_rpc_Transfer["protocol-rpc:Transfer<br/><small>219 LOC</small>"]:::unknownDomain
+        S_protocol_soap_Execution["protocol-soap:Execution<br/><small>597 LOC</small>"]:::unknownDomain
+        S_protocol_soap_Registrar["protocol-soap:Registrar<br/><small>97 LOC</small>"]:::unknownDomain
+        S_protocol_soap_Transfer["protocol-soap:Transfer<br/><small>203 LOC</small>"]:::unknownDomain
+        S_protocol_soap_Validation["protocol-soap:Validation<br/><small>139 LOC</small>"]:::unknownDomain
         S_runner_Async["runner:Async<br/><small>1346 LOC</small>"]:::unknownDomain
         S_runner_Execution["runner:Execution<br/><small>383 LOC</small>"]:::unknownDomain
         S_runner_Interfaces["runner:Interfaces<br/><small>25 LOC</small>"]:::unknownDomain
         S_runner_Sync["runner:Sync<br/><small>1046 LOC</small>"]:::unknownDomain
-        S_runtime_Infrastructure["runtime:Infrastructure<br/><small>162 LOC</small>"]:::unknownDomain
-        S_runtime_Policy["runtime:Policy<br/><small>102 LOC</small>"]:::unknownDomain
-        S_runtime_Telemetry["runtime:Telemetry<br/><small>282 LOC</small>"]:::unknownDomain
         S_sources_Normalizer["sources:Normalizer<br/><small>1282 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
@@ -84,9 +85,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,207 | 0 | 5% |
-| Supporting | 7 | 8,761 | 0 | 37% |
-| Generic subdomain | 13 | 2,237 | 1,407 | 16% |
-| Unclassified | 32 | 9,767 | 0 | 42% |
+| Supporting | 8 | 8,897 | 0 | 34% |
+| Generic subdomain | 5 | 1,509 | 0 | 6% |
+| Unclassified | 40 | 14,551 | 0 | 56% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
@@ -96,14 +97,13 @@ flowchart LR
 - `engine:Enum`
 - `engine:Exceptions`
 - `engine:Execution`
+- `engine:Runtime`
 - `evaluation:Condition`
 - `evaluation:Data`
 - `evaluation:Enum`
 - `evaluation:Interfaces`
 - `evaluation:Plugins`
 - `evaluation:Registries`
-- `events:Interfaces`
-- `events:Listener`
 - `expression:Ast`
 - `expression:Data`
 - `expression:Enum`
@@ -113,11 +113,20 @@ flowchart LR
 - `expression:Plugins`
 - `expression:Registries`
 - `expression:Xpath`
+- `protocol-http:Execution`
+- `protocol-http:Protocol`
+- `protocol-http:Registrar`
+- `protocol-rpc:Execution`
+- `protocol-rpc:Normalizer`
+- `protocol-rpc:Protocol`
+- `protocol-rpc:Registrar`
+- `protocol-rpc:Transfer`
+- `protocol-soap:Execution`
+- `protocol-soap:Registrar`
+- `protocol-soap:Transfer`
+- `protocol-soap:Validation`
 - `runner:Async`
 - `runner:Execution`
 - `runner:Interfaces`
 - `runner:Sync`
-- `runtime:Infrastructure`
-- `runtime:Policy`
-- `runtime:Telemetry`
 - `sources:Normalizer`

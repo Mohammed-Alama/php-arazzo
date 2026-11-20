@@ -1,5 +1,5 @@
 {
-    "name": "alama/arazzo-protocol-soap",
+    "name": "php-arazzo/arazzo-protocol-soap",
     "description": "SOAP vertical slice for alama/arazzo-core: SOAP executor, SoapResponseTransfer mapper, XSD response validator (WSDL parsing ships in alama/arazzo-sources — DF8). Zero vendor, DOM + PSR-18.",
     "keywords": [
         "alama",
@@ -10,6 +10,7 @@
         "protocol"
     ],
     "license": "MIT",
+    "version": "1.0.0-alpha.1",
     "repositories": [
         {
             "type": "path",
@@ -40,12 +41,12 @@
         "php": "^8.4",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "alama/arazzo-contracts": "@dev",
-        "alama/arazzo-document": "@dev",
-        "alama/arazzo-expression": "@dev",
-        "alama/arazzo-evaluation": "@dev",
-        "alama/arazzo-engine": "@dev",
-        "alama/arazzo-sources": "@dev",
+        "php-arazzo/arazzo-contracts": "@dev",
+        "php-arazzo/arazzo-document": "@dev",
+        "php-arazzo/arazzo-expression": "@dev",
+        "php-arazzo/arazzo-evaluation": "@dev",
+        "php-arazzo/arazzo-engine": "@dev",
+        "php-arazzo/arazzo-sources": "@dev",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.1",
         "psr/http-message": "^2.0"

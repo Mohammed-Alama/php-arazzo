@@ -14,7 +14,7 @@ namespace ArazzoDocs;
  *
  * @var list<string>
  */
-const CORE_SRC_PACKAGES = ['contracts', 'expression', 'evaluation', 'document', 'sources', 'runtime', 'engine', 'events', 'runner', 'cli'];
+const CORE_SRC_PACKAGES = ['contracts', 'expression', 'evaluation', 'document', 'sources', 'engine', 'runner', 'cli', 'protocol-http', 'protocol-rpc', 'protocol-soap', 'core'];
 
 /**
  * Real cross-package dependency direction, bottom (most depended-upon) to top
@@ -28,7 +28,7 @@ const CORE_SRC_PACKAGES = ['contracts', 'expression', 'evaluation', 'document', 
  *
  * @var list<string>
  */
-const PACKAGE_LAYER_ORDER = ['contracts', 'expression', 'evaluation', 'document', 'sources', 'runtime', 'engine', 'events', 'runner', 'cli', 'laravel'];
+const PACKAGE_LAYER_ORDER = ['contracts', 'expression', 'evaluation', 'sources', 'document', 'engine', 'protocol-http', 'protocol-rpc', 'protocol-soap', 'runner', 'core', 'cli'];
 
 /**
  * Namespace segment each package claims, used to render package-qualified
@@ -42,12 +42,13 @@ const PACKAGE_NAMESPACE = [
     'evaluation' => 'Evaluation',
     'document' => 'Document',
     'sources' => 'Sources',
-    'runtime' => 'Runtime',
     'engine' => 'Engine',
-    'events' => 'Events',
     'runner' => 'Runner',
     'cli' => 'Cli',
-    'laravel' => 'Laravel',
+    'protocol-http' => 'Protocol\\Http',
+    'protocol-rpc' => 'Protocol\\Rpc',
+    'protocol-soap' => 'Protocol\\Soap',
+    'core' => '',
 ];
 
 /**
@@ -241,7 +242,7 @@ function packageLayerOrder(string $root): array
         $require = array_keys(is_array($json['require'] ?? null) ? $json['require'] : []);
         $counts[$slug] = count(array_filter(
             $require,
-            fn (string $k): bool => str_starts_with($k, 'alama/') && $k !== 'alama/'.($slug === 'laravel' ? 'laravel-arazzo' : 'arazzo-'.$slug),
+            fn (string $k): bool => str_starts_with($k, 'php-arazzo/arazzo-') && $k !== 'php-arazzo/arazzo-'.$slug,
         ));
     }
     usort($slugs, fn (string $a, string $b): int => $counts[$a] <=> $counts[$b]);

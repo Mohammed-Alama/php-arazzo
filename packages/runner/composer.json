@@ -1,18 +1,17 @@
 {
-    "name": "alama/arazzo-runner",
+    "name": "php-arazzo/arazzo-runner",
     "description": "Arazzo workflow execution engine: state, events, policy, protocol, async, telemetry.",
     "type": "library",
+    "version": "1.0.0-alpha.1",
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "alama/arazzo-contracts": "@dev",
-        "alama/arazzo-expression": "@dev",
-        "alama/arazzo-evaluation": "@dev",
-        "alama/arazzo-document": "@dev",
-        "alama/arazzo-events": "@dev",
-        "alama/arazzo-runtime": "@dev",
-        "alama/arazzo-sources": "@dev",
-        "alama/arazzo-engine": "@dev",
+        "php-arazzo/arazzo-contracts": "@dev",
+        "php-arazzo/arazzo-expression": "@dev",
+        "php-arazzo/arazzo-evaluation": "@dev",
+        "php-arazzo/arazzo-document": "@dev",
+        "php-arazzo/arazzo-sources": "@dev",
+        "php-arazzo/arazzo-engine": "@dev",
         "guzzlehttp/guzzle": "^7.9",
         "open-telemetry/api": "^1.0",
         "open-telemetry/sdk": "^1.0",
@@ -30,11 +29,15 @@
         "pestphp/pest-plugin-arch": "^5.0"
     },
     "autoload": {
-        "psr-4": {"Alama\\Arazzo\\Runner\\": "src/"}
+        "psr-4": {
+            "Alama\\Arazzo\\Runner\\": "src/",
+            "Alama\\Arazzo\\Events\\": "src/Events/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Alama\\Arazzo\\Tests\\": "tests/"
+            "Alama\\Arazzo\\Tests\\": "tests/",
+            "Alama\\Arazzo\\Tests\\Events\\": "tests/Events/"
         }
     },
     "config": {

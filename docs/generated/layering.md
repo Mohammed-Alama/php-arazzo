@@ -39,16 +39,13 @@ flowchart TB
         M_expression_Xpath["expression:Xpath"]:::node
         M_expression__["(expression package root)"]:::node
     end
-    subgraph PKG_M_runtime["runtime"]
-        M_runtime_Infrastructure["runtime:Infrastructure"]:::node
-        M_runtime_Policy["runtime:Policy"]:::node
-        M_runtime_State["runtime:State"]:::node
-        M_runtime_Telemetry["runtime:Telemetry"]:::node
-    end
-    subgraph PKG_M_events["events"]
-        M_events_Interfaces["events:Interfaces"]:::node
-        M_events_Listener["events:Listener"]:::node
-        M_events__["(events package root)"]:::node
+    subgraph PKG_M_engine["engine"]
+        M_engine_Data["engine:Data"]:::node
+        M_engine_Enum["engine:Enum"]:::node
+        M_engine_Exceptions["engine:Exceptions"]:::node
+        M_engine_Execution["engine:Execution"]:::node
+        M_engine_Runtime["engine:Runtime"]:::node
+        M_engine__["(engine package root)"]:::node
     end
     subgraph PKG_M_evaluation["evaluation"]
         M_evaluation_Condition["evaluation:Condition"]:::node
@@ -65,21 +62,34 @@ flowchart TB
         M_document_Validator["document:Validator"]:::node
         M_document__["(document package root)"]:::node
     end
-    subgraph PKG_M_engine["engine"]
-        M_engine_Data["engine:Data"]:::node
-        M_engine_Enum["engine:Enum"]:::node
-        M_engine_Exceptions["engine:Exceptions"]:::node
-        M_engine_Execution["engine:Execution"]:::node
-        M_engine__["(engine package root)"]:::node
-    end
     subgraph PKG_M_sources["sources"]
         M_sources_Normalizer["sources:Normalizer"]:::node
         M_sources_Resolver["sources:Resolver"]:::node
         M_sources_Validator["sources:Validator"]:::node
         M_sources__["(sources package root)"]:::node
     end
+    subgraph PKG_M_protocol_http["protocol-http"]
+        M_protocol_http_Execution["protocol-http:Execution"]:::node
+        M_protocol_http_Protocol["protocol-http:Protocol"]:::node
+        M_protocol_http_Registrar["protocol-http:Registrar"]:::node
+    end
+    subgraph PKG_M_protocol_rpc["protocol-rpc"]
+        M_protocol_rpc_Execution["protocol-rpc:Execution"]:::node
+        M_protocol_rpc_Normalizer["protocol-rpc:Normalizer"]:::node
+        M_protocol_rpc_Protocol["protocol-rpc:Protocol"]:::node
+        M_protocol_rpc_Registrar["protocol-rpc:Registrar"]:::node
+        M_protocol_rpc_Transfer["protocol-rpc:Transfer"]:::node
+    end
+    subgraph PKG_M_protocol_soap["protocol-soap"]
+        M_protocol_soap_Execution["protocol-soap:Execution"]:::node
+        M_protocol_soap_Registrar["protocol-soap:Registrar"]:::node
+        M_protocol_soap_Resolver["protocol-soap:Resolver"]:::node
+        M_protocol_soap_Transfer["protocol-soap:Transfer"]:::node
+        M_protocol_soap_Validation["protocol-soap:Validation"]:::node
+    end
     subgraph PKG_M_runner["runner"]
         M_runner_Async["runner:Async"]:::node
+        M_runner_Events["runner:Events"]:::node
         M_runner_Execution["runner:Execution"]:::node
         M_runner_Interfaces["runner:Interfaces"]:::node
         M_runner_Sync["runner:Sync"]:::node
@@ -90,17 +100,6 @@ flowchart TB
         M_cli_Generator["cli:Generator"]:::node
         M_cli_Renderer["cli:Renderer"]:::node
     end
-    subgraph PKG_M_laravel["laravel"]
-        M_laravel_Bindings["laravel:Bindings"]:::laravelNode
-        M_laravel_Events["laravel:Events"]:::laravelNode
-        M_laravel_Http["laravel:Http"]:::laravelNode
-        M_laravel_Lock["laravel:Lock"]:::laravelNode
-        M_laravel_Persistence["laravel:Persistence"]:::laravelNode
-        M_laravel_Queue["laravel:Queue"]:::laravelNode
-        M_laravel_State["laravel:State"]:::laravelNode
-        M_laravel_Support["laravel:Support"]:::laravelNode
-        M_laravel__["(laravel package root)"]:::laravelNode
-    end
     M_cli_Console --> M_cli_Renderer
     M_cli_Console --> M_contracts_Dependency
     M_cli_Console --> M_contracts_Exceptions
@@ -109,14 +108,14 @@ flowchart TB
     M_cli_Console --> M_contracts_State
     M_cli_Console --> M_document_Parser
     M_cli_Console --> M_document_Validator
+    M_cli_Console --> M_engine_Runtime
     M_cli_Console --> M_evaluation__
-    M_cli_Console --> M_events_Interfaces
     M_cli_Console --> M_expression__
+    M_cli_Console --> M_protocol_http_Execution
     M_cli_Console --> M_runner_Async
+    M_cli_Console --> M_runner_Events
     M_cli_Console --> M_runner_Execution
     M_cli_Console --> M_runner__
-    M_cli_Console --> M_runtime_State
-    M_cli_Console --> M_runtime_Telemetry
     M_cli_Console --> M_sources_Resolver
     M_cli_Console --> M_sources__
     M_cli_Generator --> M_contracts_Interfaces
@@ -149,8 +148,11 @@ flowchart TB
     M_engine_Exceptions --> M_contracts_Support
     M_engine_Execution --> M_contracts_Spec
     M_engine_Execution --> M_contracts_State
-    M_engine_Execution --> M_document_Parser
-    M_engine_Execution --> M_evaluation__
+    M_engine_Execution -.->|violation| M_document_Parser
+    M_engine_Execution -.->|violation| M_evaluation__
+    M_engine_Runtime --> M_contracts_Interfaces
+    M_engine_Runtime --> M_contracts_Spec
+    M_engine_Runtime --> M_contracts_State
     M_engine__ --> M_contracts_Spec
     M_engine__ --> M_contracts_State
     M_engine__ --> M_engine_Data
@@ -188,9 +190,6 @@ flowchart TB
     M_evaluation__ --> M_expression_Data
     M_evaluation__ --> M_expression_Exceptions
     M_evaluation__ --> M_expression_Interfaces
-    M_events_Listener --> M_contracts_Support
-    M_events_Listener --> M_events_Interfaces
-    M_events_Listener --> M_events__
     M_expression_Ast --> M_expression_Data
     M_expression_Ast --> M_expression_Enum
     M_expression_Data --> M_contracts_Spec
@@ -228,61 +227,76 @@ flowchart TB
     M_expression__ --> M_expression_Registries
     M_expression__ --> M_expression_Support
     M_expression__ --> M_expression_Xpath
-    M_laravel_Bindings --> M_cli_Generator
-    M_laravel_Bindings --> M_contracts_Interfaces
-    M_laravel_Bindings --> M_contracts_Support
-    M_laravel_Bindings --> M_document_Parser
-    M_laravel_Bindings --> M_document__
-    M_laravel_Bindings --> M_evaluation__
-    M_laravel_Bindings --> M_events_Interfaces
-    M_laravel_Bindings --> M_events_Listener
-    M_laravel_Bindings --> M_expression_Interfaces
-    M_laravel_Bindings --> M_expression__
-    M_laravel_Bindings --> M_laravel_Http
-    M_laravel_Bindings --> M_laravel_Lock
-    M_laravel_Bindings --> M_laravel_Persistence
-    M_laravel_Bindings --> M_laravel_Queue
-    M_laravel_Bindings --> M_laravel_State
-    M_laravel_Bindings --> M_laravel_Support
-    M_laravel_Bindings --> M_runner_Execution
-    M_laravel_Bindings --> M_runner_Sync
-    M_laravel_Bindings --> M_runner__
-    M_laravel_Bindings --> M_runtime_State
-    M_laravel_Bindings --> M_sources_Normalizer
-    M_laravel_Bindings --> M_sources_Resolver
-    M_laravel_Bindings --> M_sources_Validator
-    M_laravel_Bindings --> M_sources__
-    M_laravel_Http --> M_cli_Generator
-    M_laravel_Http --> M_contracts_Interfaces
-    M_laravel_Http --> M_contracts_Spec
-    M_laravel_Http --> M_laravel_Support
-    M_laravel_Http --> M_runner_Async
-    M_laravel_Http --> M_sources_Resolver
-    M_laravel_Lock --> M_contracts_Interfaces
-    M_laravel_Persistence --> M_contracts_Interfaces
-    M_laravel_Persistence --> M_contracts_Spec
-    M_laravel_Persistence --> M_document_Parser
-    M_laravel_Persistence --> M_events_Interfaces
-    M_laravel_Persistence --> M_runtime_State
-    M_laravel_Queue --> M_contracts_Interfaces
-    M_laravel_Queue --> M_runner_Async
-    M_laravel_Queue --> M_runner__
-    M_laravel_State --> M_laravel_Support
-    M_laravel_State --> M_runtime_State
-    M_laravel_Support --> M_contracts_Interfaces
-    M_laravel_Support --> M_events_Interfaces
-    M_laravel_Support --> M_runner__
-    M_laravel_Support --> M_runtime_State
-    M_laravel_Support --> M_sources_Resolver
-    M_laravel__ --> M_contracts_Interfaces
-    M_laravel__ --> M_evaluation__
-    M_laravel__ --> M_expression_Interfaces
-    M_laravel__ --> M_laravel_Bindings
-    M_laravel__ --> M_laravel_Http
-    M_laravel__ --> M_laravel_Support
-    M_laravel__ --> M_runner__
-    M_laravel__ --> M_sources_Normalizer
-    M_laravel__ --> M_sources_Resolver
+    M_protocol_http_Execution --> M_contracts_Exceptions
+    M_protocol_http_Execution --> M_contracts_Interfaces
+    M_protocol_http_Execution --> M_contracts_Spec
+    M_protocol_http_Execution --> M_engine_Execution
+    M_protocol_http_Execution --> M_evaluation__
+    M_protocol_http_Execution --> M_expression_Data
+    M_protocol_http_Execution --> M_expression_Enum
+    M_protocol_http_Execution --> M_expression_Interfaces
+    M_protocol_http_Execution --> M_sources_Normalizer
+    M_protocol_http_Protocol --> M_contracts_Interfaces
+    M_protocol_http_Protocol --> M_contracts_Spec
+    M_protocol_http_Protocol --> M_contracts_State
+    M_protocol_http_Protocol --> M_engine_Exceptions
+    M_protocol_http_Protocol --> M_engine_Execution
+    M_protocol_http_Protocol --> M_evaluation__
+    M_protocol_http_Protocol --> M_expression_Data
+    M_protocol_http_Protocol --> M_protocol_http_Execution
+    M_protocol_http_Protocol --> M_sources_Normalizer
+    M_protocol_http_Registrar --> M_contracts_Interfaces
+    M_protocol_http_Registrar --> M_engine_Execution
+    M_protocol_http_Registrar --> M_evaluation__
+    M_protocol_http_Registrar --> M_protocol_http_Execution
+    M_protocol_http_Registrar --> M_protocol_http_Protocol
+    M_protocol_http_Registrar --> M_sources_Normalizer
+    M_protocol_rpc_Execution --> M_contracts_Interfaces
+    M_protocol_rpc_Execution --> M_contracts_Spec
+    M_protocol_rpc_Execution --> M_contracts_State
+    M_protocol_rpc_Execution --> M_document__
+    M_protocol_rpc_Execution --> M_engine_Exceptions
+    M_protocol_rpc_Execution --> M_engine_Execution
+    M_protocol_rpc_Execution --> M_evaluation__
+    M_protocol_rpc_Execution --> M_protocol_rpc_Protocol
+    M_protocol_rpc_Execution --> M_protocol_rpc_Transfer
+    M_protocol_rpc_Normalizer --> M_contracts_Interfaces
+    M_protocol_rpc_Normalizer --> M_contracts_Spec
+    M_protocol_rpc_Normalizer --> M_document__
+    M_protocol_rpc_Protocol --> M_contracts_Spec
+    M_protocol_rpc_Protocol --> M_document__
+    M_protocol_rpc_Protocol --> M_protocol_rpc_Normalizer
+    M_protocol_rpc_Protocol --> M_sources_Resolver
+    M_protocol_rpc_Registrar --> M_contracts_Interfaces
+    M_protocol_rpc_Registrar --> M_protocol_rpc_Execution
+    M_protocol_rpc_Registrar --> M_protocol_rpc_Normalizer
+    M_protocol_rpc_Registrar --> M_protocol_rpc_Protocol
+    M_protocol_rpc_Registrar --> M_protocol_rpc_Transfer
+    M_protocol_rpc_Transfer --> M_contracts_Interfaces
+    M_protocol_rpc_Transfer --> M_contracts_Spec
+    M_protocol_rpc_Transfer --> M_protocol_rpc_Protocol
+    M_protocol_soap_Execution --> M_contracts_Interfaces
+    M_protocol_soap_Execution --> M_contracts_Spec
+    M_protocol_soap_Execution --> M_contracts_State
+    M_protocol_soap_Execution --> M_document__
+    M_protocol_soap_Execution --> M_engine_Exceptions
+    M_protocol_soap_Execution --> M_engine_Execution
+    M_protocol_soap_Execution --> M_evaluation__
+    M_protocol_soap_Execution --> M_protocol_soap_Transfer
+    M_protocol_soap_Execution --> M_sources_Normalizer
+    M_protocol_soap_Execution --> M_sources_Resolver
+    M_protocol_soap_Registrar --> M_contracts_Interfaces
+    M_protocol_soap_Registrar --> M_protocol_soap_Execution
+    M_protocol_soap_Registrar --> M_protocol_soap_Resolver
+    M_protocol_soap_Registrar --> M_protocol_soap_Transfer
+    M_protocol_soap_Registrar --> M_protocol_soap_Validation
+    M_protocol_soap_Registrar --> M_sources_Normalizer
+    M_protocol_soap_Resolver --> M_contracts_Interfaces
+    M_protocol_soap_Transfer --> M_contracts_Interfaces
+    M_protocol_soap_Validation --> M_contracts_Exceptions
+    M_protocol_soap_Validation --> M_contracts_Interfaces
+    M_protocol_soap_Validation --> M_contracts_Spec
+    M_protocol_soap_Validation --> M_protocol_soap_Execution
     M_runner_Async --> M_contracts_Dependency
     M_runner_Async --> M_contracts_Exceptions
     M_runner_Async --> M_contracts_Interfaces
@@ -293,23 +307,22 @@ flowchart TB
     M_runner_Async --> M_document__
     M_runner_Async --> M_engine_Exceptions
     M_runner_Async --> M_engine_Execution
+    M_runner_Async --> M_engine_Runtime
     M_runner_Async --> M_evaluation__
-    M_runner_Async --> M_events_Interfaces
-    M_runner_Async --> M_events__
     M_runner_Async --> M_expression_Data
+    M_runner_Async --> M_runner_Events
     M_runner_Async --> M_runner_Execution
     M_runner_Async --> M_runner_Sync
     M_runner_Async --> M_runner__
-    M_runner_Async --> M_runtime_State
-    M_runner_Async --> M_runtime_Telemetry
+    M_runner_Events --> M_contracts_Support
     M_runner_Execution --> M_contracts_Interfaces
     M_runner_Execution --> M_contracts_Spec
     M_runner_Execution --> M_contracts_State
     M_runner_Execution --> M_contracts_Support
     M_runner_Execution --> M_document__
-    M_runner_Execution --> M_events_Interfaces
+    M_runner_Execution --> M_engine_Runtime
+    M_runner_Execution --> M_runner_Events
     M_runner_Execution --> M_runner_Sync
-    M_runner_Execution --> M_runtime_State
     M_runner_Execution --> M_sources_Normalizer
     M_runner_Interfaces --> M_contracts_Interfaces
     M_runner_Interfaces --> M_contracts_Spec
@@ -323,13 +336,13 @@ flowchart TB
     M_runner_Sync --> M_document__
     M_runner_Sync --> M_engine_Exceptions
     M_runner_Sync --> M_engine_Execution
+    M_runner_Sync --> M_engine_Runtime
     M_runner_Sync --> M_evaluation__
-    M_runner_Sync --> M_events__
     M_runner_Sync --> M_expression_Data
+    M_runner_Sync --> M_protocol_http_Execution
+    M_runner_Sync --> M_runner_Events
     M_runner_Sync --> M_runner_Execution
     M_runner_Sync --> M_runner__
-    M_runner_Sync --> M_runtime_Policy
-    M_runner_Sync --> M_runtime_State
     M_runner_Sync --> M_sources_Normalizer
     M_runner__ --> M_contracts_Exceptions
     M_runner__ --> M_contracts_Interfaces
@@ -337,22 +350,16 @@ flowchart TB
     M_runner__ --> M_contracts_State
     M_runner__ --> M_document__
     M_runner__ --> M_engine_Exceptions
+    M_runner__ --> M_engine_Runtime
     M_runner__ --> M_engine__
     M_runner__ --> M_evaluation__
-    M_runner__ --> M_events_Interfaces
     M_runner__ --> M_expression_Interfaces
+    M_runner__ --> M_protocol_http_Execution
     M_runner__ --> M_runner_Async
+    M_runner__ --> M_runner_Events
     M_runner__ --> M_runner_Execution
     M_runner__ --> M_runner_Sync
-    M_runner__ --> M_runtime_State
     M_runner__ --> M_sources_Normalizer
-    M_runtime_Infrastructure --> M_contracts_Interfaces
-    M_runtime_Policy --> M_contracts_Interfaces
-    M_runtime_Policy --> M_contracts_Spec
-    M_runtime_Policy --> M_contracts_State
-    M_runtime_State --> M_contracts_Interfaces
-    M_runtime_State --> M_contracts_Spec
-    M_runtime_State --> M_contracts_State
     M_sources_Normalizer --> M_contracts_Interfaces
     M_sources_Normalizer --> M_contracts_Spec
     M_sources_Normalizer --> M_contracts_Support
@@ -382,11 +389,13 @@ flowchart TB
 
 ## Package boundaries
 
-**1 package boundary violation(s):**
+**3 package boundary violation(s):**
 
 | Package | ↑ depends on package | Refs | Modules involved |
 |---|---|---:|---|
 | `document` | `sources` | 3 | `(document package root) -> sources:Normalizer`, `(document package root) -> sources:Validator` |
+| `engine` | `document` | 1 | `engine:Execution -> document:Parser` |
+| `engine` | `evaluation` | 1 | `engine:Execution -> (evaluation package root)` |
 
 ### All package edges (reference counts)
 
@@ -394,49 +403,54 @@ flowchart TB
 |---|---|---:|
 | `cli` | `contracts` | 27 |
 | `cli` | `document` | 10 |
+| `cli` | `engine` | 7 |
 | `cli` | `evaluation` | 2 |
-| `cli` | `events` | 2 |
 | `cli` | `expression` | 2 |
-| `cli` | `runner` | 7 |
-| `cli` | `runtime` | 7 |
+| `cli` | `protocol-http` | 3 |
+| `cli` | `runner` | 9 |
 | `cli` | `sources` | 3 |
 | `document` | `contracts` | 190 |
 | `document` | `expression` | 31 |
 | `document` | `sources` | 3 |
-| `engine` | `contracts` | 28 |
+| `engine` | `contracts` | 47 |
 | `engine` | `document` | 1 |
 | `engine` | `evaluation` | 1 |
 | `evaluation` | `contracts` | 56 |
 | `evaluation` | `expression` | 23 |
-| `events` | `contracts` | 1 |
 | `expression` | `contracts` | 27 |
-| `laravel` | `cli` | 3 |
-| `laravel` | `contracts` | 38 |
-| `laravel` | `document` | 4 |
-| `laravel` | `evaluation` | 6 |
-| `laravel` | `events` | 5 |
-| `laravel` | `expression` | 4 |
-| `laravel` | `runner` | 24 |
-| `laravel` | `runtime` | 10 |
-| `laravel` | `sources` | 29 |
-| `runner` | `contracts` | 126 |
+| `protocol-http` | `contracts` | 37 |
+| `protocol-http` | `engine` | 9 |
+| `protocol-http` | `evaluation` | 4 |
+| `protocol-http` | `expression` | 4 |
+| `protocol-http` | `sources` | 12 |
+| `protocol-rpc` | `contracts` | 24 |
+| `protocol-rpc` | `document` | 7 |
+| `protocol-rpc` | `engine` | 4 |
+| `protocol-rpc` | `evaluation` | 1 |
+| `protocol-rpc` | `sources` | 1 |
+| `protocol-soap` | `contracts` | 25 |
+| `protocol-soap` | `document` | 6 |
+| `protocol-soap` | `engine` | 3 |
+| `protocol-soap` | `evaluation` | 1 |
+| `protocol-soap` | `sources` | 3 |
+| `runner` | `contracts` | 127 |
 | `runner` | `document` | 10 |
-| `runner` | `engine` | 14 |
+| `runner` | `engine` | 34 |
 | `runner` | `evaluation` | 11 |
-| `runner` | `events` | 24 |
 | `runner` | `expression` | 6 |
-| `runner` | `runtime` | 20 |
+| `runner` | `protocol-http` | 4 |
 | `runner` | `sources` | 5 |
-| `runtime` | `contracts` | 19 |
 | `sources` | `contracts` | 34 |
 | `sources` | `document` | 26 |
 | `sources` | `expression` | 2 |
 
 ## Module-level detail
 
-**2 module-level violation(s) found:**
+**4 module-level violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
 | `(document package root)` | `sources:Normalizer` | 2 |
 | `(document package root)` | `sources:Validator` | 1 |
+| `engine:Execution` | `document:Parser` | 1 |
+| `engine:Execution` | `(evaluation package root)` | 1 |

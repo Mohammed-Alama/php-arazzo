@@ -1,13 +1,17 @@
 # Arazzo Workflow Engine for PHP & Laravel
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
+[![PHP](https://img.shields.io/badge/PHP-^8.4-blue.svg)](https://www.php.net/)
+[![Latest Stable Version](https://img.shields.io/packagist/v/php-arazzo/arazzo-core.svg)](https://packagist.org/packages/php-arazzo/arazzo-core)
+[![Total Downloads](https://img.shields.io/packagist/dt/php-arazzo/arazzo-core.svg)](https://packagist.org/packages/php-arazzo/arazzo-core)
+[![CI](https://github.com/PHP-Arazzo/php-arazzo/actions/workflows/ci.yml/badge.svg)](https://github.com/PHP-Arazzo/php-arazzo/actions/workflows/ci.yml)
 [![Ecosystem Feed](https://img.shields.io/badge/docs-ecosystem%20feed-informational)](docs/ECOSYSTEM_FEED.md)
 [![Tia Benchmark](https://img.shields.io/badge/docs-tia%20benchmark-success)](docs/TIA-BENCHMARK.md)
 
 > [!WARNING]
 > **Work in Progress:** This project is currently under active development and is not yet ready for production use.
 
-This monorepo hosts the complete ecosystem for executing **Arazzo 1.0.0/1.1.0** specifications natively in PHP and Laravel. 
+This monorepo hosts the complete ecosystem for executing **Arazzo 1.0.0/1.1.0** specifications natively in PHP.
 
 The [Arazzo Specification](https://github.com/OAI/Arazzo-Specification) is an extension of OpenAPI that describes sequences of API calls (workflows). While OpenAPI describes *what* endpoints exist, Arazzo describes *how* to chain those endpoints together to complete complex, multi-step tasks. This ecosystem provides a powerful execution engine to run those workflows dynamically within your PHP applications.
 
@@ -15,42 +19,101 @@ The [Arazzo Specification](https://github.com/OAI/Arazzo-Specification) is an ex
 
 ## 📦 Packages
 
-This repository is organized as a monorepo containing the following packages:
+This repository is organized as a monorepo containing the following Composer packages:
 
 | Package | Description | Version |
 |---------|-------------|---------|
-| **[alama/arazzo-core](packages/core)** | Framework-agnostic PHP engine. Includes the Arazzo parser, validator, step executor, dependency graph resolution, and JSONPath expression resolver. | `^1.0@alpha` |
-| **[alama/laravel-arazzo](packages/laravel)** | Laravel bridge. Deeply integrates the core engine into your Laravel applications with service providers, async queue execution, cache locking, and Eloquent model adapters. | `^2.0@alpha` |
+| **[php-arazzo/arazzo-contracts](packages/contracts)** | Shared contracts, DTOs, port interfaces, and parsed document model (Spec, Workflow, Step, SourceDescription, ExecutionState, WorkflowContext). | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-core](packages/core)** | Framework-agnostic PHP engine. Includes the Arazzo parser, validator, document loader, shared services. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-engine](packages/engine)** | Application core: step state machine, execution pipeline, retry policy, telemetry, lock strategies, state stores. Merged from `engine` + `runtime`. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-runner](packages/runner)** | Workflow execution facade (`RunnerFacade`), execution machinery, events. Includes folded-in `events` package. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-document](packages/document)** | Document parsing, validation and vendor-free model types. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-expression](packages/expression)** | Expression engine: parsing, evaluation, criteria evaluation, JSONPath, JSON Pointer. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-evaluation](packages/evaluation)** | Expression evaluation: criteria evaluation, selector evaluation, string interpolation, payload replacement. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-sources](packages/sources)** | Source resolution, fetching, OpenAPI normalization. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzi-protocol-http](packages/protocol-http)** | HTTP/OpenAPI + AsyncAPI vertical slice: normalizers, operation executors, transport, response validation. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-protocol-rpc](packages/protocol-rpc)** | Protocol-Buffer RPC vertical slice: gRPC, gRPC-Web, Twirp and Connect executors. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-protocol-soap](packages/protocol-soap)** | SOAP vertical slice: SOAP executor, SoapResponseTransfer mapper, XSD response validator. | `^1.0.0-alpha.1` |
+| **[php-arazzo/arazzo-cli](packages/cli)** | Console terminal edge: `arazzo run`, `validate`, `list`, `explain`, `render` commands. Thin OSS port using `RunnerFacadeInterface`. | `^1.0.0-alpha.1` |
+
+> **Note:** `alama/laravel-arazzo` has been extracted to its own repository at [`php-arazzo/laravel-arazzo`](https://github.com/PHP-Arazzo/laravel-arazzo). Use that repo for Laravel integration.
 
 ---
 
 ## 🚀 Features
 
-- **Full Arazzo Spec Support**: Parses and executes workflows defined in Arazzo 1.0.0 and 1.1.0 formats (YAML/JSON).
-- **Expression Resolution**: Dynamically resolves `$inputs`, `$steps`, `$response.body`, and custom variables using powerful JSONPath expressions.
+- **Framework-agnostic core**: Works natively with any PSR-compliant PHP application (PSR-7, PSR-18, PSR-3, PSR-16, PSR-14, PSR-11).
+- **Sub-workflow invocation**: Steps can reference and execute other workflows (`workflowId` steps).
+- **Expression Resolution**: Dynamically resolves `$inputs`, `$steps`, `$response.body`, `$sourceDescriptions`, and custom variables using powerful JSONPath expressions.
 - **Dependency Management**: Automatically resolves and guarantees step execution dependencies (`dependsOn`).
 - **Success Criteria Evaluation**: Enforces criteria validation natively before proceeding to the next steps.
-- **Framework Agnostic**: The core works natively with any PSR-compliant PHP application (PSR-7, PSR-18, PSR-3, PSR-16, PSR-14, PSR-11).
-- **Laravel Native**: Zero-friction setup for Laravel developers. Runs workflows natively on Laravel Queues.
+- **Sub-workflow outputs**: Child workflow outputs are exposed to parent `$steps.<childStepId>.outputs`.
+- **Response schema validation**: Validates HTTP responses against OpenAPI response schemas (default `true`, opt-out per step via `x-strict-validation: false`).
+- **Strict mode defaults**: Configurable strict validation default at the engine level.
+- **Retry policies**: Configurable retry attempts with exponential backoff calculator.
+- **Control flow**: Supports `onSuccess`/`onFailure` actions with `goto`, `retry`, and `end` semantics.
+- **Cancellation and suspension**: Supports cancellation scopes and suspension/resumption via correlation.
+- **Sub-step budgets**: Shared step budget across nested invocations and queue jobs.
 
 ---
 
 ## 💻 Installation
 
-Depending on your framework, you can install the core or the Laravel integration package.
-
-### For Laravel Projects
-```bash
-composer require alama/laravel-arazzo
-```
-The Service Provider is auto-discovered. You can publish the configuration using:
-```bash
-php artisan vendor:publish --tag="arazzo-config"
-```
+Depending on your framework, you can install the core or protocol packages.
 
 ### For Plain PHP Projects
 ```bash
-composer require alama/arazzo-core
+composer require php-arazzo/arazzo-core php-arazzo/arazzo-runner php-arazzo/arazzo-protocol-http
+```
+
+The `php-arazzo/arazzo-runner` package exposes `RunnerFacade` as the entry point:
+```php
+use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Loader;
+use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Runner\RunnerFacade;
+use Alama\Arazzo\Sources\SourceGraph;
+
+// 1. Parse the Arazzo document
+$loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
+$document = (new Parser())->parse($loader->load('workflow.arazzo.yaml'));
+
+// 2. Wire up source resolution
+$sourceGraph = SourceGraph::createRegistry(
+    new \GuzzleHttp\Client(),
+    new \GuzzleHttp\Psr7\HttpFactory()
+);
+
+// 3. Execute
+$executor = new RunnerFacade(
+    documentLoader: $sourceGraph->document(),
+    operationResolver: $sourceGraph->operations(),
+    evaluationEngine: new \Alama\Arazzo\Expression\ExpressionEngine(),
+    openApiExecutor: new \Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor(
+        new \GuzzleHttp\Client(),
+        new \GuzzleHttp\Psr7\HttpFactory()
+    ),
+    outputExtractor: new \Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor(
+        $sourceGraph->operations(),
+        new \Alama\Arazzo\Expression\ExpressionEngine(),
+        new \Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator(
+            new \Alama\Arazzo\Expression\ExpressionEngine()
+        ),
+        new \Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator(
+            $sourceGraph->operations()
+        )
+    ),
+    schemaValidator: new \Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator(
+        $sourceGraph->operations()
+    ),
+);
+
+$result = $executor->execute(
+    $document->workflows[0],
+    $document,
+    ['inputs' => []]
+);
 ```
 
 ---
@@ -61,70 +124,23 @@ composer require alama/arazzo-core
 
 ### Laravel Example
 
-> There is currently no `Arazzo` facade. Resolve the core classes from the container instead (constructor injection or `app()->make()`):
-
-```php
-use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
-use Alama\Arazzo\Parser\Loader;
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-
-class RunsRideBooking
-{
-    public function __construct(private WorkflowExecutor $executor)
-    {
-    }
-
-    public function __invoke(): void
-    {
-        $loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
-        $document = (new Parser())->parse($loader->load(resource_path('arazzo/ride-booking.arazzo.yaml')));
-
-        $result = $this->executor->execute($document->workflows[0], $document, [
-            'departure_polygon_id' => 123,
-            'destination_polygon_id' => 456,
-            'customer_id' => 789,
-        ]);
-
-        // $result->status is 'succeeded' or 'failed'
-    }
-}
-```
-
-`WorkflowExecutor` is bound as a singleton by `LaravelArazzoServiceProvider`, already wired for the canonical, action-following execution path. See [`packages/laravel/README.md`](packages/laravel) for durable, queue-driven execution and the full container binding list.
+`alama/laravel-arazzo` is now maintained in its own repository at [`php-arazzo/laravel-arazzo`](https://github.com/PHP-Arazzo/laravel-arazzo).
 
 ### Core Engine Example (Framework-Agnostic)
 
-Using the core executor manually, with no framework at all:
+Using the core engine directly with no framework:
 
 ```php
 use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
 use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Loader;
 use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
-use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Runner\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
-use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Runner\RunnerFacade;
+use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 
-// 1. Parse the Arazzo document.
+// 1. Parse the Arazzo document
 $loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
 $document = (new Parser())->parse($loader->load('LoginAndRetrievePets.arazzo.yaml'));
 
@@ -136,49 +152,44 @@ foreach ($document->workflows as $w) {
     }
 }
 
-// 2. Wire up PSR HTTP + source resolution (fetches the OpenAPI docs the workflow references).
-$client = new Client();
-$httpFactory = new HttpFactory();
-
-$sourceResolver = new SourceRegistry(new DefaultSourceResolver([
-    'http' => new HttpFetcher($client, $httpFactory),
-    'https' => new HttpFetcher($client, $httpFactory),
-    'file' => new LocalFetcher(),
-]));
-
-// 3. Wire up the execution pipeline.
-$evaluator = new ExpressionEvaluator();
-$operationResolver = new OpenApiOperationResolver(
-    new OpenApiDocumentLoader($sourceResolver),
-    new OpenApiVersionDetector(),
-    new OpenApi30Normalizer(),
-    new OpenApi31Normalizer(),
+// 2. Wire up PSR HTTP + source resolution
+$sourceGraph = SourceGraph::createRegistry(
+    new Client(),
+    new HttpFactory()
 );
 
-$expressionResolver = new ArazzoExpressionResolver(
-    $evaluator,
-    new ArazzoOutputExtractor($operationResolver, $evaluator),
-    new ArazzoCriteriaEvaluator($evaluator),
-    new ArazzoSchemaValidator($operationResolver),
+// 3. Execute via RunnerFacade
+$executor = new RunnerFacade(
+    documentLoader: $sourceGraph->document(),
+    operationResolver: $sourceGraph->operations(),
+    evaluationEngine: new \Alama\Arazzo\Expression\ExpressionEngine(),
+    openApiExecutor: new \Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor(
+        new Client(),
+        new HttpFactory()
+    ),
+    outputExtractor: new \Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor(
+        $sourceGraph->operations(),
+        new \Alama\Arazzo\Expression\ExpressionEngine(),
+        new \Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator(
+            new \Alama\Arazzo\Expression\ExpressionEngine()
+        ),
+        new \Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator(
+            $sourceGraph->operations()
+        )
+    ),
+    schemaValidator: new \Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator(
+        $sourceGraph->operations()
+    ),
 );
 
-$stepExecutor = new StepExecutor(
-    new DefaultOpenApiExecutor($client, $httpFactory),
-    $expressionResolver,
-    $operationResolver,
-    // Responses are validated against their OpenAPI schema by default; a
-    // step can opt out with `x-strict-validation: false`.
-    strictValidationDefault: true,
-    injector: new IdempotencyKeyInjector(enabledDefault: false, headerDefault: 'Idempotency-Key'),
+$result = $executor->execute(
+    $workflow,
+    $document,
+    [
+        'username' => 'testuser',
+        'password' => 'password123',
+    ]
 );
-
-$executor = new WorkflowExecutor($stepExecutor);
-
-// 4. Run it.
-$result = $executor->execute($workflow, $document, [
-    'username' => 'testuser',
-    'password' => 'password123',
-]);
 
 echo "Workflow execution finished with status: {$result->status}\n";
 
@@ -239,7 +250,7 @@ Daily **human-readable** poll of 54 github sources via `gh` (30 `OAI/*`, 4 `usea
 
 > **Digest:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) — a bounded, evidence-first digest: **Act** (everything worth a decision, with links and what changed), the tracked **watchlist** status table, collapsed **peer releases**, the **meeting agenda**, and a one-line `suppressed:` count. Any contributor can open it without running a command.
 
-* **Digest:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) (generated) · **State:** `storage/ecosystem-feed/state/`
+> **Digest:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) (generated) · **State:** `storage/ecosystem-feed/state/`
 * **Poll locally:** `composer ecosystem:poll:dry` (dry) / `composer ecosystem:poll` (commit) or `php scripts/ecosystem/poll.php --fixtures --dry-run` (offline fixtures including `OAI/Arazzo-Specification#533` SOAP + `#410` actor/loop)
 * **Triage:** `php .agents/skills/ecosystem-triage/scripts/analyze.php --verbose` → `.scratch/ecosystem-triage/<date>.md` → `/to-tickets`
 * **Workflow:** `.github/workflows/ecosystem-feed.yml` (`cron 17 6 * * *`, `workflow_dispatch` with `source` filter), `actions/cache` for ETags
@@ -248,7 +259,4 @@ All 54 sources polled via `gh api` (`gh` CLI) with `GITHUB_TOKEN` fallback — s
 
 ## Conformance
 
-`alama/arazzo-core` runs the **official OAI example corpus** through both its
-synchronous and queued adapters on every change. The current results live in
-[`docs/CONFORMANCE.md`](docs/CONFORMANCE.md); regenerate with
-`php scripts/generate-conformance-matrix.php`.
+`php-arazzo/arazzo-core` runs the **official OAI example corpus** through both its synchronous and queued adapters on every change. The current results live in [`docs/CONFORMANCE.md`](docs/CONFORMANCE.md); regenerate with `php scripts/generate-conformance-matrix.php`.

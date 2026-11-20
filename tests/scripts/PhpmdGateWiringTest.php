@@ -38,18 +38,15 @@ function phpmdScannedPackages(): array
         'packages/core/src',
         'packages/contracts/src',
         'packages/document/src',
-        'packages/expression/src',
-        'packages/evaluation/src',
-        'packages/sources/src',
-        'packages/runtime/src',
         'packages/engine/src',
-        'packages/events/src',
-        'packages/runner/src',
-        'packages/cli/src',
-        'packages/laravel/src',
+        'packages/evaluation/src',
+        'packages/expression/src',
         'packages/protocol-http/src',
         'packages/protocol-rpc/src',
         'packages/protocol-soap/src',
+        'packages/runner/src',
+        'packages/sources/src',
+        'packages/cli/src',
     ];
 }
 

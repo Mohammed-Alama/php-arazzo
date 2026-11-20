@@ -81,9 +81,10 @@ _No catalog found (LedgerAppendingListener not found)._
 | `WorkflowUniqueIdRule` <small>core</small> | `error` | 1 |
 | `WsdlStepRule` <small>core</small> | `error` | 3 |
 | `WorkflowDependencyCycleWalker` <small>core</small> | `error` | 1 |
-| `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
+| `DefaultOpenApiExecutor` <small>core</small> | `warning` | 1 |
+| `StepOutputExtractor` <small>core</small> | `warning` | 1 |
 
-98 logging calls total. PSR-14 events are dispatched independently (see events.md).
+99 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 
@@ -91,13 +92,13 @@ Runtime state survives process boundaries through these contracts:
 
 | Contract | Implementations |
 |---|---|
-| `DefinitionRegistryInterface` | `DatabaseDefinitionRegistry` <small>laravel</small> |
-| `EventLedgerInterface` | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
-| `ExecutionRegistryInterface` | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
-| `LockManagerInterface` | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
-| `PendingCorrelationRegistryInterface` | `InProcessPendingCorrelationRegistry` <small>core</small>, `DatabasePendingCorrelationRegistry` <small>laravel</small> |
-| `QueueDriverInterface` | `LaravelQueueDriver` <small>laravel</small>, `SyncQueueDriver` <small>core</small> |
-| `StateStoreInterface` | `RedisHotStateStore` <small>laravel</small>, `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small> |
+| `DefinitionRegistryInterface` |  |
+| `EventLedgerInterface` | `NullEventLedger` <small>core</small> |
+| `ExecutionRegistryInterface` | `InProcessExecutionRegistry` <small>core</small> |
+| `LockManagerInterface` | `CliRunner` <small>core</small> |
+| `PendingCorrelationRegistryInterface` | `InProcessPendingCorrelationRegistry` <small>core</small> |
+| `QueueDriverInterface` | `SyncQueueDriver` <small>core</small> |
+| `StateStoreInterface` | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | `InMemoryDefinitionRegistry` <small>core</small> |
 
 ## Correlation touchpoints
@@ -112,11 +113,6 @@ Where async suspend/resume bookkeeping happens:
 | `WorkflowContext` <small>core</small> | resumes from webhook |
 | `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
 | `LedgerEventListener` <small>core</small> | resumes from webhook |
-| `WebhookResumeController` <small>laravel</small> | resumes from webhook |
-| `LaravelArazzoServiceProvider` <small>laravel</small> | resumes from webhook |
-| `DatabasePendingCorrelationRegistry` <small>laravel</small> | consumes correlation, creates pending correlation, reads pending state |
-| `RunResumeCorrelationJob` <small>laravel</small> | resumes from webhook |
-| `LaravelQueueDriver` <small>laravel</small> | resumes from webhook |
 | `AsyncExecutionGraph` <small>core</small> | resumes from webhook |
 | `AsyncExecutionGraphAssembler` <small>core</small> | resumes from webhook |
 | `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |

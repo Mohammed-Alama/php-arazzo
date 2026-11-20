@@ -1,0 +1,69 @@
+arazzo: 1.0.0
+info:
+  title: Petstore Workflow Demo
+  version: 1.0.0
+  description: |
+    Demonstrates executing an Arazzo workflow against a local Petstore API
+    running in Docker. Uses the `arazzo run` CLI command.
+sourceDescriptions:
+  - name: petstore
+    url: ./petstore-openapi.yaml
+    type: openapi
+
+workflows:
+  - workflowId: loginAndRetrievePets
+    info:
+      title: Login User and Retrieve Pets
+      version: 1.0.0
+    inputs:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    steps:
+      - stepId: loginStep
+        description: Log in to the Petstore API
+        operationId: loginUser
+        parameters:
+          - name: username
+            in: query
+            value: $inputs.username
+          - name: password
+            in: query
+            value: $inputs.password
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          token: $response.body
+
+      - stepId: getPetsByStatus
+        description: Find pets by status using the authenticated session
+        operationId: findPetsByStatus
+        parameters:
+          - name: status
+            in: query
+            value: "available"
+          - name: Authorization
+            in: header
+            value: $steps.loginStep.outputs.token
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          availablePets: $response.body
+
+      - stepId: getPetById
+        description: Get a specific pet by ID from the previous response
+        operationId: getPetById
+        parameters:
+          - name: petId
+            in: path
+            value: $steps.getPetsByStatus.response.body#/0/id
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          petDetails: $response.body
+
+    outputs:
+      status: $steps.getPetById.outputs.petDetails

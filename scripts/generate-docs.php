@@ -97,7 +97,6 @@ $scans = [];
 foreach (\ArazzoDocs\CORE_SRC_PACKAGES as $package) {
     $scans[$package] = Scanner::scan($root.'/packages/'.$package.'/src', 'Alama\\Arazzo\\', $package);
 }
-$scans['laravel'] = Scanner::scan($root.'/packages/laravel/src', 'Alama\\Arazzo\\Laravel\\', 'laravel');
 
 // All renderers consume per-package $scans (package slug => module => files);
 // the legacy bare-module $core/$laravel merge is gone (was the source of

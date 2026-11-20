@@ -89,3 +89,27 @@ parameters:
 			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/UnifiedStepCarrier.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
+			count: 1
+			path: src/Events/CorrelationPendingEvent.php
+
+		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
+			count: 1
+			path: src/Events/StepExecutedEvent.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
+			count: 1
+			path: src/Events/StepFailedEvent.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
+			count: 1
+			path: src/Events/StepRetriedEvent.php

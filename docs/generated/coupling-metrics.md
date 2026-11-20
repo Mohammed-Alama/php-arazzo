@@ -12,21 +12,22 @@ targets. Regenerated before every commit.
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
 | `cli:Console` | 12 | 931 | 0 | 18 | 1.00 |  |
-| `cli:Generator` | 2 | 139 | 2 | 1 | 0.33 |  |
+| `cli:Generator` | 2 | 139 | 0 | 1 | 1.00 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
-| `contracts:Exceptions` | 1 | 30 | 5 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 19 | 348 | 24 | 3 | 0.11 |  |
-| `contracts:Spec` | 49 | 1158 | 37 | 1 | 0.03 |  |
-| `contracts:State` | 3 | 907 | 13 | 1 | 0.07 |  |
-| `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
-| `document:Parser` | 12 | 1441 | 7 | 2 | 0.22 |  |
+| `contracts:Exceptions` | 1 | 30 | 7 | 0 | 0.00 |  |
+| `contracts:Interfaces` | 19 | 348 | 27 | 3 | 0.10 |  |
+| `contracts:Spec` | 49 | 1158 | 42 | 1 | 0.02 |  |
+| `contracts:State` | 3 | 907 | 15 | 1 | 0.06 |  |
+| `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
+| `document:Parser` | 12 | 1441 | 5 | 2 | 0.29 |  |
 | `document:Validator` | 80 | 5052 | 6 | 7 | 0.54 |  |
-| `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
+| `(document root)` | 6 | 293 | 10 | 6 | 0.38 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
-| `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
-| `engine:Execution` | 8 | 1023 | 2 | 4 | 0.67 |  |
+| `engine:Exceptions` | 1 | 41 | 6 | 1 | 0.14 |  |
+| `engine:Execution` | 8 | 1023 | 7 | 4 | 0.36 |  |
+| `engine:Runtime` | 19 | 1583 | 5 | 3 | 0.38 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 17 | 1006 | 1 | 8 | 0.89 |  |
 | `evaluation:Data` | 2 | 84 | 3 | 2 | 0.40 |  |
@@ -35,45 +36,43 @@ targets. Regenerated before every commit.
 | `evaluation:Interfaces` | 2 | 42 | 2 | 3 | 0.60 |  |
 | `evaluation:Plugins` | 2 | 118 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
-| `(evaluation root)` | 6 | 843 | 7 | 13 | 0.65 |  |
-| `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
-| `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
-| `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |
+| `(evaluation root)` | 6 | 843 | 10 | 13 | 0.57 |  |
 | `expression:Ast` | 15 | 335 | 4 | 2 | 0.33 |  |
-| `expression:Data` | 5 | 145 | 9 | 3 | 0.25 |  |
-| `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
+| `expression:Data` | 5 | 145 | 11 | 3 | 0.21 |  |
+| `expression:Enum` | 2 | 43 | 5 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 7 | 1 | 0.13 |  |
-| `expression:Interfaces` | 5 | 206 | 15 | 5 | 0.25 |  |
+| `expression:Interfaces` | 5 | 206 | 14 | 5 | 0.26 |  |
 | `expression:Internal` | 3 | 422 | 1 | 6 | 0.86 |  |
 | `expression:Plugins` | 3 | 125 | 1 | 4 | 0.80 |  |
 | `expression:Registries` | 1 | 72 | 2 | 2 | 0.50 |  |
 | `expression:Support` | 1 | 58 | 1 | 1 | 0.50 |  |
 | `expression:Xpath` | 3 | 170 | 2 | 2 | 0.50 |  |
-| `(expression root)` | 9 | 1268 | 6 | 11 | 0.65 |  |
-| `laravel:Bindings` | 7 | 388 | 1 | 24 | 0.96 |  |
-| `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
-| `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
-| `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
-| `laravel:Persistence` | 4 | 312 | 1 | 5 | 0.83 |  |
-| `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
-| `laravel:State` | 1 | 51 | 1 | 2 | 0.67 |  |
-| `laravel:Support` | 4 | 268 | 4 | 5 | 0.56 |  |
-| `(laravel root)` | 4 | 589 | 0 | 9 | 1.00 |  |
-| `runner:Async` | 7 | 1339 | 4 | 19 | 0.83 | ⚠ unstable hub |
-| `runner:Execution` | 16 | 367 | 5 | 9 | 0.64 |  |
+| `(expression root)` | 9 | 1268 | 5 | 11 | 0.69 |  |
+| `protocol-http:Execution` | 4 | 532 | 5 | 9 | 0.64 |  |
+| `protocol-http:Protocol` | 2 | 327 | 1 | 9 | 0.90 |  |
+| `protocol-http:Registrar` | 1 | 140 | 0 | 6 | 1.00 |  |
+| `protocol-rpc:Execution` | 3 | 310 | 1 | 9 | 0.90 |  |
+| `protocol-rpc:Normalizer` | 6 | 655 | 2 | 3 | 0.60 |  |
+| `protocol-rpc:Protocol` | 4 | 510 | 3 | 4 | 0.57 |  |
+| `protocol-rpc:Registrar` | 1 | 92 | 0 | 5 | 1.00 |  |
+| `protocol-rpc:Transfer` | 2 | 217 | 2 | 3 | 0.60 |  |
+| `protocol-soap:Execution` | 5 | 592 | 2 | 10 | 0.83 |  |
+| `protocol-soap:Registrar` | 1 | 96 | 0 | 6 | 1.00 |  |
+| `protocol-soap:Resolver` | 1 | 135 | 1 | 1 | 0.50 |  |
+| `protocol-soap:Transfer` | 2 | 201 | 2 | 1 | 0.33 |  |
+| `protocol-soap:Validation` | 1 | 138 | 1 | 4 | 0.80 |  |
+| `runner:Async` | 7 | 1339 | 2 | 17 | 0.89 |  |
+| `runner:Events` | 11 | 317 | 5 | 1 | 0.17 |  |
+| `runner:Execution` | 16 | 367 | 4 | 9 | 0.69 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
-| `runner:Sync` | 6 | 1040 | 4 | 18 | 0.82 | ⚠ unstable hub |
-| `(runner root)` | 9 | 522 | 7 | 15 | 0.68 |  |
-| `runtime:Infrastructure` | 3 | 159 | 0 | 1 | 1.00 |  |
-| `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
-| `runtime:State` | 12 | 1044 | 9 | 3 | 0.25 |  |
-| `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `sources:Normalizer` | 11 | 1271 | 8 | 5 | 0.38 |  |
-| `sources:Resolver` | 13 | 499 | 8 | 3 | 0.27 |  |
-| `sources:Validator` | 1 | 324 | 3 | 4 | 0.57 |  |
-| `(sources root)` | 3 | 335 | 2 | 10 | 0.83 |  |
+| `runner:Sync` | 6 | 1040 | 3 | 18 | 0.86 | ⚠ unstable hub |
+| `(runner root)` | 9 | 522 | 3 | 16 | 0.84 | ⚠ unstable hub |
+| `sources:Normalizer` | 11 | 1271 | 11 | 5 | 0.31 |  |
+| `sources:Resolver` | 13 | 499 | 6 | 3 | 0.33 |  |
+| `sources:Validator` | 1 | 324 | 2 | 4 | 0.67 |  |
+| `(sources root)` | 3 | 335 | 1 | 10 | 0.91 |  |
 
-Total cross-module edges: **1151**
+Total cross-module edges: **1169**
 
 ## Most entangled module pairs
 
@@ -88,6 +87,6 @@ Total cross-module edges: **1151**
 | `(expression root)` → `expression:Ast` | 20 |
 | `document:Validator` → `expression:Interfaces` | 15 |
 | `(runner root)` → `contracts:Interfaces` | 14 |
+| `runner:Async` → `runner:Events` | 14 |
 | `(document root)` → `contracts:Spec` | 13 |
 | `engine:Execution` → `contracts:Spec` | 13 |
-| `sources:Normalizer` → `contracts:Spec` | 13 |
