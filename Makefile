@@ -143,7 +143,7 @@ verify: ## Run the same gates the pre-push hook runs (docs, pint, analyse, basel
 	vendor/bin/pint --test
 	composer run analyse
 	composer run check-baselines
-	composer run test
+	vendor/bin/pest --parallel --no-tia
 
 # Falsification testing (Popper/Hume/Socrates/Descartes) — see .agents/skills/falsification-testing/SKILL.md
 detect-fake: ## Run Fake Test Detector (ARGS="--all --json" or path)

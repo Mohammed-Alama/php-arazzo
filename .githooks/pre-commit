@@ -87,8 +87,8 @@ fi
 echo "✅ Baseline policy passed."
 echo ""
 
-echo "6. Running Tests (Pest/PHPUnit)..."
-if ! composer test; then
+echo "6. Running Tests (Pest, parallel, no TIA)..."
+if ! vendor/bin/pest --parallel --no-tia; then
     echo "========================================"
     echo "❌ Tests failed!"
     echo "💡 Fix the failing tests shown above."
