@@ -56,9 +56,16 @@ if ($uri === '/v3/pet/findByStatus' && $method === 'GET') {
 // Get pet by ID
 if (preg_match('#^/v3/pet/(\d+)$#', $uri, $matches) && $method === 'GET') {
     $petId = (int) $matches[1];
-    if (isset($pets[$petId])) {
+    $pet = null;
+    foreach ($pets as $p) {
+        if ($p['id'] === $petId) {
+            $pet = $p;
+            break;
+        }
+    }
+    if ($pet !== null) {
         http_response_code(200);
-        echo json_encode($pets[$petId]);
+        echo json_encode($pet);
     } else {
         http_response_code(404);
         echo json_encode(['error' => 'Pet not found']);

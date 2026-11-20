@@ -129,6 +129,15 @@ it('parses $steps.s.outputs.o#/pointer (1.1)', function () {
         ->and($ast->part->jsonPointer)->toBe('/profile/email');
 });
 
+it('parses array index on output', function (): void {
+    $ast = (new Parser())->parse('{$steps.getPetsByStatus.outputs.availablePets[0].id}');
+    expect($ast)->toBeInstanceOf(StepRef::class)
+        ->and($ast->stepId)->toBe('getPetsByStatus')
+        ->and($ast->part)->toBeInstanceOf(OutputPart::class)
+        ->and($ast->part->name)->toBe('availablePets')
+        ->and($ast->part->jsonPointer)->toBe('/0/id');
+});
+
 it('parses $message.header.Name and $message.payload#/ptr (1.1)', function () {
     $parser = new Parser();
 
