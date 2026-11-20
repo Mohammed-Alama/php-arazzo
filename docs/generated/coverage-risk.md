@@ -48,7 +48,7 @@ quadrantChart
     expression/Enum: [0, 1]
     expression/Exceptions: [0.125, 1]
     expression/Interfaces: [0.263, 1]
-    expression/Internal: [0.857, 0]
+    expression/Internal: [0.857, 0.333]
     expression/Plugins: [0.8, 0]
     expression/Registries: [0.5, 1]
     expression/Support: [0.5, 1]
@@ -84,17 +84,17 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 6 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 5 | 1 | 100% |
 | `contracts/Interfaces` | 0.10 | 43 | 19 | 100% |
-| `contracts/Spec` | 0.02 | 269 | 49 | 100% |
-| `contracts/State` | 0.06 | 76 | 3 | 100% |
+| `contracts/Spec` | 0.02 | 270 | 49 | 100% |
+| `contracts/State` | 0.06 | 77 | 3 | 100% |
 | `contracts/Support` | 0.00 | 13 | 5 | 100% |
-| `document/Parser` | 0.29 | 53 | 12 | 100% |
+| `document/Parser` | 0.29 | 54 | 12 | 100% |
 | `document/Validator` | 0.54 | 95 | 80 | 100% |
 | `engine/Data` | 0.75 | 2 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.14 | 5 | 1 | 100% |
 | `engine/Execution` | 0.36 | 12 | 8 | 100% |
 | `engine/Runtime` | 0.38 | 29 | 19 | 100% |
-| `evaluation/Condition` | 0.89 | 65 | 17 | 100% |
+| `evaluation/Condition` | 0.89 | 66 | 17 | 100% |
 | `evaluation/Data` | 0.40 | 15 | 2 | 100% |
 | `evaluation/Enum` | 0.00 | 6 | 5 | 100% |
 | `evaluation/Events` | 0.33 | 1 | 1 | 100% |
@@ -102,11 +102,11 @@ quadrantChart
 | `evaluation/Plugins` | 0.75 | 3 | 2 | 100% |
 | `evaluation/Registries` | 0.80 | 2 | 2 | 100% |
 | `expression/Ast` | 0.33 | 8 | 15 | 53% |
-| `expression/Data` | 0.21 | 21 | 5 | 100% |
+| `expression/Data` | 0.21 | 22 | 5 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
 | `expression/Exceptions` | 0.12 | 12 | 2 | 100% |
 | `expression/Interfaces` | 0.26 | 19 | 5 | 100% |
-| `expression/Internal` | 0.86 | 0 | 3 | 0% |
+| `expression/Internal` | 0.86 | 1 | 3 | 33% |
 | `expression/Plugins` | 0.80 | 0 | 3 | 0% |
 | `expression/Registries` | 0.50 | 1 | 1 | 100% |
 | `expression/Support` | 0.50 | 4 | 1 | 100% |
@@ -133,4 +133,4 @@ quadrantChart
 | `sources/Resolver` | 0.33 | 31 | 13 | 100% |
 | `sources/Validator` | 0.67 | 3 | 1 | 100% |
 
-**Refactor-now list** (untested churn): `protocol-rpc/Registrar`, `protocol-soap/Registrar`, `runner/Interfaces`, `expression/Internal`, `expression/Plugins`
+**Refactor-now list** (untested churn): `protocol-rpc/Registrar`, `protocol-soap/Registrar`, `runner/Interfaces`, `expression/Plugins`
