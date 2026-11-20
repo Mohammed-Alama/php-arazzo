@@ -1,6 +1,6 @@
 # Conformance Matrix
 
-> Generated on 2026-11-19 by `php scripts/generate-conformance-matrix.php`.
+> Generated on 2026-11-20 by `php scripts/generate-conformance-matrix.php`.
 > Corpus: official [OAI Arazzo examples](https://github.com/OAI/Arazzo-Specification/tree/main/examples)
 > (vendored snapshot under `packages/core/tests/Conformance/corpus/oai/`).
 >
