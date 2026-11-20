@@ -33,6 +33,7 @@ flowchart TB
         M_expression_Exceptions["expression:Exceptions"]:::node
         M_expression_Interfaces["expression:Interfaces"]:::node
         M_expression_Internal["expression:Internal"]:::node
+        M_expression_JsonPath["expression:JsonPath"]:::node
         M_expression_Plugins["expression:Plugins"]:::node
         M_expression_Registries["expression:Registries"]:::node
         M_expression_Support["expression:Support"]:::node
@@ -207,6 +208,8 @@ flowchart TB
     M_expression_Internal --> M_expression_Exceptions
     M_expression_Internal --> M_expression_Interfaces
     M_expression_Internal --> M_expression__
+    M_expression_JsonPath --> M_expression_Data
+    M_expression_JsonPath --> M_expression_Exceptions
     M_expression_Plugins --> M_contracts_Spec
     M_expression_Plugins --> M_expression_Interfaces
     M_expression_Plugins --> M_expression_Xpath
@@ -223,6 +226,7 @@ flowchart TB
     M_expression__ --> M_expression_Exceptions
     M_expression__ --> M_expression_Interfaces
     M_expression__ --> M_expression_Internal
+    M_expression__ --> M_expression_JsonPath
     M_expression__ --> M_expression_Plugins
     M_expression__ --> M_expression_Registries
     M_expression__ --> M_expression_Support

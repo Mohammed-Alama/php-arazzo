@@ -276,8 +276,10 @@ this file on a commit is a public API change — review it deliberately.
 - `public function test(string $raw): bool`
 
 #### `JsonPathEvaluator` class
-- `public static function evaluate(string $expression, array|object $data): mixed`
-- `public static function normalizeFilters(string $expression): string`
+- `public function __construct(private Rfc9535Engine $engine = new Rfc9535Engine())`
+- `public function budget(): JsonPathBudget`
+- `public function supportedVersions(): array`
+- `public static function withLimits(array $limits = []): self`
 
 #### `JsonPointer` class
 - `public static function isValid(string $pointer): bool`
@@ -301,6 +303,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function __construct(string $message, public readonly string $expression = '', public readonly int $offset = -1, string $path = '', string $codeId = '', ?Throwable $previous = null)`
 
 #### `SelectorEvaluationException` class
+- `public static function jsonPathBudgetExceeded(string $limitName, string $location = '/'): self`
 - `public static function unsupportedXpathVersion(string $requested, array $supported, string $location = '/'): self`
 - `public static function xpathRequiresXml(string $pointer): self`
 

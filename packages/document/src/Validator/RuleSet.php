@@ -130,7 +130,7 @@ final readonly class RuleSet
             new ExpressionUnresolvedWorkflowRefRule($engine),
             new ExtensionsXPrefixRule(),
             new ParameterQuerystringOperationShapeRule(),
-            new SelectorTypeSupportedRule(),
+            new SelectorTypeSupportedRule($selectorRegistry->supportedVersions(ExpressionType::JsonPath)),
             new SelfUriSyntaxRule(),
             new SourceTypeMatchesRule(),
             new SourceUniqueNameRule(),

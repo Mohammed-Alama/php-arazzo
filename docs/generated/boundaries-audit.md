@@ -16,7 +16,6 @@ when a boundary consciously moves.
 
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
-| `Flow` | 1 | 0 | _unclassified_ ⚠ |
 | `GuzzleHttp` | 7 | 0 | **forbidden** ⚠ |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 25 | 0 | _unclassified_ ⚠ |
@@ -40,7 +39,6 @@ when a boundary consciously moves.
 | engine | `engine:Execution` | `cebe` | 2 |
 | engine | `engine:Runtime` | `OpenTelemetry` | 23 |
 | evaluation | `evaluation:_` | `Psr` | 2 |
-| expression | `expression:_` | `Flow` | 1 |
 | protocol-http | `protocol-http:Execution` | `GuzzleHttp` | 2 |
 | protocol-http | `protocol-http:Execution` | `Psr` | 8 |
 | protocol-http | `protocol-http:Execution` | `cebe` | 8 |
@@ -62,14 +60,13 @@ when a boundary consciously moves.
 | sources | `sources:_` | `GuzzleHttp` | 1 |
 | sources | `sources:_` | `Psr` | 2 |
 
-**14 library boundary violation(s):**
+**13 library boundary violation(s):**
 - `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (4 refs)
 - `engine:Execution` imports `cebe\*` (2 refs)
 - `engine:Runtime` imports `OpenTelemetry\*` (23 refs)
-- `expression:_` imports `Flow\*` (1 refs)
 - `protocol-http:Execution` imports `GuzzleHttp\*` (2 refs)
 - `protocol-http:Execution` imports `cebe\*` (8 refs)
 - `runner:Async` imports `OpenTelemetry\*` (2 refs)

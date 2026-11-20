@@ -4,61 +4,63 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
-use Flow\JSONPath\JSONPath;
+use Alama\Arazzo\Expression\Data\JsonPathBudget;
+use Alama\Arazzo\Expression\JsonPath\Rfc9535Engine;
 
 /**
  * Standalone JSONPath evaluation; consumed by the ExpressionEngine facade and exposed
  * through its public jsonPath() method.
+ *
+ * Backed by a self-contained RFC 9535-conformant engine with query admission
+ * budgets, replacing the classic engine and its `[?expr]` → `[?(expr)]` regex
+ * translation seam.
+ *
+ * @param  array<array-key, mixed>|object  $data
  */
-class JsonPathEvaluator
+final class JsonPathEvaluator
 {
-    /**
-     * @param  array<array-key, mixed>|object  $data
-     */
-    public static function evaluate(string $expression, array|object $data): mixed
+    public function __construct(
+        private Rfc9535Engine $engine = new Rfc9535Engine(),
+    ) {}
+
+    public function evaluate(string $expression, array|object $data): mixed
     {
-        $normalized = self::normalizeFilters($expression);
+        $result = $this->engine->find($expression, $data);
 
-        // RFC 9535 allows filter selectors against OBJECT roots (testing the
-        // object's own members); classic engines only filter lists, so wrap
-        // the object as a single-element collection.
-        $isAssocObject = is_array($data) && $data !== [] && !array_is_list($data);
-        $wrapped = $isAssocObject && preg_match('/^\$?\[\?/', $normalized) === 1;
-
-        if ($wrapped) {
-            $data = [$data];
+        // Single match unwraps to the bare value; multiple matches stay a
+        // collection, matching the classic engine's public contract.
+        if (is_array($result) && count($result) === 1) {
+            return $result[0];
         }
 
-        $jsonPath = new JSONPath($data);
+        return $result;
+    }
 
-        $result = $jsonPath->find($normalized);
+    /** @return list<string> */
+    public function supportedVersions(): array
+    {
+        return $this->engine->supportedVersions();
+    }
 
-        $arrayResult = $result->getData();
-
-        // The engine types its payload as mixed; find() always yields a list,
-        // but anything unexpected is passed through rather than counted.
-        if (!is_array($arrayResult)) {
-            return $arrayResult;
-        }
-
-        // Single-match plucks unwrap to the value itself; standard JSONPath
-        // collections stay collections. Wrapped object-filters keep their
-        // collection shape so criteria truthiness sees "matched".
-        if (!$wrapped && count($arrayResult) === 1) {
-            return $arrayResult[0];
-        }
-
-        return $arrayResult;
+    public function budget(): JsonPathBudget
+    {
+        return $this->engine->budget();
     }
 
     /**
-     * RFC 9535 spells filter selectors `[?@...]` / `[?count(...)]`; the
-     * underlying engine uses the classic `[?(...)]` form. Translate the
-     * modern spelling so official examples (oauth, BNPL) evaluate.
+     * Create an evaluator with custom admission budgets.
+     *
+     * @param  array{maxExpressionLength?: int, maxSelectorDepth?: int, maxNodesVisited?: int, maxResultSetSize?: int}  $limits
      */
-    public static function normalizeFilters(string $expression): string
+    public static function withLimits(array $limits = []): self
     {
-        // `[?BODY]` -> `[?(BODY)]`
-        return (string) preg_replace('/\[\?([^\]]*)\]/', '[?($1)]', $expression);
+        $budget = new JsonPathBudget(
+            $limits['maxExpressionLength'] ?? 1000,
+            $limits['maxSelectorDepth'] ?? 64,
+            $limits['maxNodesVisited'] ?? 10000,
+            $limits['maxResultSetSize'] ?? 1000,
+        );
+
+        return new self(new Rfc9535Engine($budget));
     }
 }

@@ -28,4 +28,13 @@ final class SelectorEvaluationException extends ArazzoException
             'selector.xpath_requires_xml',
         );
     }
+
+    public static function jsonPathBudgetExceeded(string $limitName, string $location = '/'): self
+    {
+        return new self(
+            "JSONPath evaluation exceeded budget '{$limitName}'. Evaluation stopped to prevent unbounded cost.",
+            $location,
+            'expression.jsonpath_budget',
+        );
+    }
 }

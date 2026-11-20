@@ -19,11 +19,24 @@ use Alama\Arazzo\Document\Validator\Interfaces\Rule;
  */
 final class SelectorTypeSupportedRule implements Rule
 {
-    private const KNOWN_VERSIONS = [
+    /**
+     * Versions the specification recognises for each selector type; anything
+     * else is not a specification spelling at all.
+     *
+     * @var array<string, list<string>>
+     */
+    private const SPEC_VERSIONS = [
         'jsonpath' => ['rfc9535'],
         'xpath' => ['xpath-10', 'xpath-20', 'xpath-30', 'xpath-31'],
         'jsonpointer' => ['rfc6901'],
     ];
+
+    /**
+     * @param  list<string>  $supportedVersions  JSONPath versions the bound evaluator can apply.
+     */
+    public function __construct(
+        private readonly array $supportedVersions = ['rfc9535'],
+    ) {}
 
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
@@ -95,11 +108,27 @@ final class SelectorTypeSupportedRule implements Rule
             return; // No pinned version = implementation default; allowed.
         }
 
-        $allowed = self::KNOWN_VERSIONS[$s->type->value];
-        if (!in_array($s->version, $allowed, true)) {
+        $specVersions = self::SPEC_VERSIONS[$s->type->value];
+
+        if (!in_array($s->version, $specVersions, true)) {
             $errors->error(
                 $this->code(),
-                "Unsupported {$s->type->value} version '{$s->version}' at {$pointer}; expected one of: ".implode(', ', $allowed),
+                "Unsupported {$s->type->value} version '{$s->version}' at {$pointer}; expected one of: ".implode(', ', $specVersions),
+                $pointer,
+            );
+
+            return;
+        }
+
+        // The injected list is the JSONPath versions the bound evaluator
+        // implements; other selector types treat the spec list as implemented
+        // (preserving the original behaviour for xpath and jsonpointer).
+        $implemented = $s->type->value === 'jsonpath' ? $this->supportedVersions : $specVersions;
+
+        if (!in_array($s->version, $implemented, true)) {
+            $errors->error(
+                $this->code(),
+                "{$s->type->value} version '{$s->version}' is recognised by the specification but not implemented by the bound evaluator (supports: ".implode(', ', $implemented).'). Pin a supported version, or omit the version to run as the engine default.',
                 $pointer,
             );
         }

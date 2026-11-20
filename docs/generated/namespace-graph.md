@@ -41,6 +41,7 @@ flowchart LR
     expression_Exceptions["Alama\Arazzo\Expression\Exceptions"]:::coreNode
     expression_Interfaces["Alama\Arazzo\Expression\Interfaces"]:::coreNode
     expression_Internal["Alama\Arazzo\Expression\Internal"]:::coreNode
+    expression_JsonPath["Alama\Arazzo\Expression\JsonPath"]:::coreNode
     expression_Plugins["Alama\Arazzo\Expression\Plugins"]:::coreNode
     expression_Registries["Alama\Arazzo\Expression\Registries"]:::coreNode
     expression_Support["Alama\Arazzo\Expression\Support"]:::coreNode
@@ -93,6 +94,8 @@ flowchart LR
     expression_Internal --> expression__
     expression_Internal --> expression_Ast
     expression_Internal --> expression_Interfaces
+    expression_JsonPath --> expression_Data
+    expression_JsonPath --> expression_Exceptions
     expression_Plugins --> contracts_Spec
     expression_Plugins --> expression_Interfaces
     expression_Plugins --> expression_Xpath
@@ -112,6 +115,7 @@ flowchart LR
     expression__ --> expression_Xpath
     expression__ --> expression_Ast
     expression__ --> expression_Enum
+    expression__ --> expression_JsonPath
     expression__ --> expression_Support
     evaluation_Condition --> expression_Exceptions
     evaluation_Condition --> expression__
