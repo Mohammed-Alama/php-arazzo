@@ -64,11 +64,23 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
-      - name: Install Pint
-        run: composer global require laravel/pint:^1.0 --no-progress --dev
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+      - name: Cache composer downloads and vendor
+        id: composer-cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            .cache/composer
+            vendor
+          key: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
+          restore-keys: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: |
+          composer install --no-progress --prefer-dist --no-interaction
       - name: Check PHP code style
-        run: ~/.composer/vendor/bin/pint --test
+        run: vendor/bin/pint --test
 
   phpstan:
     name: PHPStan
