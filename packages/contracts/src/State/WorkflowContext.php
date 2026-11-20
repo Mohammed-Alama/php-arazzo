@@ -157,7 +157,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
      */
     public function withBudget(int $stepsSpent, array $workflowCallStack): self
     {
-        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $stepsSpent, workflowCallStack: $workflowCallStack, parentRunId: $this->parentRunId);
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $stepsSpent, workflowCallStack: $workflowCallStack, skippedSteps: $this->skippedSteps, parentRunId: $this->parentRunId);
     }
 
     /**

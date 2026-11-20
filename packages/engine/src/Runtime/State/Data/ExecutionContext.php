@@ -546,6 +546,7 @@ final class ExecutionContext
             'maxWorkflowDepth' => $this->maxWorkflowDepth,
             'status' => $this->status,
             'workflows' => $this->workflows,
+            'skippedSteps' => $this->skippedSteps,
         ];
     }
 }

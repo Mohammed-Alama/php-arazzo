@@ -92,7 +92,7 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `document:Parser` | 931 |
-| `ExecutionContext` | `engine:Runtime` | 552 |
+| `ExecutionContext` | `engine:Runtime` | 553 |
 | `Parser` | `expression:_` | 511 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |
 | `ExecutionState` | `contracts:State` | 465 |
