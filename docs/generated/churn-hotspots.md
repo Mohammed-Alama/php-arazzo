@@ -14,15 +14,15 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["cli:Console", "document:Validator", "runner:Execution", "runner:Async", "expression:Interfaces", "document:Parser", "sources:Normalizer", "contracts:Interfaces", "contracts:Spec", "runner:Sync", "engine:Execution", "evaluation:Plugins"]
     y-axis "Touches" 0 --> 50
-    bar [35, 34, 27, 17, 15, 14, 13, 11, 11, 10, 8, 7]
+    bar [35, 35, 27, 17, 15, 14, 13, 11, 11, 10, 8, 7]
 ```
 
-Analyzed 328 total file-touches across 54 modules.
+Analyzed 330 total file-touches across 54 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `cli:Console` | 35 | 11% | 943 | 37.1 |
-| `document:Validator` | 34 | 10% | 5,132 | 6.6 |
+| `document:Validator` | 35 | 11% | 5,170 | 6.8 |
 | `runner:Execution` | 27 | 8% | 383 | 70.5 |
 | `runner:Async` | 17 | 5% | 1,346 | 12.6 |
 | `expression:Interfaces` | 15 | 5% | 211 | 71.1 |
@@ -47,11 +47,11 @@ Analyzed 328 total file-touches across 54 modules.
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
 | `contracts:Dependency` | 4 | 1% | 336 | 11.9 |
 | `evaluation:Data` | 4 | 1% | 86 | 46.5 |
+| `expression:Enum` | 4 | 1% | 47 | 85.1 |
 | `protocol-http:Execution` | 4 | 1% | 536 | 7.5 |
 | `contracts:State` | 3 | 1% | 910 | 3.3 |
 | `contracts:Support` | 3 | 1% | 185 | 16.2 |
 | `evaluation:Interfaces` | 3 | 1% | 44 | 68.2 |
-| `expression:Enum` | 3 | 1% | 45 | 66.7 |
 | `expression:Internal` | 3 | 1% | 433 | 6.9 |
 | `protocol-rpc:Execution` | 3 | 1% | 313 | 9.6 |
 | `sources:Validator` | 3 | 1% | 325 | 9.2 |

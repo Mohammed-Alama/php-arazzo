@@ -221,6 +221,29 @@ it('rejects an async step that declares both operationId and channelPath', funct
         ->and($errors->errors()[0]->code)->toBe('schema.invalid');
 });
 
+it('rejects an async send step that declares correlationId', function (): void {
+    $errors = proseErrors(proseRaw('1.1.0', [[
+        'stepId' => 's',
+        'action' => 'send',
+        'channelPath' => 'createUser',
+        'correlationId' => 'id123',
+    ]], sourceType: 'asyncapi'));
+
+    expect($errors->errors())->not->toBeEmpty()
+        ->and($errors->errors()[0]->code)->toBe('schema.invalid');
+});
+
+it('accepts an async receive step with correlationId', function (): void {
+    $errors = proseErrors(proseRaw('1.1.0', [[
+        'stepId' => 's',
+        'action' => 'receive',
+        'channelPath' => 'createUser',
+        'correlationId' => 'id123',
+    ]], sourceType: 'asyncapi'));
+
+    expect($errors->errors())->toBeEmpty();
+});
+
 it('rejects a workflow step that also declares an async action', function (): void {
     $errors = proseErrors(proseRaw('1.1.0', [[
         'stepId' => 's',

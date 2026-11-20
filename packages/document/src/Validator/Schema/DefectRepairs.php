@@ -28,6 +28,7 @@ final class DefectRepairs
             $defs = self::criterionExpressionType($defs);
         } else {
             $defs = self::stepObjectDiscrimination($defs);
+            $defs = self::rejectSendWithCorrelationId($defs);
             $defs = self::payloadReplacementValue($defs);
         }
 
@@ -102,6 +103,43 @@ final class DefectRepairs
         $defs = self::forbidFields($defs, 'wsdl-step-object', [
             'operationId', 'operationPath', 'action', 'channelPath', 'correlationId', 'workflowId',
         ]);
+
+        return $defs;
+    }
+
+    /**
+     * Arazzo 1.1 §5.8.5 types AsyncAPI `correlationId` as "only specified for async
+     * receive steps". The vendored schema spells this with an `if`/`then` that
+     * justinrainbow does not enforce inside an `allOf`, so a `send` step carrying
+     * a `correlationId` slips through. Spell the exclusivity out with an explicit
+     * `not` guard: an async step must not combine `action: send` with `correlationId`.
+     *
+     * @param  array<array-key, mixed>  $defs
+     * @return array<array-key, mixed>
+     */
+    private static function rejectSendWithCorrelationId(array $defs): array
+    {
+        $definition = $defs['asyncapi-step-object'] ?? null;
+        if (!is_array($definition)) {
+            return $defs;
+        }
+
+        $allOf = $definition['allOf'] ?? null;
+        $definition['allOf'] = is_array($allOf) ? $allOf : [];
+        $definition['allOf'][] = [
+            'not' => [
+                'allOf' => [
+                    [
+                        'properties' => [
+                            'action' => ['const' => 'send'],
+                        ],
+                        'required' => ['action'],
+                    ],
+                    ['required' => ['correlationId']],
+                ],
+            ],
+        ];
+        $defs['asyncapi-step-object'] = $definition;
 
         return $defs;
     }
