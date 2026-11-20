@@ -17,7 +17,7 @@ xychart-beta
     bar [35, 34, 27, 17, 15, 14, 13, 11, 11, 10, 8, 7]
 ```
 
-Analyzed 326 total file-touches across 54 modules.
+Analyzed 328 total file-touches across 54 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -37,6 +37,7 @@ Analyzed 326 total file-touches across 54 modules.
 | `evaluation:Condition` | 6 | 2% | 1,023 | 5.9 |
 | `evaluation:Registries` | 6 | 2% | 121 | 49.6 |
 | `expression:Data` | 6 | 2% | 150 | 40 |
+| `expression:Ast` | 5 | 2% | 355 | 14.1 |
 | `expression:Xpath` | 5 | 2% | 173 | 28.9 |
 | `protocol-http:Registrar` | 5 | 2% | 141 | 35.5 |
 | `protocol-soap:Execution` | 5 | 2% | 597 | 8.4 |
@@ -46,12 +47,12 @@ Analyzed 326 total file-touches across 54 modules.
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
 | `contracts:Dependency` | 4 | 1% | 336 | 11.9 |
 | `evaluation:Data` | 4 | 1% | 86 | 46.5 |
-| `expression:Ast` | 4 | 1% | 355 | 11.3 |
 | `protocol-http:Execution` | 4 | 1% | 536 | 7.5 |
 | `contracts:State` | 3 | 1% | 910 | 3.3 |
 | `contracts:Support` | 3 | 1% | 185 | 16.2 |
 | `evaluation:Interfaces` | 3 | 1% | 44 | 68.2 |
 | `expression:Enum` | 3 | 1% | 45 | 66.7 |
+| `expression:Internal` | 3 | 1% | 433 | 6.9 |
 | `protocol-rpc:Execution` | 3 | 1% | 313 | 9.6 |
 | `sources:Validator` | 3 | 1% | 325 | 9.2 |
 | `contracts:Exceptions` | 2 | 1% | 31 | 64.5 |
@@ -59,7 +60,6 @@ Analyzed 326 total file-touches across 54 modules.
 | `engine:Enum` | 2 | 1% | 17 | 117.6 |
 | `evaluation:Enum` | 2 | 1% | 123 | 16.3 |
 | `expression:Exceptions` | 2 | 1% | 55 | 36.4 |
-| `expression:Internal` | 2 | 1% | 433 | 4.6 |
 | `expression:Plugins` | 2 | 1% | 128 | 15.6 |
 | `expression:Registries` | 2 | 1% | 73 | 27.4 |
 | `protocol-rpc:Normalizer` | 2 | 1% | 661 | 3 |
