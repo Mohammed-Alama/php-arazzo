@@ -107,13 +107,21 @@ final readonly class StepReferenceResolver
         return match (true) {
             $part instanceof RequestPart => $this->requestPart($part, $stepData),
             $part instanceof ResponsePart => $this->responsePart($part, $stepData),
-            $part instanceof OutputPart => $this->values->withPointer(
-                $this->values->map($stepData, 'outputs')[$part->name] ?? null,
-                $part->jsonPointer,
-            ),
+            $part instanceof OutputPart => $this->outputsPart($part, $stepData),
             $part instanceof InputPart => $this->values->map($stepData, 'inputs')[$part->name] ?? null,
             default => null,
         };
+    }
+
+    /** @param array<string, mixed> $stepData */
+    private function outputsPart(OutputPart $part, array $stepData): mixed
+    {
+        $outputs = $this->values->map($stepData, 'outputs');
+
+        return $this->values->withPointer(
+            $part->name === null ? $outputs : ($outputs[$part->name] ?? null),
+            $part->jsonPointer,
+        );
     }
 
     /** @param array<string, mixed> $stepData */

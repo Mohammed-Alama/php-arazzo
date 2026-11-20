@@ -40,6 +40,26 @@ it('evaluates step output references', function () {
     expect($evaluator->evaluate($expr, new EvaluationContext($context)))->toBe(456);
 });
 
+it('evaluates $steps.<id>.outputs (all outputs) as a selector payload root', function () {
+    $context = (new WorkflowContext('def_1'))
+        ->withStepResult('previous', [
+            'outputs' => ['id' => 456, 'token' => 'abc'],
+            'response' => ['statusCode' => 200],
+        ]);
+    $evaluator = evaluator();
+
+    expect($evaluator->evaluate(
+        new Expression('{$steps.previous.outputs}'),
+        new EvaluationContext($context),
+    ))->toBe(['id' => 456, 'token' => 'abc']);
+
+    // A specific output still resolves individually.
+    expect($evaluator->evaluate(
+        new Expression('{$steps.previous.outputs.id}'),
+        new EvaluationContext($context),
+    ))->toBe(456);
+});
+
 it('evaluates request parts using json pointer', function () {
     $context = (new WorkflowContext('def_1'))->withStepRequest('step1', [
         'headers' => ['Authorization' => 'Bearer token'],
