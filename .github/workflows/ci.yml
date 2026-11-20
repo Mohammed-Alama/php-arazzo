@@ -245,7 +245,7 @@ jobs:
         run: |
           composer update --no-progress --${{ matrix.stability }} --prefer-dist --no-interaction
       - name: Execute tests
-        run: composer run test
+        run: vendor/bin/pest --parallel --no-tia
       - name: Check conformance manifest drift
         run: php scripts/check-conformance-manifest.php
 
