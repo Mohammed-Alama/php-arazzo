@@ -13,6 +13,8 @@ enum TokenKind
     case Dot;
     case Hash;
     case Slash;
+    case LeftBracket;
+    case RightBracket;
     case Name;
     case PointerSegment;
     case Keyword;

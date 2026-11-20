@@ -187,16 +187,20 @@ final class Parser implements ParserInterface
      */
     private function parseNamedPart(array $rest, string $cls, string $raw, bool $allowPointer = false): OutputPart|InputPart
     {
-        if (count($rest) < 2 || $rest[0]->kind !== TokenKind::Dot || ($rest[1]->kind !== TokenKind::Name && $rest[1]->kind !== TokenKind::Keyword)) {
+        if (count($rest) < 2 || $rest[0]->kind !== TokenKind::Dot || !in_array($rest[1]->kind, [TokenKind::Name, TokenKind::Keyword], true)) {
             $this->fail("Malformed reference: {$raw}", $raw, $this->firstUnexpected($rest, [
                 0 => [TokenKind::Dot],
                 1 => [TokenKind::Name, TokenKind::Keyword],
             ]));
         }
 
-        if ($allowPointer && count($rest) > 2) {
-            if ($rest[2]->kind === TokenKind::Hash && $cls === OutputPart::class) {
+        if ($allowPointer && count($rest) > 2 && $cls === OutputPart::class) {
+            if ($rest[2]->kind === TokenKind::Hash) {
                 return new OutputPart($rest[1]->value, $this->parseJsonPointer(array_slice($rest, 2), $raw));
+            }
+
+            if ($rest[2]->kind === TokenKind::LeftBracket) {
+                return new OutputPart($rest[1]->value, $this->parseArrayIndexPointer(array_slice($rest, 2), $raw));
             }
 
             $this->fail("Unexpected tokens after '{$rest[1]->value}' in: {$raw}", $raw, $rest[2]);
@@ -298,6 +302,59 @@ final class Parser implements ParserInterface
         return $out;
     }
 
+    /**
+     * Parse a run of one or more `[index]` segments, each optionally followed
+     * by a `.name` segment, into a JSON pointer string, e.g. `[0].id` -> `/0/id`.
+     *
+     * @param  list<Token>  $rest  starting at the '[' token
+     */
+    private function parseArrayIndexPointer(array $rest, string $raw): string
+    {
+        $out = '';
+        $i = 0;
+        $count = count($rest);
+
+        while ($i < $count) {
+            $out .= $this->parseIndexSegment($rest, $i, $count, $raw);
+        }
+
+        return $out;
+    }
+
+    /**
+     * Parse one `[index]` segment, optionally followed by a `.name` segment,
+     * advancing $i past it. Returns the pointer fragment, e.g. `/0` or `/0/id`.
+     *
+     * @param  list<Token>  $rest
+     */
+    private function parseIndexSegment(array $rest, int &$i, int $count, string $raw): string
+    {
+        if ($rest[$i]->kind !== TokenKind::LeftBracket) {
+            $this->fail("Expected '[' in array index in: {$raw}", $raw, $rest[$i]);
+        }
+        $i++;
+        if ($i >= $count || $rest[$i]->kind !== TokenKind::Name) {
+            $this->fail("Expected array index in: {$raw}", $raw, $rest[$i] ?? null);
+        }
+        $out = '/'.$rest[$i]->value;
+        $i++;
+        if ($i >= $count || $rest[$i]->kind !== TokenKind::RightBracket) {
+            $this->fail("Expected ']' after array index in: {$raw}", $raw, $rest[$i] ?? null);
+        }
+        $i++;
+
+        if ($i < $count && $rest[$i]->kind === TokenKind::Dot) {
+            $i++;
+            if ($i >= $count || !in_array($rest[$i]->kind, [TokenKind::Name, TokenKind::Keyword], true)) {
+                $this->fail("Expected name after '.' in: {$raw}", $raw, $rest[$i] ?? null);
+            }
+            $out .= '/'.$rest[$i]->value;
+            $i++;
+        }
+
+        return $out;
+    }
+
     /** @param list<Token> $tail */
     private function parseHeaderName(array $tail, string $raw): string
     {
@@ -321,7 +378,7 @@ final class Parser implements ParserInterface
         $rest = array_slice($tokens, $i);
 
         // workflows . <name> . (inputs|outputs) . <name>
-        if (count($rest) !== 7 || !$this->isWorkflowShape($rest)) {
+        if (count($rest) !== 7) {
             $at = $this->firstUnexpected($rest, [
                 1 => [TokenKind::Dot],
                 2 => [TokenKind::Name, TokenKind::Keyword],
@@ -343,22 +400,6 @@ final class Parser implements ParserInterface
 
         /** @var 'inputs'|'outputs' $kind */
         return new WorkflowRef($rest[2]->value, $kind, $rest[6]->value);
-    }
-
-    /** @param list<Token> $rest */
-    private function isWorkflowShape(array $rest): bool
-    {
-        return $rest[1]->kind === TokenKind::Dot
-            && $this->isNameOrKeyword($rest[2])
-            && $rest[3]->kind === TokenKind::Dot
-            && $rest[4]->kind === TokenKind::Keyword
-            && $rest[5]->kind === TokenKind::Dot
-            && $this->isNameOrKeyword($rest[6]);
-    }
-
-    private function isNameOrKeyword(Token $token): bool
-    {
-        return $token->kind === TokenKind::Name || $token->kind === TokenKind::Keyword;
     }
 
     /** @param list<Token> $tokens */

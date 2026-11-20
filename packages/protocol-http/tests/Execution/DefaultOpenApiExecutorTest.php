@@ -182,3 +182,73 @@ it('logs and falls back to the raw value when a parameter cannot be cast to its 
 
     expect($executor->execute($resolved, $payload)->getStatusCode())->toBe(200);
 });
+
+it('compiles an indexed expression into the request path', function () {
+    $openapiJson = <<<'JSON'
+    {
+      "openapi": "3.0.0",
+      "info": { "title": "API", "version": "1.0" },
+      "servers": [{ "url": "https://api.example.com" }],
+      "paths": {
+        "/v3/pet/{petId}": {
+          "get": {
+            "operationId": "getPetById",
+            "parameters": [
+              { "name": "petId", "in": "path", "required": true, "schema": { "type": "integer" } }
+            ]
+          }
+        }
+      }
+    }
+    JSON;
+
+    $openApi = Reader::readFromJson($openapiJson);
+
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $httpClient->shouldReceive('sendRequest')->withArgs(function ($request) {
+        expect($request->getMethod())->toBe('GET');
+        expect((string) $request->getUri())->toBe('https://api.example.com/v3/pet/1');
+
+        return true;
+    })->andReturn(new Response(200));
+
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $requestFactory->shouldReceive('createRequest')->andReturnUsing(function ($method, $uri) {
+        return new Request($method, $uri);
+    });
+
+    $executor = new DefaultOpenApiExecutor($httpClient, $requestFactory, new NullLogger());
+
+    $payload = new OpenApiPayload(auto: ['petId' => '1']);
+
+    $source = new SourceDescription('test', 'test.json', SourceType::Openapi);
+    $normalized = new NormalizedOpenApiOperation(
+        path: '/v3/pet/{petId}',
+        method: 'get',
+        resolvedServerUrl: 'https://api.example.com',
+        pathParameters: [
+            'petId' => ['name' => 'petId', 'in' => 'path', 'schema' => ['type' => 'integer']],
+        ],
+        queryParameters: [],
+        headerParameters: [],
+        cookieParameters: [],
+        requestBodies: [],
+        responses: [],
+    );
+
+    $resolved = new OpenApiOperationHandle(
+        new ResolvedOperation(
+            source: $source,
+            normalized: $normalized,
+            rpcProtocol: null,
+            operationName: null,
+            rpcMethod: null,
+            graphqlOperation: null,
+            interaction: null,
+        ),
+        $openApi,
+        clone $openApi->paths->getPath('/v3/pet/{petId}')->get,
+    );
+
+    expect($executor->execute($resolved, $payload)->getStatusCode())->toBe(200);
+});

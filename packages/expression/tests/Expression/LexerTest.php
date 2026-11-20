@@ -57,3 +57,11 @@ it('rejects missing dollar sign', function (): void {
 it('rejects illegal characters', function (): void {
     (new Lexer())->tokenize('{$inputs.na me}');
 })->throws(ExpressionSyntaxException::class);
+
+it('tokenizes square brackets', function (): void {
+    $t = (new Lexer())->tokenize('{$steps.getPetsByStatus.outputs.availablePets[0].id}');
+    $kinds = array_map(fn ($tk) => $tk->kind, $t);
+
+    expect($kinds)->toContain(TokenKind::LeftBracket)
+        ->and($kinds)->toContain(TokenKind::RightBracket);
+});

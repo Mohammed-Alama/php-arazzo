@@ -103,6 +103,8 @@ final class Lexer
             '.' => TokenKind::Dot,
             '#' => TokenKind::Hash,
             '/' => TokenKind::Slash,
+            '[' => TokenKind::LeftBracket,
+            ']' => TokenKind::RightBracket,
             default => null,
         };
     }
