@@ -25,6 +25,7 @@ final readonly class ExecutionState implements JsonSerializable
      * @param  list<string>  $workflowCallStack
      * @param  array<string, mixed>  $components
      * @param  array<string, array{inputs: array<string, mixed>, outputs: array<string, mixed>}>  $workflows
+     * @param  list<string>  $skippedSteps
      */
     public function __construct(
         public string $executionId,
@@ -44,6 +45,8 @@ final readonly class ExecutionState implements JsonSerializable
         public array $components = [],
         public string $status = 'running',
         public array $workflows = [],
+        /** @var list<string> */
+        public array $skippedSteps = [],
     ) {}
 
     /**
@@ -101,6 +104,8 @@ final readonly class ExecutionState implements JsonSerializable
         $components = self::arrayField($values, 'components');
 
         $workflows = WorkflowDataMap::from($values['workflows'] ?? null);
+        /** @var list<string> $skippedSteps */
+        $skippedSteps = self::arrayField($values, 'skippedSteps');
 
         return new self(
             self::stringField($values, 'executionId'),
@@ -120,6 +125,7 @@ final readonly class ExecutionState implements JsonSerializable
             $components,
             self::stringField($values, 'status', 'running'),
             $workflows,
+            $skippedSteps,
         );
     }
 
@@ -187,6 +193,7 @@ final readonly class ExecutionState implements JsonSerializable
             'components' => $this->components,
             'status' => $this->status,
             'workflows' => $this->workflows,
+            'skippedSteps' => $this->skippedSteps,
         ];
     }
 
@@ -211,7 +218,7 @@ final readonly class ExecutionState implements JsonSerializable
 
     public function withCurrentStep(?string $stepId): self
     {
-        return new self($this->executionId, $this->definitionId, $this->workflowId, $stepId, $this->inputs, $this->stepAttempts, $this->stepResults, $this->dependencies, $this->outputs, $this->errors, $this->stepsSpent, $this->maxSteps, $this->workflowCallStack, $this->maxWorkflowDepth, $this->components, $this->status, $this->workflows);
+        return new self($this->executionId, $this->definitionId, $this->workflowId, $stepId, $this->inputs, $this->stepAttempts, $this->stepResults, $this->dependencies, $this->outputs, $this->errors, $this->stepsSpent, $this->maxSteps, $this->workflowCallStack, $this->maxWorkflowDepth, $this->components, $this->status, $this->workflows, $this->skippedSteps);
     }
 
     public function withStatus(string $status): self
@@ -229,6 +236,7 @@ final readonly class ExecutionState implements JsonSerializable
      * @param  list<string>  $workflowCallStack
      * @param  array<string, mixed>  $components
      * @param  array<string, array{inputs: array<string, mixed>, outputs: array<string, mixed>}>|null  $workflows
+     * @param  list<string>|null  $skippedSteps
      */
     private function copy(
         ?string $executionId = null, ?string $definitionId = null, ?string $workflowId = null,
@@ -236,14 +244,14 @@ final readonly class ExecutionState implements JsonSerializable
         ?array $stepResults = null, ?array $dependencies = null, ?array $outputs = null,
         ?array $errors = null, ?int $stepsSpent = null, ?int $maxSteps = null,
         ?array $workflowCallStack = null, ?int $maxWorkflowDepth = null, ?array $components = null,
-        ?string $status = null, ?array $workflows = null,
+        ?string $status = null, ?array $workflows = null, ?array $skippedSteps = null,
     ): self {
         return new self($executionId ?? $this->executionId, $definitionId ?? $this->definitionId, $workflowId ?? $this->workflowId,
             $currentStepId === null ? $this->currentStepId : $currentStepId, $inputs ?? $this->inputs, $stepAttempts ?? $this->stepAttempts,
             $stepResults ?? $this->stepResults, $dependencies ?? $this->dependencies, $outputs ?? $this->outputs, $errors ?? $this->errors,
             $stepsSpent ?? $this->stepsSpent, $maxSteps ?? $this->maxSteps, $workflowCallStack ?? $this->workflowCallStack,
             $maxWorkflowDepth ?? $this->maxWorkflowDepth, $components ?? $this->components, $status ?? $this->status,
-            $workflows ?? $this->workflows);
+            $workflows ?? $this->workflows, $skippedSteps ?? $this->skippedSteps);
     }
 
     public function withWorkflow(string $workflowId): self
@@ -287,6 +295,8 @@ final readonly class ExecutionState implements JsonSerializable
      */
     public static function fromContext(WorkflowContext $context, ?int $maxSteps = null, ?int $maxWorkflowDepth = null): self
     {
+        $skippedSteps = $context->getSkippedSteps();
+
         $state = new self(
             (string) $context->getExecutionId(),
             $context->getDefinitionId(),
@@ -304,6 +314,7 @@ final readonly class ExecutionState implements JsonSerializable
             $maxWorkflowDepth ?? 32,
             $context->getComponents(),
             workflows: $context->getWorkflows(),
+            skippedSteps: $skippedSteps,
         );
 
         foreach ($context->getSteps() as $stepId => $result) {
@@ -404,6 +415,7 @@ final readonly class ExecutionState implements JsonSerializable
             components: $this->components,
             status: $this->status,
             workflows: $this->workflows,
+            skippedSteps: $this->skippedSteps,
         );
     }
 
@@ -430,6 +442,23 @@ final readonly class ExecutionState implements JsonSerializable
             components: $this->components,
             status: $this->status,
             workflows: $this->workflows,
+            skippedSteps: $this->skippedSteps,
         );
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getSkippedSteps(): array
+    {
+        return $this->skippedSteps;
+    }
+
+    /**
+     * @param  list<string>  $skippedSteps
+     */
+    public function withSkippedSteps(array $skippedSteps): self
+    {
+        return $this->copy(skippedSteps: $skippedSteps);
     }
 }

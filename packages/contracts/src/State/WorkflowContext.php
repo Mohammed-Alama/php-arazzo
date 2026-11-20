@@ -29,6 +29,8 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         private int $stepsSpent = 0,
         /** @var list<string> */
         private array $workflowCallStack = [],
+        /** @var list<string> */
+        private array $skippedSteps = [],
         public ?string $parentRunId = null,
     ) {
         $this->executionId = $executionId ?? uniqid('run_', true);
@@ -62,6 +64,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
             'stepsSpent' => $this->stepsSpent,
             'workflowCallStack' => $this->workflowCallStack,
             'workflows' => $this->workflows,
+            'skippedSteps' => $this->skippedSteps,
         ];
     }
 
@@ -83,8 +86,10 @@ final readonly class WorkflowContext implements WorkflowContextInterface
 
         /** @var array<string, mixed> $components */
         $components = is_array($persisted['components'] ?? null) ? $persisted['components'] : [];
+        /** @var list<string> $skippedSteps */
+        $skippedSteps = is_array($persisted['skippedSteps'] ?? null) ? $persisted['skippedSteps'] : [];
 
-        $context = new self($definitionId, $inputs, $steps, $components, $workflowId, $executionId, workflows: WorkflowDataMap::from($persisted['workflows'] ?? null));
+        $context = new self($definitionId, $inputs, $steps, $components, $workflowId, $executionId, workflows: WorkflowDataMap::from($persisted['workflows'] ?? null), skippedSteps: $skippedSteps);
 
         if (array_key_exists('stepsSpent', $persisted) || array_key_exists('workflowCallStack', $persisted)) {
             $stack = is_array($persisted['workflowCallStack'] ?? null) ? $persisted['workflowCallStack'] : [];
@@ -115,6 +120,9 @@ final readonly class WorkflowContext implements WorkflowContextInterface
 
         $persistedWorkflows = WorkflowDataMap::from($persisted['workflows'] ?? null);
 
+        /** @var list<string> $skippedSteps */
+        $skippedSteps = $persisted['skippedSteps'] ?? $incoming->getSkippedSteps();
+
         $restored = new self(
             $incoming->getDefinitionId(),
             $incoming->getInputs(),
@@ -123,6 +131,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
             $incoming->getWorkflowId(),
             $executionId,
             workflows: $incoming->getWorkflows(),
+            skippedSteps: $skippedSteps,
         );
 
         if (array_key_exists('stepsSpent', $persisted) || array_key_exists('workflowCallStack', $persisted)) {
@@ -241,6 +250,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
             workflows: $newWorkflows,
             stepsSpent: $this->stepsSpent,
             workflowCallStack: $this->workflowCallStack,
+            skippedSteps: $this->skippedSteps,
             parentRunId: $this->parentRunId,
         );
     }
@@ -255,12 +265,12 @@ final readonly class WorkflowContext implements WorkflowContextInterface
 
     public function withWorkflowId(string $workflowId): self
     {
-        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     public function withExecutionId(string $executionId): self
     {
-        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     /**
@@ -271,7 +281,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         $newSteps = $this->steps;
         $newSteps[$stepId] = $result;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     /**
@@ -285,7 +295,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         $record['request'] = $request;
         $newSteps[$stepId] = $record;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     /**
@@ -299,7 +309,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         $record['response'] = $response;
         $newSteps[$stepId] = $record;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     public function withStepOutput(string $stepId, string $key, mixed $value): self
@@ -313,7 +323,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         $record['outputs'] = $outputs;
         $newSteps[$stepId] = $record;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     public function withInput(string $name, mixed $value): self
@@ -321,7 +331,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         $inputs = $this->inputs;
         $inputs[$name] = $value;
 
-        return new self($this->definitionId, $inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     /**
@@ -329,7 +339,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
      */
     public function withInputs(array $inputs): self
     {
-        return new self($this->definitionId, $inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     /**
@@ -343,7 +353,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         $existing['inputs'] = $inputs;
         $newSteps[$stepId] = $existing;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     public function getStepStatus(string $stepId): ?StepStatus
@@ -366,7 +376,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         $record['status'] = $status;
         $newSteps[$stepId] = $record;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     public function getStepAttempts(string $stepId): int
@@ -386,7 +396,7 @@ final readonly class WorkflowContext implements WorkflowContextInterface
         $record['attempts'] = $attempts + 1;
         $newSteps[$stepId] = $record;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack, skippedSteps: $this->skippedSteps);
     }
 
     /**
@@ -399,5 +409,33 @@ final readonly class WorkflowContext implements WorkflowContextInterface
             'steps' => $this->steps,
             'components' => $this->components,
         ];
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getSkippedSteps(): array
+    {
+        return $this->skippedSteps;
+    }
+
+    /**
+     * @param  list<string>  $skippedSteps
+     */
+    public function withSkippedSteps(array $skippedSteps): self
+    {
+        return new self(
+            $this->definitionId,
+            $this->inputs,
+            $this->steps,
+            $this->components,
+            $this->workflowId,
+            $this->executionId,
+            workflows: $this->workflows,
+            stepsSpent: $this->stepsSpent,
+            workflowCallStack: $this->workflowCallStack,
+            parentRunId: $this->parentRunId,
+            skippedSteps: $skippedSteps,
+        );
     }
 }

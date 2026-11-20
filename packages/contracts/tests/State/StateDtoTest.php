@@ -46,6 +46,7 @@ it('keeps the persisted key set and its order stable', function (): void {
         'stepAttempts', 'stepResults', 'dependencies', 'outputs', 'errors',
         'stepsSpent', 'maxSteps', 'workflowCallStack', 'maxWorkflowDepth',
         'components', 'status', 'workflows',
+        'skippedSteps',
     ]);
 });
 

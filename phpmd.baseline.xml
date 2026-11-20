@@ -17,6 +17,7 @@
   <violation rule="PHPMD\Rule\Design\ExcessiveParameterList" file="packages/contracts/src/State/ExecutionState.php" method="__construct"/>
   <violation rule="PHPMD\Rule\Design\ExcessiveParameterList" file="packages/contracts/src/State/ExecutionState.php" method="copy"/>
   <violation rule="PHPMD\Rule\Design\ExcessiveClassComplexity" file="packages/contracts/src/State/WorkflowContext.php"/>
+  <violation rule="PHPMD\Rule\Design\ExcessiveParameterList" file="packages/contracts/src/State/WorkflowContext.php" method="__construct"/>
   <violation rule="PHPMD\Rule\Design\TooManyMethods" file="packages/document/src/Parser/Parser.php"/>
   <violation rule="PHPMD\Rule\Design\ExcessiveClassComplexity" file="packages/document/src/Parser/Parser.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/document/src/Parser/Parser.php"/>
