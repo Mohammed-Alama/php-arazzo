@@ -8,6 +8,8 @@ use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
@@ -17,7 +19,15 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\MessageRefRequiresReceiveRule;
+use Alama\Arazzo\Expression\Data\ExpressionReference;
+use Alama\Arazzo\Expression\Data\InterpolationOptions;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
+use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
+use Alama\Arazzo\Tests\Support\Fx;
 
 function messageRuleDocument(
     SpecVersion $sv,
@@ -165,4 +175,163 @@ it('flags $message with no step context', function (): void {
     );
 
     expect($errors->errors())->toHaveCount(1);
+});
+
+it('skips non-message references', function (): void {
+    $step = Fx::step('fetch', 'op', outputs: ['result' => new Expression('{$steps.fetch.outputs.result}')]);
+    $workflow = Fx::wf('w', [$step], outputs: ['out' => new Expression('{$steps.fetch.outputs.result}')]);
+    $doc = Fx::doc(workflows: [$workflow]);
+    $ref = new ExpressionReference(kind: ReferenceKind::Step, target: 'fetch');
+    $engine = new class($ref) implements ExpressionEngineInterface
+    {
+        public function __construct(private readonly ExpressionReference $ref) {}
+
+        public function parseExpression(string $raw): ?ExpressionSyntaxException
+        {
+            return null;
+        }
+
+        public function expressionReferences(string $raw): ?ExpressionReference
+        {
+            return $this->ref;
+        }
+
+        public function extract(string $template): array
+        {
+            return [];
+        }
+
+        public function parseEmbedded(string $raw, SpecVersion $version = SpecVersion::V1_0): array
+        {
+            return [];
+        }
+
+        public function interpolate(string $template, callable $resolver, array $options = []): string
+        {
+            return $template;
+        }
+
+        public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string
+        {
+            return $template;
+        }
+
+        public function test(string $raw): bool
+        {
+            return true;
+        }
+
+        public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
+        {
+            return null;
+        }
+
+        public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed
+        {
+            return null;
+        }
+
+        public function jsonPath(string $expression, array|object $data): mixed
+        {
+            return null;
+        }
+
+        public function jsonPointer(array $data, ?string $pointer): mixed
+        {
+            return null;
+        }
+
+        public function selectorPlugins(): SelectorPluginRegistryInterface
+        {
+            return new class() implements SelectorPluginRegistryInterface
+            {
+                public function supportedVersions(int $expressionType): array
+                {
+                    return [];
+                }
+            };
+        }
+    };
+    $ec = new ErrorCollector();
+    (new MessageRefRequiresReceiveRule($engine))->check($doc, SymbolTable::build($doc), $ec);
+    expect($ec->errors())->toBe([]);
+});
+
+it('findStep returns null for null stepId', function (): void {
+    $wf = new Workflow('w', null, null, null, [], [], [], [], ['out' => new Expression('{$message.payload#/x}')], []);
+    $doc = Fx::doc(workflows: [$wf]);
+    $ref = new ExpressionReference(kind: ReferenceKind::Message, target: null);
+    $engine = new class($ref) implements ExpressionEngineInterface
+    {
+        public function __construct(private readonly ExpressionReference $ref) {}
+
+        public function parseExpression(string $raw): ?ExpressionSyntaxException
+        {
+            return null;
+        }
+
+        public function expressionReferences(string $raw): ?ExpressionReference
+        {
+            return $this->ref;
+        }
+
+        public function extract(string $template): array
+        {
+            return [];
+        }
+
+        public function parseEmbedded(string $raw, SpecVersion $version = SpecVersion::V1_0): array
+        {
+            return [];
+        }
+
+        public function interpolate(string $template, callable $resolver, array $options = []): string
+        {
+            return $template;
+        }
+
+        public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string
+        {
+            return $template;
+        }
+
+        public function test(string $raw): bool
+        {
+            return true;
+        }
+
+        public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
+        {
+            return null;
+        }
+
+        public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed
+        {
+            return null;
+        }
+
+        public function jsonPath(string $expression, array|object $data): mixed
+        {
+            return null;
+        }
+
+        public function jsonPointer(array $data, ?string $pointer): mixed
+        {
+            return null;
+        }
+
+        public function selectorPlugins(): SelectorPluginRegistryInterface
+        {
+            return new class() implements SelectorPluginRegistryInterface
+            {
+                public function supportedVersions(int $expressionType): array
+                {
+                    return [];
+                }
+            };
+        }
+    };
+    $ec = new ErrorCollector();
+    (new MessageRefRequiresReceiveRule($engine))->check($doc, SymbolTable::build($doc), $ec);
+    expect($ec->errors())->toHaveCount(1);
 });

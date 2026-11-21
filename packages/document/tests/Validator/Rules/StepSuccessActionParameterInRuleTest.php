@@ -99,6 +99,44 @@ it('accepts success action parameter without in', function (): void {
     expect($errors->errors())->toHaveCount(0);
 });
 
+it('checks workflow-level successActions', function (): void {
+    $errors = new ErrorCollector();
+    $doc = new ArazzoDocument(
+        arazzo: '1.1.0',
+        info: new Info('T', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [
+            new Workflow(
+                workflowId: 'w',
+                summary: null,
+                description: null,
+                inputs: null,
+                dependsOn: [],
+                steps: [],
+                successActions: [
+                    new SuccessGotoAction(
+                        'goto',
+                        stepId: null,
+                        workflowId: null,
+                        criteria: [],
+                        parameters: [
+                            new Parameter('petId', ParameterIn::Query, 'x'),
+                        ],
+                    ),
+                ],
+                failureActions: [],
+                outputs: [],
+                parameters: [],
+            ),
+        ],
+        components: new Components([], [], [], []),
+        specificationExtensions: [],
+        specVersion: SpecVersion::V1_1,
+    );
+    (new StepSuccessActionParameterInRule())->check($doc, SymbolTable::build($doc), $errors);
+    expect($errors->errors())->toHaveCount(1);
+});
+
 it('accepts failure action parameter with in (only success actions checked)', function (): void {
     $errors = new ErrorCollector();
     $doc = new ArazzoDocument(
@@ -234,6 +272,46 @@ it('accepts invoke action parameter without in', function (): void {
                             workflowId: 'other',
                             criteria: [],
                             parameters: [],
+                        ),
+                    ]),
+                ],
+                successActions: [],
+                failureActions: [],
+                outputs: [],
+                parameters: [],
+            ),
+        ],
+        components: new Components([], [], [], []),
+        specificationExtensions: [],
+        specVersion: SpecVersion::V1_1,
+    );
+    (new StepSuccessActionParameterInRule())->check($doc, SymbolTable::build($doc), $errors);
+    expect($errors->errors())->toHaveCount(0);
+});
+
+it('skips reusable parameter on success action', function (): void {
+    $errors = new ErrorCollector();
+    $doc = new ArazzoDocument(
+        arazzo: '1.1.0',
+        info: new Info('T', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [
+            new Workflow(
+                workflowId: 'w',
+                summary: null,
+                description: null,
+                inputs: null,
+                dependsOn: [],
+                steps: [
+                    Fx::step('s', 'op', onSuccess: [
+                        new SuccessGotoAction(
+                            'goto',
+                            stepId: null,
+                            workflowId: null,
+                            criteria: [],
+                            parameters: [
+                                new Reusable('$components.parameters.p'),
+                            ],
                         ),
                     ]),
                 ],

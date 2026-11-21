@@ -12,6 +12,7 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\RequestBody;
+use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
@@ -85,4 +86,17 @@ it('flags jsonpath criterion missing context', function (): void {
     $ec = new ErrorCollector();
     (new StepCriteriaTypeContextRule())->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toHaveCount(1);
+});
+
+it('skips reusable parameters in StepParametersHaveNameRule', function (): void {
+    $step = StepFactory::http(
+        'x', null,
+        new StepFlow(),
+        new StepIo(parameters: [new Reusable('$components.parameters.p')]),
+        operationId: 'op',
+    );
+    $doc = stepContentDoc($step);
+    $ec = new ErrorCollector();
+    (new StepParametersHaveNameRule())->check($doc, SymbolTable::build($doc), $ec);
+    expect($ec->errors())->toBe([]);
 });

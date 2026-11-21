@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
@@ -111,4 +112,26 @@ it('rejects querystring in component parameters on 1.0 docs', function () {
     expect($errs)->toHaveCount(1)
         ->and($errs[0]->message)->toBe("Parameter 'in' value 'querystring' requires Arazzo 1.1.0.")
         ->and($errs[0]->path)->toBe('/components/parameters/myParam/in');
+});
+
+it('skips reusable parameters', function () {
+    $errors = new ErrorCollector();
+    $step = StepFactory::http(
+        's', null,
+        new StepFlow(),
+        new StepIo(parameters: [new Reusable('$components.parameters.p')]),
+        operationId: 'op',
+    );
+    $doc = new ArazzoDocument(
+        arazzo: '1.1.0', info: new Info('t', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [new Workflow('w', null, null, null, [], [$step], [], [], [], [])],
+        components: new Components([], [], [], []),
+        specificationExtensions: [], specVersion: SpecVersion::V1_1,
+    );
+    (new StepParameterInValidRule())->check(
+        $doc,
+        SymbolTable::build($doc), $errors,
+    );
+    expect($errors->errors())->toBe([]);
 });

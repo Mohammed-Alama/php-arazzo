@@ -54,3 +54,18 @@ it('rejects cross-protocol request content types', function (): void {
     expect($ec->errors())->toHaveCount(1);
     expect($ec->errors()[0]->code)->toBe('step.rpc_step');
 });
+
+it('rejects rpcMethod without rpcProtocol', function (): void {
+    $document = Fx::doc(
+        workflows: [Fx::wf('w', [
+            Fx::step('g', rpcMethod: '$sourceDescriptions.proto.com.acme.PetService/GetPet'),
+        ])],
+        sources: [new SourceDescription('proto', '/svc.proto', SourceType::Protobuf)],
+    );
+    $ec = new ErrorCollector();
+    (new RpcStepRule())->check($document, SymbolTable::build($document), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.rpc_step')
+        ->and($ec->errors()[0]->message)->toContain('rpcProtocol to be set');
+});

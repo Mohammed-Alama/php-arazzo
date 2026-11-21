@@ -130,3 +130,25 @@ it('errors on spec-recognised version not implemented by the evaluator', functio
     expect($errors->errors()[0]->message)->toContain('not implemented');
     expect($errors->errors()[0]->message)->toContain('rfc9535');
 });
+
+it('skips reusable workflow parameter', function () {
+    $errors = new ErrorCollector();
+    $doc = new ArazzoDocument(
+        arazzo: '1.1.0', info: new Info('t', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [new Workflow('w', null, null, null, [], [], [], [], [], [
+            new Reusable('$components.parameters.p'),
+        ])],
+        components: new Components([], [], [], []),
+        specificationExtensions: [], specVersion: SpecVersion::V1_1,
+    );
+    (new SelectorTypeSupportedRule())->check($doc, SymbolTable::build($doc), $errors);
+    expect($errors->errors())->toBe([]);
+});
+
+it('accepts selector with null version (implementation default)', function () {
+    $errors = new ErrorCollector();
+    $doc = docWithOutputSelector(new Selector(null, '$.x', ExpressionType::JsonPath, null));
+    (new SelectorTypeSupportedRule())->check($doc, SymbolTable::build($doc), $errors);
+    expect($errors->errors())->toBe([]);
+});

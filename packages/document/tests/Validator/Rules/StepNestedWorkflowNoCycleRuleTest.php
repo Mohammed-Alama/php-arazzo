@@ -53,3 +53,14 @@ it('ignores workflow references to undeclared workflows without crashing', funct
     (new StepNestedWorkflowNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBe([]);
 });
+
+it('accepts diamond nested workflow graph (no cycle, shared node visited twice)', function (): void {
+    $a = Fx::wf('a', [Fx::step('s-a', null, null, 'b'), Fx::step('s-a2', null, null, 'c')]);
+    $b = Fx::wf('b', [Fx::step('s-b', null, null, 'd')]);
+    $c = Fx::wf('c', [Fx::step('s-c', null, null, 'd')]);
+    $d = Fx::wf('d', [Fx::step('s-d')]);
+    $doc = Fx::doc(workflows: [$a, $b, $c, $d]);
+    $ec = new ErrorCollector();
+    (new StepNestedWorkflowNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+    expect($ec->errors())->toBe([]);
+});

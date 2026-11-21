@@ -21,7 +21,7 @@ targets. Regenerated before every commit.
 | `contracts:State` | 3 | 974 | 15 | 1 | 0.06 |  |
 | `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1441 | 5 | 2 | 0.29 |  |
-| `document:Validator` | 80 | 5119 | 6 | 7 | 0.54 |  |
+| `document:Validator` | 80 | 5171 | 6 | 7 | 0.54 |  |
 | `(document root)` | 6 | 293 | 10 | 6 | 0.38 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |

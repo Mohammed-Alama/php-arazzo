@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Tests\Validation\Rules;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
@@ -162,4 +163,52 @@ it('detects a cycle that spans workflow boundaries', function (): void {
         ->and($ec->errors()[0]->code)->toBe('step.dependson_no_cycle')
         ->and($ec->errors()[0]->message)->toContain('w1.a -> w2.b -> w1.a')
         ->and($ec->errors()[0]->path)->toBe('/workflows/0/steps/0/dependsOn');
+});
+
+it('stops DFS early once a cycle has been found (line 192 branch)', function (): void {
+    $cyclic = new Workflow('cyc', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['b']), new StepIo()),
+        new Step('b', null, new StepTarget(), new StepFlow(dependsOn: ['a']), new StepIo()),
+    ], [], [], [], []);
+    $acyclic = new Workflow('acyc', null, null, null, [], [
+        new Step('c', null, new StepTarget(), new StepFlow(), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.0.1', new Info('T', null, null, '1.0'), [], [$cyclic, $acyclic], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.dependson_no_cycle');
+});
+
+it('resolves implicit output dependencies and flags unresolved implicit refs', function (): void {
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('A', null, new StepTarget(), new StepFlow(), new StepIo(outputs: ['x' => new Expression('{$steps.B.outputs.y}')])),
+        new Step('B', null, new StepTarget(), new StepFlow(), new StepIo()),
+        new Step('C', null, new StepTarget(), new StepFlow(), new StepIo(outputs: ['z' => new Expression('{$steps.missing.outputs.w}')])),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.1.0', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.dependson_unresolved_reference');
+});
+
+it('returns null for malformed cross-workflow dependsOn reference', function (): void {
+    $workflow = new Workflow('w1', null, null, null, [], [
+        new Step('a', null, new StepTarget(), new StepFlow(dependsOn: ['$workflows.foo']), new StepIo()),
+    ], [], [], [], []);
+
+    $doc = new ArazzoDocument('1.0.1', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);
+
+    $ec = new ErrorCollector();
+    (new StepDependsOnNoCycleRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.dependson_unresolved_reference');
 });

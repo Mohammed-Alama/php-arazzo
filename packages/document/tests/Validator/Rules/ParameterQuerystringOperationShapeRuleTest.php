@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
@@ -43,6 +44,50 @@ it('warns without source info when querystring used', function () {
     );
     // With no source descriptor, rule emits a warning not an error
     expect($errors->warnings())->not->toBe([]);
+});
+
+it('skips reusable parameters', function () {
+    $errors = new ErrorCollector();
+    $step = StepFactory::http(
+        's', null,
+        new StepFlow(),
+        new StepIo(parameters: [new Reusable('$components.parameters.q')]),
+        operationId: 'getSomething',
+    );
+    $doc = new ArazzoDocument(
+        arazzo: '1.1.0', info: new Info('t', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [new Workflow('w', null, null, null, [], [$step], [], [], [], [])],
+        components: new Components([], [], [], []),
+        specificationExtensions: [], specVersion: SpecVersion::V1_1,
+    );
+    (new ParameterQuerystringOperationShapeRule())->check(
+        $doc,
+        SymbolTable::build($doc), $errors,
+    );
+    expect($errors->warnings())->toBe([]);
+});
+
+it('skips non-querystring parameters', function () {
+    $errors = new ErrorCollector();
+    $step = StepFactory::http(
+        's', null,
+        new StepFlow(),
+        new StepIo(parameters: [new Parameter('q', ParameterIn::Header, 'x')]),
+        operationId: 'getSomething',
+    );
+    $doc = new ArazzoDocument(
+        arazzo: '1.1.0', info: new Info('t', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [new Workflow('w', null, null, null, [], [$step], [], [], [], [])],
+        components: new Components([], [], [], []),
+        specificationExtensions: [], specVersion: SpecVersion::V1_1,
+    );
+    (new ParameterQuerystringOperationShapeRule())->check(
+        $doc,
+        SymbolTable::build($doc), $errors,
+    );
+    expect($errors->warnings())->toBe([]);
 });
 
 it('skips on 1.0.0 documents', function () {
