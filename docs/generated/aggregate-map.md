@@ -17,7 +17,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 | Package | Readonly | Mutable | Readonly share |
 |---|---:|---:|---:|
 | contracts | 37 | 10 | 79% |
-| expression | 22 | 19 | 54% |
+| expression | 23 | 25 | 48% |
 | evaluation | 14 | 13 | 52% |
 | sources | 3 | 21 | 12% |
 | document | 11 | 82 | 12% |

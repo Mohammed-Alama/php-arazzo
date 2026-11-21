@@ -11,6 +11,7 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\RequestBody;
+use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
@@ -95,4 +96,37 @@ it('errors on unknown pinned version in parameters', function () {
     $doc = docWithVariousSelectors(new Selector(null, '$.x', ExpressionType::JsonPath, 'draft-99'));
     (new SelectorTypeSupportedRule())->check($doc, SymbolTable::build($doc), $errors);
     expect(count($errors->errors()))->toBe(4);
+});
+
+it('skips reusable parameters (implementation-default path)', function () {
+    $errors = new ErrorCollector();
+    $reusable = new Reusable('$components.parameters.p');
+    $doc = new ArazzoDocument(
+        arazzo: SpecVersion::V1_1->value,
+        info: new Info('t', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [new Workflow('w', null, null, null, [], [
+            StepFactory::http(
+                's', null, new StepFlow(),
+                new StepIo(parameters: [new Parameter('p', ParameterIn::Header, $reusable)]),
+                operationId: 'op',
+            ),
+        ], [], [], [], [])],
+        components: new Components([], [], [], []),
+        specificationExtensions: [],
+        specVersion: SpecVersion::V1_1,
+    );
+    (new SelectorTypeSupportedRule(['rfc9535']))->check($doc, SymbolTable::build($doc), $errors);
+    expect($errors->errors())->toBe([]);
+});
+
+it('errors on spec-recognised version not implemented by the evaluator', function () {
+    $errors = new ErrorCollector();
+    $doc = docWithOutputSelector(new Selector(null, '$.x', ExpressionType::JsonPath, 'rfc9535'));
+    // supportedVersions = [] => rfc9535 is spec-recognised but not implemented.
+    (new SelectorTypeSupportedRule([]))->check($doc, SymbolTable::build($doc), $errors);
+    expect(count($errors->errors()))->toBe(1);
+    expect($errors->errors()[0]->code)->toBe('selector.type_supported');
+    expect($errors->errors()[0]->message)->toContain('not implemented');
+    expect($errors->errors()[0]->message)->toContain('rfc9535');
 });

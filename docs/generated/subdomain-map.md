@@ -22,7 +22,7 @@ flowchart LR
         S_cli_Generator["cli:Generator<br/><small>141 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1453 LOC</small>"]:::supportingDomain
-        S_document_Validator["document:Validator<br/><small>5170 LOC</small>"]:::supportingDomain
+        S_document_Validator["document:Validator<br/><small>5199 LOC</small>"]:::supportingDomain
         S_protocol_soap_Resolver["protocol-soap:Resolver<br/><small>136 LOC</small>"]:::supportingDomain
         S_sources_Resolver["sources:Resolver<br/><small>512 LOC</small>"]:::supportingDomain
         S_sources_Validator["sources:Validator<br/><small>325 LOC</small>"]:::supportingDomain
@@ -50,11 +50,12 @@ flowchart LR
         S_evaluation_Plugins["evaluation:Plugins<br/><small>120 LOC</small>"]:::unknownDomain
         S_evaluation_Registries["evaluation:Registries<br/><small>121 LOC</small>"]:::unknownDomain
         S_expression_Ast["expression:Ast<br/><small>355 LOC</small>"]:::unknownDomain
-        S_expression_Data["expression:Data<br/><small>150 LOC</small>"]:::unknownDomain
+        S_expression_Data["expression:Data<br/><small>201 LOC</small>"]:::unknownDomain
         S_expression_Enum["expression:Enum<br/><small>47 LOC</small>"]:::unknownDomain
-        S_expression_Exceptions["expression:Exceptions<br/><small>55 LOC</small>"]:::unknownDomain
+        S_expression_Exceptions["expression:Exceptions<br/><small>64 LOC</small>"]:::unknownDomain
         S_expression_Interfaces["expression:Interfaces<br/><small>211 LOC</small>"]:::unknownDomain
         S_expression_Internal["expression:Internal<br/><small>433 LOC</small>"]:::unknownDomain
+        S_expression_JsonPath["expression:JsonPath<br/><small>1378 LOC</small>"]:::unknownDomain
         S_expression_Plugins["expression:Plugins<br/><small>128 LOC</small>"]:::unknownDomain
         S_expression_Registries["expression:Registries<br/><small>73 LOC</small>"]:::unknownDomain
         S_expression_Xpath["expression:Xpath<br/><small>173 LOC</small>"]:::unknownDomain
@@ -84,10 +85,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 1 | 1,207 | 0 | 5% |
-| Supporting | 8 | 8,935 | 0 | 34% |
+| Core domain | 1 | 1,207 | 0 | 4% |
+| Supporting | 8 | 8,964 | 0 | 32% |
 | Generic subdomain | 5 | 1,576 | 0 | 6% |
-| Unclassified | 40 | 14,654 | 0 | 56% |
+| Unclassified | 41 | 16,092 | 0 | 58% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
@@ -110,6 +111,7 @@ flowchart LR
 - `expression:Exceptions`
 - `expression:Interfaces`
 - `expression:Internal`
+- `expression:JsonPath`
 - `expression:Plugins`
 - `expression:Registries`
 - `expression:Xpath`

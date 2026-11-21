@@ -37,6 +37,6 @@ final class JsonPathSelectorPlugin implements SelectorPluginInterface
 
     public function supportedVersions(): array
     {
-        return [];
+        return $this->evaluator->supportedVersions();
     }
 }

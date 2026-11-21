@@ -66,7 +66,7 @@ Evans' first question: does the code speak one language?
 |---|---|---|
 | `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
 | `OpenApiExecutorInterface` | `Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface`<br/>`Runner\Execution\Interfaces\OpenApiExecutorInterface` | protocol-http, runner |
-| `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
+| `Parser` | `Expression\JsonPath\Parser`<br/>`Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
 | `ParserInterface` | `Expression\Interfaces\ParserInterface`<br/>`Evaluation\Condition\ParserInterface` | expression, evaluation |
 | `StepResult` | `Runtime\State\Data\StepResult`<br/>`Runner\Execution\Data\StepResult` | engine, runner |
 | `Token` | `Expression\Data\Token`<br/>`Evaluation\Condition\Token` | expression, evaluation |

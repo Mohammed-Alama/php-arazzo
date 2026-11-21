@@ -11,3 +11,75 @@ parameters:
 			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Exceptions/ExpressionSyntaxException.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\JsonPathFunctions\:\:evaluateExists\(\) has parameter \$expression with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/JsonPathFunctions.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\Parser\:\:__construct\(\) has parameter \$tokens with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/Parser.php
+
+		-
+			message: '#^Method parsePrimary has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
+			identifier: arazzo.custom.cyclomaticComplexity
+			count: 1
+			path: src/JsonPath/Parser.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\PredicateEvaluator\:\:evaluateLogical\(\) has parameter \$predicate with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/PredicateEvaluator.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\Tokenizer\:\:matchDot\(\) has parameter \$tokens with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/Tokenizer.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\Tokenizer\:\:matchNumber\(\) has parameter \$tokens with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/Tokenizer.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\Tokenizer\:\:matchOperator\(\) has parameter \$tokens with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/Tokenizer.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\Tokenizer\:\:matchSingleChar\(\) has parameter \$tokens with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/Tokenizer.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\Tokenizer\:\:matchString\(\) has parameter \$tokens with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/Tokenizer.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\Tokenizer\:\:matchWord\(\) has parameter \$tokens with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/Tokenizer.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPath\\Tokenizer\:\:tokenize\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPath/Tokenizer.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Expression\\JsonPathEvaluator\:\:evaluate\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JsonPathEvaluator.php

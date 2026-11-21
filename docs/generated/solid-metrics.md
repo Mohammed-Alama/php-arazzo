@@ -50,16 +50,17 @@ quadrantChart
     evaluation/Registries: [0.8, 0]
     evaluation/_: [0.565, 0.167]
     expression/Ast: [0.333, 0]
-    expression/Data: [0.214, 0]
+    expression/Data: [0.25, 0]
     expression/Enum: [0, 0]
-    expression/Exceptions: [0.125, 0]
+    expression/Exceptions: [0.1, 0]
     expression/Interfaces: [0.263, 1]
     expression/Internal: [0.857, 0]
+    expression/JsonPath: [0.667, 0.143]
     expression/Plugins: [0.8, 0]
     expression/Registries: [0.5, 0]
     expression/Support: [0.5, 0]
     expression/Xpath: [0.5, 0.333]
-    expression/_: [0.688, 0]
+    expression/_: [0.706, 0]
     protocol-http/Execution: [0.643, 0.25]
     protocol-http/Protocol: [0.9, 0]
     protocol-http/Registrar: [1, 0]
@@ -95,6 +96,7 @@ Concrete types over 300 LOC:
 | `ExecutionContext` | `engine:Runtime` | 553 |
 | `Parser` | `expression:_` | 511 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |
+| `Parser` | `expression:JsonPath` | 470 |
 | `ExecutionState` | `contracts:State` | 465 |
 | `StepOutcomeHandler` | `runner:Async` | 455 |
 | `ProtoParser` | `protocol-rpc:Normalizer` | 446 |

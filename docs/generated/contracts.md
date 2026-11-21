@@ -43,6 +43,7 @@ flowchart LR
     I_Rule["Rule<br/><small>document:Validator</small>"]:::contract
     I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
     I_RunnerGraphBuilderInterface["RunnerGraphBuilderInterface<br/><small>(runner root)</small>"]:::contract
+    I_SelectorContext["SelectorContext<br/><small>expression:JsonPath</small>"]:::contract
     I_SelectorPluginInterface["SelectorPluginInterface<br/><small>expression:Interfaces</small>"]:::contract
     I_SelectorPluginRegistryInterface["SelectorPluginRegistryInterface<br/><small>expression:Interfaces</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>sources:Resolver</small>"]:::contract
@@ -68,6 +69,8 @@ flowchart LR
     C_expression_expression_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
+    C_expression_expression_JsonPath_Rfc9535Engine["Rfc9535Engine<br/><small>expression:JsonPath</small>"]:::implCore
+    C_expression_expression_JsonPath_Rfc9535Engine -.->|implements| I_SelectorContext
     C_expression_expression___Parser["Parser<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___Parser -.->|implements| I_ParserInterface
     C_evaluation_evaluation_Condition_CachedParser["CachedParser<br/><small>evaluation:Condition</small>"]:::implCore

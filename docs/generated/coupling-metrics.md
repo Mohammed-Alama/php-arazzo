@@ -21,7 +21,7 @@ targets. Regenerated before every commit.
 | `contracts:State` | 3 | 974 | 15 | 1 | 0.06 |  |
 | `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1441 | 5 | 2 | 0.29 |  |
-| `document:Validator` | 80 | 5090 | 6 | 7 | 0.54 |  |
+| `document:Validator` | 80 | 5119 | 6 | 7 | 0.54 |  |
 | `(document root)` | 6 | 293 | 10 | 6 | 0.38 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
@@ -38,16 +38,17 @@ targets. Regenerated before every commit.
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
 | `(evaluation root)` | 6 | 843 | 10 | 13 | 0.57 |  |
 | `expression:Ast` | 15 | 340 | 4 | 2 | 0.33 |  |
-| `expression:Data` | 5 | 145 | 11 | 3 | 0.21 |  |
+| `expression:Data` | 6 | 195 | 12 | 4 | 0.25 |  |
 | `expression:Enum` | 2 | 45 | 5 | 0 | 0.00 |  |
-| `expression:Exceptions` | 2 | 53 | 7 | 1 | 0.13 |  |
+| `expression:Exceptions` | 2 | 62 | 9 | 1 | 0.10 |  |
 | `expression:Interfaces` | 5 | 206 | 14 | 5 | 0.26 |  |
 | `expression:Internal` | 3 | 430 | 1 | 6 | 0.86 |  |
+| `expression:JsonPath` | 7 | 1371 | 1 | 2 | 0.67 |  |
 | `expression:Plugins` | 3 | 125 | 1 | 4 | 0.80 |  |
 | `expression:Registries` | 1 | 72 | 2 | 2 | 0.50 |  |
 | `expression:Support` | 1 | 58 | 1 | 1 | 0.50 |  |
 | `expression:Xpath` | 3 | 170 | 2 | 2 | 0.50 |  |
-| `(expression root)` | 9 | 1315 | 5 | 11 | 0.69 |  |
+| `(expression root)` | 9 | 1317 | 5 | 12 | 0.71 |  |
 | `protocol-http:Execution` | 4 | 532 | 5 | 9 | 0.64 |  |
 | `protocol-http:Protocol` | 2 | 327 | 1 | 9 | 0.90 |  |
 | `protocol-http:Registrar` | 1 | 140 | 0 | 6 | 1.00 |  |
@@ -72,7 +73,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 324 | 2 | 4 | 0.67 |  |
 | `(sources root)` | 3 | 335 | 1 | 10 | 0.91 |  |
 
-Total cross-module edges: **1169**
+Total cross-module edges: **1176**
 
 ## Most entangled module pairs
 
