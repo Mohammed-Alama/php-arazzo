@@ -202,9 +202,10 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Contracts\State`
 
 #### `ExecutionState` class
-- `public function __construct(public string $executionId, public string $definitionId, public string $workflowId, public ?string $currentStepId = null, public array $inputs = [], public array $stepAttempts = [], public array $stepResults = [], public array $dependencies = [], public array $outputs = [], public array $errors = [], public int $stepsSpent = 0, public int $maxSteps = 1000, public array $workflowCallStack = [], public int $maxWorkflowDepth = 32, public array $components = [], public string $status = 'running', public array $workflows = [])`
+- `public function __construct(public string $executionId, public string $definitionId, public string $workflowId, public ?string $currentStepId = null, public array $inputs = [], public array $stepAttempts = [], public array $stepResults = [], public array $dependencies = [], public array $outputs = [], public array $errors = [], public int $stepsSpent = 0, public int $maxSteps = 1000, public array $workflowCallStack = [], public int $maxWorkflowDepth = 32, public array $components = [], public string $status = 'running', public array $workflows = [], /** @var list<string> */ public array $skippedSteps = [])`
 - `public function attemptFor(string $stepId): int`
 - `public function enterWorkflow(string $workflowId): self`
+- `public function getSkippedSteps(): array`
 - `public function jsonSerialize(): array`
 - `public function leaveWorkflow(): self`
 - `public function restoreBudget(int $stepsSpent, array $workflowCallStack): self`
@@ -216,6 +217,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function withErrorEntry(array $entry): self`
 - `public function withInputs(array $inputs): self`
 - `public function withOutput(string $name, mixed $value): self`
+- `public function withSkippedSteps(array $skippedSteps): self`
 - `public function withStatus(string $status): self`
 - `public function withStepAttempt(string $stepId): self`
 - `public function withStepResult(string $stepId, array $result): self`
@@ -225,11 +227,12 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function fromContext(WorkflowContext $context, ?int $maxSteps = null, ?int $maxWorkflowDepth = null): self`
 
 #### `WorkflowContext` class
-- `public function __construct(private string $definitionId, private array $inputs = [], private array $steps = [], private array $components = [], private ?string $workflowId = null, ?string $executionId = null, private array $workflows = [], private int $stepsSpent = 0, /** @var list<string> */ private array $workflowCallStack = [], public ?string $parentRunId = null)`
+- `public function __construct(private string $definitionId, private array $inputs = [], private array $steps = [], private array $components = [], private ?string $workflowId = null, ?string $executionId = null, private array $workflows = [], private int $stepsSpent = 0, /** @var list<string> */ private array $workflowCallStack = [], /** @var list<string> */ private array $skippedSteps = [], public ?string $parentRunId = null)`
 - `public function getComponents(): array`
 - `public function getDefinitionId(): string`
 - `public function getExecutionId(): string`
 - `public function getInputs(): array`
+- `public function getSkippedSteps(): array`
 - `public function getStepAttempts(string $stepId): int`
 - `public function getStepStatus(string $stepId): ?StepStatus`
 - `public function getSteps(): array`
@@ -243,6 +246,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function withExecutionId(string $executionId): self`
 - `public function withInput(string $name, mixed $value): self`
 - `public function withInputs(array $inputs): self`
+- `public function withSkippedSteps(array $skippedSteps): self`
 - `public function withStepAttemptIncremented(string $stepId): self`
 - `public function withStepInputs(string $stepId, array $inputs): self`
 - `public function withStepOutput(string $stepId, string $key, mixed $value): self`

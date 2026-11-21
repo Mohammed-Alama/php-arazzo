@@ -35,10 +35,10 @@
                     "lastSeenUpdatedAt": "2026-11-09T22:41:22Z"
                 },
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-15T21:54:02Z"
+                    "lastSeenUpdatedAt": "2026-11-20T05:43:00Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-19T00:53:37Z"
+                    "lastSeenUpdatedAt": "2026-11-19T20:45:08Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-05-18T11:11:50Z",
@@ -49,10 +49,10 @@
         "OAI/OpenAPI-Specification": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-19T13:21:03Z"
+                    "lastSeenUpdatedAt": "2026-11-19T22:48:51Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-18T22:41:29Z"
+                    "lastSeenUpdatedAt": "2026-11-19T17:34:17Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-09-10T17:18:00Z",
@@ -132,7 +132,7 @@
         "OAI/org": {
             "endpoints": {
                 "org_diff": {
-                    "lastSeenUpdatedAt": "2026-11-19T15:41:11+00:00"
+                    "lastSeenUpdatedAt": "2026-11-20T15:23:17+00:00"
                 }
             }
         },
@@ -385,10 +385,10 @@
         "usearazzo/arazzo-toolkit": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-16T21:14:47Z"
+                    "lastSeenUpdatedAt": "2026-11-20T08:55:57Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-19T12:00:34Z"
+                    "lastSeenUpdatedAt": "2026-11-20T11:57:17Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-11-19T11:09:46Z",

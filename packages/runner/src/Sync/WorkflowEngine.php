@@ -115,6 +115,12 @@ final class WorkflowEngine
 
                 $gotoState = $state->withWorkflow($targetWorkflowId)->withCurrentStep($action->stepId);
 
+                // Steps topologically between the goto source and target are
+                // skipped: no further transition (and no side effect) targets
+                // them while this goto set is active.
+                $skipped = $this->stepsBetween($workflow, $step->stepId, $action->stepId);
+                $gotoState = $gotoState->withSkippedSteps($skipped);
+
                 // 1.1: goto parameters bind values into the target workflow input scope.
                 foreach ($action->parameters as $parameter) {
                     if ($parameter instanceof Reusable) {
@@ -230,12 +236,56 @@ final class WorkflowEngine
         }
     }
 
+    /**
+     * @return list<string>
+     */
+    private function stepsBetween(Workflow $workflow, ?string $source, ?string $target): array
+    {
+        if ($source === null || $target === null || $source === $target) {
+            return [];
+        }
+
+        $graph = new DependencyGraph($workflow->steps);
+        $order = $graph->getTopologicalOrder();
+
+        $sourceIndex = $this->indexOf($order, $source);
+        $targetIndex = $this->indexOf($order, $target);
+
+        if ($sourceIndex === null || $targetIndex === null) {
+            return [];
+        }
+
+        // Only forward jumps (target after source) skip the steps in between.
+        if ($targetIndex <= $sourceIndex) {
+            return [];
+        }
+
+        return array_values(array_slice($order, $sourceIndex + 1, $targetIndex - $sourceIndex - 1));
+    }
+
+    /**
+     * @param  array<string>  $haystack
+     */
+    private function indexOf(array $haystack, string $needle): ?int
+    {
+        foreach ($haystack as $index => $value) {
+            if ($value === $needle) {
+                return $index;
+            }
+        }
+
+        return null;
+    }
+
     private function nextRunnable(Workflow $workflow, ExecutionState $state, string $completed): ?string
     {
         $graph = new DependencyGraph($workflow->steps);
 
         foreach ($graph->getTopologicalOrder() as $candidateId) {
             if ($candidateId === $completed || isset($state->stepResults[$candidateId])) {
+                continue;
+            }
+            if (in_array($candidateId, $state->getSkippedSteps(), true)) {
                 continue;
             }
 

@@ -35,6 +35,8 @@ final class ExecutionContext
         public readonly int $maxWorkflowDepth = 32,
         public readonly string $status = 'running',
         public readonly array $workflows = [],
+        /** @var list<string> */
+        public readonly array $skippedSteps = [],
     ) {}
 
     /**
@@ -93,6 +95,7 @@ final class ExecutionContext
             maxWorkflowDepth: 32,
             status: 'running',
             workflows: $context->getWorkflows(),
+            skippedSteps: $context->getSkippedSteps(),
         );
     }
 
@@ -108,6 +111,7 @@ final class ExecutionContext
             stepsSpent: $this->stepsSpent,
             workflowCallStack: $this->workflowCallStack,
             workflows: $this->workflows,
+            skippedSteps: $this->skippedSteps,
         );
     }
 
@@ -145,7 +149,39 @@ final class ExecutionContext
             $state = $state->withErrorEntry($error);
         }
 
-        return $state->withStatus($this->status);
+        return $state->withSkippedSteps($this->skippedSteps)->withStatus($this->status);
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getSkippedSteps(): array
+    {
+        return $this->skippedSteps;
+    }
+
+    /**
+     * @param  list<string>  $skippedSteps
+     */
+    public function withSkippedSteps(array $skippedSteps): self
+    {
+        return new self(
+            executionId: $this->executionId,
+            definitionId: $this->definitionId,
+            workflowId: $this->workflowId,
+            currentStepId: $this->currentStepId,
+            inputs: $this->inputs,
+            stepResults: $this->stepResults,
+            components: $this->components,
+            errors: $this->errors,
+            stepsSpent: $this->stepsSpent,
+            maxSteps: $this->maxSteps,
+            workflowCallStack: $this->workflowCallStack,
+            maxWorkflowDepth: $this->maxWorkflowDepth,
+            status: $this->status,
+            workflows: $this->workflows,
+            skippedSteps: $skippedSteps,
+        );
     }
 
     public function getExecutionId(): string
@@ -510,6 +546,7 @@ final class ExecutionContext
             'maxWorkflowDepth' => $this->maxWorkflowDepth,
             'status' => $this->status,
             'workflows' => $this->workflows,
+            'skippedSteps' => $this->skippedSteps,
         ];
     }
 }
