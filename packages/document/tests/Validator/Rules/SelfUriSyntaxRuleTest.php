@@ -20,32 +20,64 @@ function docWithSelf(?string $self, SpecVersion $sv = SpecVersion::V1_1): Arazzo
     );
 }
 
-it('accepts a valid https URI', function () {
+function errorsFor(?string $self, SpecVersion $sv = SpecVersion::V1_1): array
+{
     $errors = new ErrorCollector();
-    $doc = docWithSelf('https://example.com/spec.yaml');
     (new SelfUriSyntaxRule())->check(
-        $doc,
-        SymbolTable::build($doc), $errors,
+        docWithSelf($self, $sv),
+        SymbolTable::build(docWithSelf($self, $sv)), $errors,
     );
-    expect($errors->errors())->toBe([]);
+
+    return $errors->errors();
+}
+
+it('accepts an absolute $self on 1.0.0', function () {
+    expect(errorsFor('https://example.com/spec.yaml', SpecVersion::V1_0))->toBe([]);
 });
 
-it('errors on garbage $self', function () {
-    $errors = new ErrorCollector();
-    $doc = docWithSelf('not a uri at all');
-    (new SelfUriSyntaxRule())->check(
-        $doc,
-        SymbolTable::build($doc), $errors,
-    );
-    expect($errors->errors())->not->toBe([]);
+it('accepts an absolute $self on 1.1.0', function () {
+    expect(errorsFor('https://example.com/spec.yaml'))->toBe([]);
 });
 
-it('no-op when $self is null', function () {
-    $errors = new ErrorCollector();
-    $doc = docWithSelf(null);
-    (new SelfUriSyntaxRule())->check(
-        $doc,
-        SymbolTable::build($doc), $errors,
-    );
-    expect($errors->errors())->toBe([]);
+it('accepts a relative $self on 1.0.0', function () {
+    expect(errorsFor('./doc.arazzo', SpecVersion::V1_0))->toBe([]);
+});
+
+it('accepts a relative $self on 1.1.0', function () {
+    expect(errorsFor('./doc.arazzo'))->toBe([]);
+});
+
+it('rejects a $self with a fragment on 1.0.0', function () {
+    $errors = errorsFor('https://example.com/doc.arazzo#frag', SpecVersion::V1_0);
+    expect($errors)->toHaveCount(1);
+    expect($errors[0]->code)->toBe('document.self_uri_syntax');
+    expect($errors[0]->path)->toBe('/$self');
+    expect($errors[0]->message)->toBe("Invalid \$self URI: 'https://example.com/doc.arazzo#frag'");
+});
+
+it('rejects a $self with a fragment on 1.1.0', function () {
+    $errors = errorsFor('https://example.com/doc.arazzo#frag');
+    expect($errors)->toHaveCount(1);
+    expect($errors[0]->code)->toBe('document.self_uri_syntax');
+    expect($errors[0]->path)->toBe('/$self');
+});
+
+it('rejects an empty $self', function () {
+    $errors = errorsFor('');
+    expect($errors)->toHaveCount(1);
+    expect($errors[0]->code)->toBe('document.self_uri_syntax');
+    expect($errors[0]->path)->toBe('/$self');
+    expect($errors[0]->message)->toBe("Invalid \$self URI: ''");
+});
+
+it('rejects a whitespace-only $self', function () {
+    expect(errorsFor('   '))->toHaveCount(1);
+});
+
+it('rejects a garbage $self containing spaces', function () {
+    expect(errorsFor('not a uri at all'))->toHaveCount(1);
+});
+
+it('is a no-op when $self is null', function () {
+    expect(errorsFor(null))->toBe([]);
 });
