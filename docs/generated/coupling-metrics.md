@@ -38,12 +38,12 @@ targets. Regenerated before every commit.
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
 | `(evaluation root)` | 6 | 843 | 10 | 13 | 0.57 |  |
 | `expression:Ast` | 15 | 340 | 4 | 2 | 0.33 |  |
-| `expression:Data` | 6 | 180 | 12 | 3 | 0.20 |  |
+| `expression:Data` | 6 | 195 | 12 | 4 | 0.25 |  |
 | `expression:Enum` | 2 | 45 | 5 | 0 | 0.00 |  |
-| `expression:Exceptions` | 2 | 62 | 8 | 1 | 0.11 |  |
+| `expression:Exceptions` | 2 | 62 | 9 | 1 | 0.10 |  |
 | `expression:Interfaces` | 5 | 206 | 14 | 5 | 0.26 |  |
 | `expression:Internal` | 3 | 430 | 1 | 6 | 0.86 |  |
-| `expression:JsonPath` | 3 | 1312 | 1 | 2 | 0.67 |  |
+| `expression:JsonPath` | 7 | 1371 | 1 | 2 | 0.67 |  |
 | `expression:Plugins` | 3 | 125 | 1 | 4 | 0.80 |  |
 | `expression:Registries` | 1 | 72 | 2 | 2 | 0.50 |  |
 | `expression:Support` | 1 | 58 | 1 | 1 | 0.50 |  |
@@ -73,7 +73,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 324 | 2 | 4 | 0.67 |  |
 | `(sources root)` | 3 | 335 | 1 | 10 | 0.91 |  |
 
-Total cross-module edges: **1173**
+Total cross-module edges: **1176**
 
 ## Most entangled module pairs
 

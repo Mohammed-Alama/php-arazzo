@@ -333,6 +333,11 @@ this file on a commit is a public API change — review it deliberately.
 - `public function has(ExpressionType $type): bool;`
 - `public function supportedVersions(ExpressionType $type): array;`
 
+### `Alama\Arazzo\Expression\JsonPath`
+
+#### `SelectorContext` interface
+- `public function select(array $ast, array $nodes, string $path, int &$visited, int $depth = 0): array;`
+
 ### `Alama\Arazzo\Expression\Xpath`
 
 #### `XpathEvaluator` interface

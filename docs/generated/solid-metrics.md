@@ -50,12 +50,12 @@ quadrantChart
     evaluation/Registries: [0.8, 0]
     evaluation/_: [0.565, 0.167]
     expression/Ast: [0.333, 0]
-    expression/Data: [0.2, 0]
+    expression/Data: [0.25, 0]
     expression/Enum: [0, 0]
-    expression/Exceptions: [0.111, 0]
+    expression/Exceptions: [0.1, 0]
     expression/Interfaces: [0.263, 1]
     expression/Internal: [0.857, 0]
-    expression/JsonPath: [0.667, 0]
+    expression/JsonPath: [0.667, 0.143]
     expression/Plugins: [0.8, 0]
     expression/Registries: [0.5, 0]
     expression/Support: [0.5, 0]
@@ -93,7 +93,6 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `document:Parser` | 931 |
-| `Rfc9535Engine` | `expression:JsonPath` | 649 |
 | `ExecutionContext` | `engine:Runtime` | 516 |
 | `Parser` | `expression:_` | 511 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |

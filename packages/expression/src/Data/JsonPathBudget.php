@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Data;
 
+use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
+
 /**
  * Admission budget for JSONPath evaluation.
  *
@@ -31,5 +33,18 @@ final readonly class JsonPathBudget
     public static function defaults(): self
     {
         return new self();
+    }
+
+    /**
+     * Record one node visit and enforce the nodes-visited admission budget.
+     *
+     * @param  int  $visited  node visit counter (passed by reference)
+     */
+    public function touchNode(int &$visited): void
+    {
+        $visited++;
+        if ($visited > $this->maxNodesVisited) {
+            throw SelectorEvaluationException::jsonPathBudgetExceeded('nodesVisited');
+        }
     }
 }

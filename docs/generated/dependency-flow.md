@@ -105,6 +105,7 @@ expression-Ast,expression-Data,9
 expression-Ast,expression-Enum,9
 expression-Data,contracts-Spec,2
 expression-Data,expression-Enum,2
+expression-Data,expression-Exceptions,1
 expression-Exceptions,contracts-Support,2
 expression-Interfaces,contracts-Spec,8
 expression-Interfaces,expression-Ast,1
@@ -115,7 +116,7 @@ expression-Internal,expression-Ast,10
 expression-Internal,expression-Data,1
 expression-Internal,expression-Exceptions,1
 expression-Internal,expression-Interfaces,1
-expression-JsonPath,expression-Data,1
+expression-JsonPath,expression-Data,3
 expression-JsonPath,expression-Exceptions,1
 expression-Plugins,contracts-Spec,3
 expression-Plugins,expression-Interfaces,3
