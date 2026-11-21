@@ -29,6 +29,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `ActionReusableRefResolvesRule` <small>core</small> | `error` | 2 |
 | `ActionTargetExclusivityRule` <small>core</small> | `error` | 1 |
 | `AsyncApiFieldsRequire11Rule` <small>core</small> | `error` | 1 |
+| `ComponentsUniqueNamesRule` <small>core</small> | `error` | 1 |
 | `DocUnknownFieldRule` <small>core</small> | `error` · `warning` | 2 |
 | `DocumentArazzoVersionRule` <small>core</small> | `error` | 1 |
 | `DocumentInfoRequiredRule` <small>core</small> | `error` | 2 |
@@ -62,6 +63,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `StepOperationIdSourceScopedRule` <small>core</small> | `error` | 1 |
 | `StepOperationPathSyntaxRule` <small>core</small> | `error` | 4 |
 | `StepOperationTargetPresentRule` <small>core</small> | `error` | 1 |
+| `StepOutputsUniqueRule` <small>core</small> | `error` | 2 |
 | `StepParameterDuplicateRule` <small>core</small> | `error` | 1 |
 | `StepParameterInValidRule` <small>core</small> | `error` | 1 |
 | `StepParameterRequiresInRule` <small>core</small> | `error` | 1 |
@@ -84,7 +86,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `DefaultOpenApiExecutor` <small>core</small> | `warning` | 1 |
 | `StepOutputExtractor` <small>core</small> | `warning` | 1 |
 
-100 logging calls total. PSR-14 events are dispatched independently (see events.md).
+103 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 
