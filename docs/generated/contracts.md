@@ -143,6 +143,8 @@ flowchart LR
     C_document_document_Parser_SymfonyYamlDecoder -.->|implements| I_DecoderInterface
     C_document_document_Validator_OfficialSchemaRule["OfficialSchemaRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_OfficialSchemaRule -.->|implements| I_Rule
+    C_document_document_Validator_ActionDuplicateRule["ActionDuplicateRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ActionDuplicateRule -.->|implements| I_Rule
     C_document_document_Validator_ActionGotoTargetResolvesRule["ActionGotoTargetResolvesRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ActionGotoTargetResolvesRule -.->|implements| I_Rule
     C_document_document_Validator_ActionOutputTargetExclusivityRule["ActionOutputTargetExclusivityRule<br/><small>document:Validator</small>"]:::implCore

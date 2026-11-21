@@ -47,7 +47,10 @@ it('rejects duplicate parameters within same step (same name and in)', function 
         specVersion: SpecVersion::V1_0,
     );
     (new StepParameterDuplicateRule())->check($doc, SymbolTable::build($doc), $errors);
-    expect($errors->errors())->toHaveCount(1);
+    expect($errors->errors())->toHaveCount(1)
+        ->and($errors->errors()[0]->code)->toBe('step.parameters_duplicate')
+        ->and($errors->errors()[0]->path)->toBe('/workflows/0/steps/0/parameters')
+        ->and($errors->errors()[0]->message)->toContain('indices 0 and 1');
 });
 
 it('accepts different parameter names in same step', function (): void {
@@ -146,7 +149,10 @@ it('rejects duplicate workflow-level parameters', function (): void {
         specVersion: SpecVersion::V1_0,
     );
     (new StepParameterDuplicateRule())->check($doc, SymbolTable::build($doc), $errors);
-    expect($errors->errors())->toHaveCount(1);
+    expect($errors->errors())->toHaveCount(1)
+        ->and($errors->errors()[0]->code)->toBe('workflow.parameters_duplicate')
+        ->and($errors->errors()[0]->path)->toBe('/workflows/0/parameters')
+        ->and($errors->errors()[0]->message)->toContain('indices 0 and 1');
 });
 
 it('accepts reusable parameter duplicates', function (): void {
