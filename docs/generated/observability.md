@@ -25,6 +25,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `OfficialSchemaRule` <small>core</small> | `error` | 4 |
 | `ActionGotoTargetResolvesRule` <small>core</small> | `error` | 2 |
 | `ActionOutputTargetExclusivityRule` <small>core</small> | `error` | 2 |
+| `ActionParameterInForbiddenRule` <small>core</small> | `error` | 2 |
 | `ActionRetryLimitsRule` <small>core</small> | `error` | 2 |
 | `ActionReusableRefResolvesRule` <small>core</small> | `error` | 2 |
 | `ActionTargetExclusivityRule` <small>core</small> | `error` | 1 |
@@ -86,7 +87,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `DefaultOpenApiExecutor` <small>core</small> | `warning` | 1 |
 | `StepOutputExtractor` <small>core</small> | `warning` | 1 |
 
-103 logging calls total. PSR-14 events are dispatched independently (see events.md).
+105 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 

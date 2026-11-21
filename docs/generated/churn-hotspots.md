@@ -14,14 +14,14 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["document:Validator", "cli:Console", "runner:Execution", "runner:Async", "expression:Interfaces", "document:Parser", "sources:Normalizer", "contracts:Interfaces", "contracts:Spec", "runner:Sync", "engine:Execution", "expression:Data"]
     y-axis "Touches" 0 --> 50
-    bar [37, 35, 27, 18, 15, 14, 13, 11, 11, 11, 8, 8]
+    bar [38, 35, 27, 18, 15, 14, 13, 11, 11, 11, 8, 8]
 ```
 
-Analyzed 344 total file-touches across 55 modules.
+Analyzed 345 total file-touches across 55 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `document:Validator` | 37 | 11% | 5,251 | 7 |
+| `document:Validator` | 38 | 11% | 5,339 | 7.1 |
 | `cli:Console` | 35 | 10% | 943 | 37.1 |
 | `runner:Execution` | 27 | 8% | 383 | 70.5 |
 | `runner:Async` | 18 | 5% | 1,347 | 13.4 |

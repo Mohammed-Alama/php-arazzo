@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionOutputTargetExclusivityRule;
+use Alama\Arazzo\Document\Validator\Rules\ActionParameterInForbiddenRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionRetryLimitsRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionReusableRefResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionTargetExclusivityRule;
@@ -55,7 +56,6 @@ use Alama\Arazzo\Document\Validator\Rules\StepParameterRequiresInRule;
 use Alama\Arazzo\Document\Validator\Rules\StepParametersHaveNameRule;
 use Alama\Arazzo\Document\Validator\Rules\StepRequestBodyReplacementsTargetRule;
 use Alama\Arazzo\Document\Validator\Rules\StepRequestBodyWorkflowRule;
-use Alama\Arazzo\Document\Validator\Rules\StepSuccessActionParameterInRule;
 use Alama\Arazzo\Document\Validator\Rules\StepSuccessCriteriaConditionRule;
 use Alama\Arazzo\Document\Validator\Rules\StepTimeoutRequires11Rule;
 use Alama\Arazzo\Document\Validator\Rules\StepUniqueIdRule;
@@ -111,6 +111,7 @@ final readonly class RuleSet
             new ActionGotoTargetResolvesRule(),
             new ActionTargetExclusivityRule(),
             new ActionOutputTargetExclusivityRule($engine),
+            new ActionParameterInForbiddenRule(),
             new ActionRetryLimitsRule(),
             new ActionReusableRefResolvesRule(),
             new ActionTypeValidRule(),
@@ -150,7 +151,6 @@ final readonly class RuleSet
             new StepOutputsUniqueRule(),
             new StepParameterDuplicateRule(),
             new StepParameterRequiresInRule(),
-            new StepSuccessActionParameterInRule(),
             new StepParameterInValidRule(),
             new StepRequestBodyWorkflowRule(),
             new StepParametersHaveNameRule(),
