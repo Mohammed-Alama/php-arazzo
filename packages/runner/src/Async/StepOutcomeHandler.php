@@ -253,7 +253,8 @@ class StepOutcomeHandler
         $newContext = $context
             ->withWorkflowId($transition->state->workflowId)
             ->withStepStatus($step->stepId, $status)
-            ->withInputs($transition->state->inputs);
+            ->withInputs($transition->state->inputs)
+            ->withSkippedSteps($transition->state->getSkippedSteps());
 
         $targetWorkflow = $this->findWorkflow($document, $transition->workflowId ?? (string) $context->getWorkflowId());
         if ($targetWorkflow === null) {

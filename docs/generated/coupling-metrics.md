@@ -18,7 +18,7 @@ targets. Regenerated before every commit.
 | `contracts:Exceptions` | 1 | 30 | 7 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 19 | 348 | 27 | 3 | 0.10 |  |
 | `contracts:Spec` | 49 | 1158 | 42 | 1 | 0.02 |  |
-| `contracts:State` | 3 | 907 | 15 | 1 | 0.06 |  |
+| `contracts:State` | 3 | 974 | 15 | 1 | 0.06 |  |
 | `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1441 | 5 | 2 | 0.29 |  |
 | `document:Validator` | 80 | 5090 | 6 | 7 | 0.54 |  |
@@ -27,7 +27,7 @@ targets. Regenerated before every commit.
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
 | `engine:Exceptions` | 1 | 41 | 6 | 1 | 0.14 |  |
 | `engine:Execution` | 8 | 1023 | 7 | 4 | 0.36 |  |
-| `engine:Runtime` | 19 | 1583 | 5 | 3 | 0.38 |  |
+| `engine:Runtime` | 19 | 1620 | 5 | 3 | 0.38 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 17 | 1006 | 1 | 8 | 0.89 |  |
 | `evaluation:Data` | 2 | 84 | 3 | 2 | 0.40 |  |
@@ -61,11 +61,11 @@ targets. Regenerated before every commit.
 | `protocol-soap:Resolver` | 1 | 135 | 1 | 1 | 0.50 |  |
 | `protocol-soap:Transfer` | 2 | 201 | 2 | 1 | 0.33 |  |
 | `protocol-soap:Validation` | 1 | 138 | 1 | 4 | 0.80 |  |
-| `runner:Async` | 7 | 1339 | 2 | 17 | 0.89 |  |
+| `runner:Async` | 7 | 1340 | 2 | 17 | 0.89 |  |
 | `runner:Events` | 11 | 317 | 5 | 1 | 0.17 |  |
 | `runner:Execution` | 16 | 367 | 4 | 9 | 0.69 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
-| `runner:Sync` | 6 | 1040 | 3 | 18 | 0.86 | ⚠ unstable hub |
+| `runner:Sync` | 6 | 1090 | 3 | 18 | 0.86 | ⚠ unstable hub |
 | `(runner root)` | 9 | 522 | 3 | 16 | 0.84 | ⚠ unstable hub |
 | `sources:Normalizer` | 11 | 1271 | 11 | 5 | 0.31 |  |
 | `sources:Resolver` | 13 | 499 | 6 | 3 | 0.33 |  |

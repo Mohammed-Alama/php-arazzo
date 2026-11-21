@@ -11,6 +11,7 @@ use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
 use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
 use Alama\Arazzo\Contracts\Spec\Action\SuccessAction;
 use Alama\Arazzo\Contracts\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
@@ -422,6 +423,34 @@ it('goto jumps to a same-workflow step directly, bypassing DependencyAnalyzer or
     expect($job->step->stepId)->toBe('C');
     expect($job->context->getStepStatus('C'))->toBe(StepStatus::Pending);
     expect($job->context->getStepStatus('A'))->toBe(StepStatus::Failed);
+});
+
+it('goto skips the intermediate step and dispatches no job for it after the target completes', function (): void {
+    [$handler, $queue, , , , $store] = makeStepOutcomeHandler();
+
+    $goto = new SuccessGotoAction('goto', 'C', null, []);
+    $stepA = stepOutcomeStep('A', onSuccess: [$goto]);
+    // 'B' sits between 'A' and 'C' in topological order with no dependency on C,
+    // so a working goto must skip B entirely: no job is ever dispatched for it.
+    $stepB = stepOutcomeStep('B');
+    $stepC = stepOutcomeStep('C');
+    $workflow = stepOutcomeWorkflow('wf_1', [$stepA, $stepB, $stepC]);
+    $document = stepOutcomeDocument([$workflow]);
+
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    // A succeeds and jumps to C: only C is dispatched, B is skipped.
+    $handler->handle($document, $workflow, $stepA, $context, 'exec_1', true);
+
+    expect($queue->dispatched)->toHaveCount(1);
+    expect($queue->dispatched[0]['job']->step->stepId)->toBe('C');
+
+    // C completes: the skipped step B must not be dispatched.
+    $cJobContext = $queue->dispatched[0]['job']->context;
+    $handler->handle($document, $workflow, $stepC, $cJobContext, 'exec_1', true);
+
+    expect($queue->dispatched)->toHaveCount(1, 'no job is dispatched for the skipped intermediate step B');
+    expect($store->saves['exec_1']['steps']['B'] ?? null)->toBeNull();
 });
 
 it('goto loop-back resets an already-succeeded target step to Pending so it re-runs', function (): void {

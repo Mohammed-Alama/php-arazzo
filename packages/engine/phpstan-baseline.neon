@@ -25,13 +25,13 @@ parameters:
 			path: src/StepStateMachineEngine.php
 
 		-
-			message: '#^Class ExecutionContext has too many methods \(31\)\. Maximum allowed is 20\.$#'
+			message: '#^Class ExecutionContext has too many methods \(33\)\. Maximum allowed is 20\.$#'
 			identifier: arazzo.custom.maxMethodCount
 			count: 1
 			path: src/Runtime/State/Data/ExecutionContext.php
 
 		-
-			message: '#^Method __construct has too many parameters \(14\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(15\)\. Maximum allowed is 5\.$#'
 			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Runtime/State/Data/ExecutionContext.php

@@ -92,16 +92,16 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `document:Parser` | 931 |
-| `ExecutionContext` | `engine:Runtime` | 516 |
+| `ExecutionContext` | `engine:Runtime` | 553 |
 | `Parser` | `expression:_` | 511 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |
-| `StepOutcomeHandler` | `runner:Async` | 454 |
+| `ExecutionState` | `contracts:State` | 465 |
+| `StepOutcomeHandler` | `runner:Async` | 455 |
 | `ProtoParser` | `protocol-rpc:Normalizer` | 446 |
-| `ExecutionState` | `contracts:State` | 436 |
+| `WorkflowContext` | `contracts:State` | 442 |
 | `StepExecutionWorker` | `runner:Async` | 414 |
-| `WorkflowContext` | `contracts:State` | 404 |
+| `WorkflowEngine` | `runner:Sync` | 360 |
 | `PreflightValidator` | `sources:Validator` | 325 |
-| `WorkflowEngine` | `runner:Sync` | 310 |
 | `WorkflowExecutor` | `runner:Sync` | 310 |
 | `SchemaValidator` | `engine:Execution` | 302 |
 

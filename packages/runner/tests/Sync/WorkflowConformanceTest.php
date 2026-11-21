@@ -225,6 +225,50 @@ describe('conformance: onSuccess end/goto', function () {
             ->and($result->stepResults)->toHaveKey('c')
             ->and($result->stepResults)->toHaveKey('b');
     });
+
+    it('it_skips_intermediate_steps_on_goto: goto transfers to the target, intermediate step not executed', function () {
+        $goto = new SuccessGotoAction('goto', 'fetch', null, []);
+        $stepCreate = confStep('create', 'create-pet', [], [$goto]);
+        // 'list' sits between 'create' and 'fetch' in topological order with no
+        // dependency on the goto target, so a working goto must skip it entirely.
+        $stepList = confStep('list', 'list-pets');
+        $stepFetch = confStep('fetch', 'get-pet');
+
+        $workflow = new Workflow('wf', null, null, null, [], [$stepCreate, $stepList, $stepFetch], [], [], [], []);
+        [$executor, $fake, $document] = confExecutor([$workflow], [
+            new Response(201, ['Content-Type' => 'application/json'], '{"id":"pet-1"}'), // create
+            new Response(200, ['Content-Type' => 'application/json'], '{"id":"pet-1"}'), // fetch (goto target)
+        ]);
+
+        $result = $executor->execute($workflow, $document, []);
+
+        expect($result->status)->toBe('succeeded')
+            ->and($fake->calls)->toBe(2, 'goto skips the intermediate step: exactly 2 requests, not 3')
+            ->and($result->stepResults)->toHaveKey('create')
+            ->and($result->stepResults)->toHaveKey('fetch')
+            ->and($result->stepResults)->not->toHaveKey('list');
+    });
+
+    it('it_sends_no_requests_for_skipped_steps: goto sends no requests for skipped intermediate steps', function () {
+        $goto = new SuccessGotoAction('goto', 'fetch', null, []);
+        $stepCreate = confStep('create', 'create-pet', [], [$goto]);
+        $stepList = confStep('list', 'list-pets');
+        $stepFetch = confStep('fetch', 'get-pet');
+
+        $workflow = new Workflow('wf', null, null, null, [], [$stepCreate, $stepList, $stepFetch], [], [], [], []);
+        [$executor, $fake, $document] = confExecutor([$workflow], [
+            new Response(201, ['Content-Type' => 'application/json'], '{"id":"pet-1"}'), // create
+            new Response(200, ['Content-Type' => 'application/json'], '{"id":"pet-1"}'), // fetch (goto target)
+        ]);
+
+        $result = $executor->execute($workflow, $document, []);
+
+        expect($result->status)->toBe('succeeded')
+            ->and($fake->calls)->toBe(2, 'no HTTP request is sent for the skipped intermediate step')
+            ->and($result->stepResults)->toHaveKey('create')
+            ->and($result->stepResults)->toHaveKey('fetch')
+            ->and($result->stepResults)->not->toHaveKey('list');
+    });
 });
 
 describe('conformance: onFailure goto recovery', function () {
