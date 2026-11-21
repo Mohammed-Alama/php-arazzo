@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Document\Validator;
 
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
+use Alama\Arazzo\Document\Validator\Rules\ActionDuplicateRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionOutputTargetExclusivityRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionParameterInForbiddenRule;
@@ -108,6 +109,7 @@ final readonly class RuleSet
 
         return new self([
             new OfficialSchemaRule($engine),
+            new ActionDuplicateRule(),
             new ActionGotoTargetResolvesRule(),
             new ActionTargetExclusivityRule(),
             new ActionOutputTargetExclusivityRule($engine),
