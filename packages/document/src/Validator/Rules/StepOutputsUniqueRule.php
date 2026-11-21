@@ -25,7 +25,7 @@ final class StepOutputsUniqueRule implements Rule
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ($doc->workflows as $i => $w) {
-            foreach ($w->outputs as $key => $_) {
+            foreach (array_keys($w->outputs) as $key) {
                 if (preg_match(self::PATTERN, $key) !== 1) {
                     $errors->error(
                         'workflow.outputs_key_pattern',
@@ -36,7 +36,7 @@ final class StepOutputsUniqueRule implements Rule
             }
 
             foreach ($w->steps as $j => $s) {
-                foreach ($s->io->outputs as $key => $_) {
+                foreach (array_keys($s->io->outputs) as $key) {
                     if (preg_match(self::PATTERN, $key) !== 1) {
                         $errors->error(
                             'step.outputs_key_pattern',

@@ -33,7 +33,7 @@ final class ComponentsUniqueNamesRule implements Rule
             /** @var array<string,mixed> $items */
             $items = $components->{$map} ?? [];
 
-            foreach ($items as $key => $_) {
+            foreach (array_keys($items) as $key) {
                 if (preg_match(self::PATTERN, $key) !== 1) {
                     $errors->error(
                         'components.key_pattern',

@@ -139,3 +139,35 @@ it('does not throw on a malformed operationPath expression', function (): void {
 
     expect($ec->errors())->toBeEmpty();
 });
+
+it('skips step that is not source-bound', function (): void {
+    $document = Fx::doc(
+        workflows: [Fx::wf('w', [Fx::step('s', null, null)])],
+    );
+    $ec = new ErrorCollector();
+    (new WsdlStepRule(new ExpressionEngine()))->check($document, SymbolTable::build($document), $ec);
+
+    expect($ec->errors())->toBeEmpty();
+});
+
+it('skips wsdl source via operationName without operationId/operationPath', function (): void {
+    $document = Fx::doc(
+        workflows: [Fx::wf('w', [Fx::step('s', operationName: 'MyOp')])],
+        sources: [new SourceDescription('soap', '/service.wsdl', SourceType::Wsdl)],
+    );
+    $ec = new ErrorCollector();
+    (new WsdlStepRule(new ExpressionEngine()))->check($document, SymbolTable::build($document), $ec);
+
+    expect($ec->errors())->toBeEmpty();
+});
+
+it('returns null from findSource for unknown qualified source name', function (): void {
+    $document = Fx::doc(
+        workflows: [Fx::wf('w', [Fx::step('s', '$sourceDescriptions.unknown.foo')])],
+        sources: [new SourceDescription('soap', '/service.wsdl', SourceType::Wsdl)],
+    );
+    $ec = new ErrorCollector();
+    (new WsdlStepRule(new ExpressionEngine()))->check($document, SymbolTable::build($document), $ec);
+
+    expect($ec->errors())->toBeEmpty();
+});

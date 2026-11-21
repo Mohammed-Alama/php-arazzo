@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Tests\Validation\Rules;
 
 use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
 use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessEndAction;
 use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
@@ -78,4 +79,13 @@ it('rejects both dual targets in same workflow', function (): void {
     $ec = new ErrorCollector();
     (new ActionTargetExclusivityRule())->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toHaveCount(2);
+});
+
+it('ignores non-goto/retry actions', function (): void {
+    $end = new SuccessEndAction('end', []);
+    $s = Fx::step('s', 'op', onSuccess: [$end]);
+    $doc = Fx::doc(workflows: [Fx::wf('w', [$s])]);
+    $ec = new ErrorCollector();
+    (new ActionTargetExclusivityRule())->check($doc, SymbolTable::build($doc), $ec);
+    expect($ec->errors())->toBe([]);
 });

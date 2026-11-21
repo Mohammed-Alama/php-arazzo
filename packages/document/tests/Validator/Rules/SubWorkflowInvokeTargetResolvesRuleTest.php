@@ -73,3 +73,21 @@ it('errors when component invoke target does not resolve', function () {
     (new SubWorkflowInvokeTargetResolvesRule())->check($doc, SymbolTable::build($doc), $errors);
     expect(count($errors->errors()))->toBe(2);
 });
+
+it('checks step onFailure SubWorkflowFailureAction targets', function () {
+    $errors = new ErrorCollector();
+    $step = StepFactory::http('s', null, new StepFlow(onFailure: [
+        new SubWorkflowFailureAction('call', 'ghost-workflow', [], []),
+    ]), new StepIo(), operationId: 'op');
+    $doc = new ArazzoDocument(
+        arazzo: '1.1.0', info: new Info('t', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [new Workflow('w', null, null, null, [], [$step], [], [], [], [])],
+        components: new Components([], [], [], []),
+        specificationExtensions: [],
+        specVersion: SpecVersion::V1_1,
+    );
+    (new SubWorkflowInvokeTargetResolvesRule())->check($doc, SymbolTable::build($doc), $errors);
+    expect(count($errors->errors()))->toBe(1);
+    expect($errors->errors()[0]->code)->toBe('subworkflow.invoke_target_resolves');
+});

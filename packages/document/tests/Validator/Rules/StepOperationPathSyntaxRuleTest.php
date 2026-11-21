@@ -84,3 +84,41 @@ it('reports a malformed source expression instead of throwing', function (): voi
     expect($ec->errors())->toHaveCount(1)
         ->and($ec->errors()[0]->code)->toBe('step.operationpath_syntax');
 });
+
+it('flags undeclared source in operationPath', function (): void {
+    $doc = Fx::doc(
+        workflows: [Fx::wf('w', [Fx::step('a', null, '{$sourceDescriptions.missing.url}#/pets')])],
+        sources: [new SourceDescription('src', '/u', SourceType::Openapi)],
+    );
+    $ec = new ErrorCollector();
+    (new StepOperationPathSyntaxRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.operationpath_syntax')
+        ->and($ec->errors()[0]->message)->toContain('not a declared sourceDescription');
+});
+
+it('flags JSON pointer not starting with slash', function (): void {
+    $doc = Fx::doc(
+        workflows: [Fx::wf('w', [Fx::step('a', null, '{$sourceDescriptions.src.url}#nolead')])],
+        sources: [new SourceDescription('src', '/u', SourceType::Openapi)],
+    );
+    $ec = new ErrorCollector();
+    (new StepOperationPathSyntaxRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.operationpath_syntax')
+        ->and($ec->errors()[0]->message)->toContain('must start with');
+});
+
+it('handles template source expression with multiple segments', function (): void {
+    $doc = Fx::doc(
+        workflows: [Fx::wf('w', [Fx::step('a', null, 'prefix {$sourceDescriptions.src.url} suffix#/pets')])],
+        sources: [new SourceDescription('src', '/u', SourceType::Openapi)],
+    );
+    $ec = new ErrorCollector();
+    (new StepOperationPathSyntaxRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->code)->toBe('step.operationpath_syntax');
+});
